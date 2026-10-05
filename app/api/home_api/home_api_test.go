@@ -70,7 +70,7 @@ func TestTourActionRendersTourPage(t *testing.T) {
 	assertBodyContains(t, w,
 		"<title>语言漫游 — Emo</title>",
 		"绑定与字符串",
-		"进程:一条消息链",
+		"进程：一条消息链",
 	)
 }
 

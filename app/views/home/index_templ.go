@@ -13,7 +13,7 @@ import (
 	"github.com/emo-lang/website-cn/app/views/layouts"
 )
 
-const heroSample = `// main.emo — 一切,所见即所得
+const heroSample = `// main.emo
 class User {
   def init(name String, age Int) {
     self.name = name
@@ -21,7 +21,7 @@ class User {
   }
 
   def describe() String {
-    return "${self.name},${self.age} 岁"
+    return "${self.name}, ${self.age} 岁"
   }
 
   def adult?() Bool {
@@ -30,14 +30,7 @@ class User {
 }
 
 const ming = User.new(name: "晓明", age: 28)
-print(ming.describe())          // 晓明,28 岁
-
-// do 起进程,<- 发消息,receive 收信箱
-const pid = do work(ming, self_pid())
-
-receive {
-  (who, n) -> { print("${who} 完成了 ${n} 项任务") }
-}
+print(ming.describe())          // 晓明, 28 岁
 
 def work(user User, reply Pid) {
   var done = 0
@@ -45,9 +38,16 @@ def work(user User, reply Pid) {
     done = done + 3
   }
   reply <- (user.name, done)
+}
+
+// do 起进程, <- 发消息, receive 收信箱
+const _pid = do work(ming, self_pid())
+
+receive {
+  (who, n) -> { print("${who} 完成了 ${n} 项任务") }
 }`
 
-const concurrencySample = `// 三个进程,一条消息链
+const concurrencySample = `// 三个进程, 一条消息链
 def feed(wh Pid, i Int) Int {
   if i > 3 {
     wh <- "done"
@@ -65,7 +65,7 @@ receive {
   (who, handled) -> { print("处理了 ${handled} 个订单") }
 }`
 
-const interfaceSample = `// 接口属于调用方:形状匹配即满足,无需 implements
+const interfaceSample = `// 接口属于调用方: 形状匹配即满足, 无需 implements
 interface Greeter {
   def greet() String
 }
@@ -104,7 +104,7 @@ page(title: "首页") {
   }
 }`
 
-const osSample = `// kernel_main.emo — qemu 目标:无 OS,无 libc
+const osSample = `// kernel_main.emo — qemu 目标: 无 OS, 无 libc
 //
 //   emo build kernel_main.emo --target qemu -o kernel.img
 //   qemu-system-riscv64 -kernel kernel.img
@@ -112,7 +112,7 @@ const osSample = `// kernel_main.emo — qemu 目标:无 OS,无 libc
 def kernel_main() {
   uart.write_line("hello from EmoOS")
 
-  // 显式内存原语:危险的操作,看起来就危险
+  // 显式内存原语: 危险的操作, 看起来就危险
   const status = peek(uart_status_addr)
   poke(uart_data_addr, status)
 }`
@@ -150,7 +150,7 @@ func Index() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style>\n\t\t\t.hero-question {\n\t\t\t\tmin-height: calc(100svh - 3.5rem);\n\t\t\t\tdisplay: flex;\n\t\t\t\tflex-direction: column;\n\t\t\t\talign-items: center;\n\t\t\t\tjustify-content: center;\n\t\t\t\tgap: 3.5rem;\n\t\t\t\tpadding: 3rem 1.5rem;\n\t\t\t\ttext-align: center;\n\t\t\t}\n\t\t\t.hero-question .question {\n\t\t\t\tmargin: 0;\n\t\t\t\tfont-size: clamp(2.6rem, 9vw, 6.5rem);\n\t\t\t\tfont-weight: 800;\n\t\t\t\tline-height: 1.15;\n\t\t\t\tletter-spacing: -0.03em;\n\t\t\t\ttext-wrap: balance;\n\t\t\t}\n\t\t\t.hero-question .question .emo {\n\t\t\t\tdisplay: inline-block;\n\t\t\t\tpadding: 0 0.18em;\n\t\t\t\tmargin: 0 0.08em;\n\t\t\t\tborder-radius: 0.14em;\n\t\t\t\tbackground: var(--brand);\n\t\t\t\tcolor: var(--brand-ink);\n\t\t\t\ttransform: rotate(-2deg);\n\t\t\t}\n\t\t\t.hero-question .scroll-hint {\n\t\t\t\tdisplay: inline-flex;\n\t\t\t\tflex-direction: column;\n\t\t\t\talign-items: center;\n\t\t\t\tgap: 0.4rem;\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tfont-size: 0.85rem;\n\t\t\t\tfont-weight: 600;\n\t\t\t\tletter-spacing: 0.1em;\n\t\t\t}\n\t\t\t.hero-question .scroll-hint:hover { color: var(--text); text-decoration: none; }\n\t\t\t.hero-question .scroll-hint svg { animation: nudge 1.8s ease-in-out infinite; }\n\t\t\t@keyframes nudge {\n\t\t\t\t0%, 100% { transform: translateY(0); }\n\t\t\t\t50% { transform: translateY(6px); }\n\t\t\t}\n\t\t\t@media (prefers-reduced-motion: reduce) {\n\t\t\t\t.hero-question .scroll-hint svg { animation: none; }\n\t\t\t}\n\n\t\t\t.hero {\n\t\t\t\tdisplay: grid;\n\t\t\t\tgrid-template-columns: max-content minmax(0, 1fr);\n\t\t\t\talign-items: center;\n\t\t\t\tgap: 6rem;\n\t\t\t\tmax-width: 80rem;\n\t\t\t\tmargin: 0 auto;\n\t\t\t\tpadding: 4.5rem 1.5rem 5.5rem;\n\t\t\t}\n\t\t\t@media (max-width: 959px) {\n\t\t\t\t.hero { grid-template-columns: minmax(0, 1fr); gap: 2.5rem; padding: 3.5rem 1.5rem; }\n\t\t\t}\n\t\t\t.hero-logo { width: 72px; height: 72px; border-radius: 18px; }\n\t\t\t.hero-copy { display: flex; flex-direction: column; align-self: stretch; }\n\t\t\t.hero h2 { margin: 1.25rem 0 0.5rem; font-size: 3.25rem; line-height: 1.1; letter-spacing: -0.02em; }\n\t\t\t.hero .tagline {\n\t\t\t\tdisplay: flex; align-items: center; gap: 0.7rem;\n\t\t\t\tmargin: 0.25rem 0 0.75rem; font-size: 1.2rem; font-weight: 600; letter-spacing: 0.01em;\n\t\t\t}\n\t\t\t.hero .tagline i { color: var(--brand); font-style: normal; font-weight: 700; }\n\t\t\t.hero .release-note {\n\t\t\t\tdisplay: flex;\n\t\t\t\talign-items: center;\n\t\t\t\tflex-wrap: wrap;\n\t\t\t\tgap: 0.7rem;\n\t\t\t\tmargin: auto 0 0;\n\t\t\t\tpadding-top: 1.25rem;\n\t\t\t\tmax-width: 30rem;\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tfont-size: 0.85rem;\n\t\t\t\tletter-spacing: 0.03em;\n\t\t\t}\n\t\t\t.hero .release-note .soft { color: color-mix(in srgb, var(--muted) 70%, transparent); }\n\t\t\t.hero .release-note .pill {\n\t\t\t\tdisplay: inline-flex;\n\t\t\t\talign-items: center;\n\t\t\t\tgap: 0.4rem;\n\t\t\t\tpadding: 0.16rem 0.7rem 0.16rem 0.55rem;\n\t\t\t\tborder: 1px solid var(--border);\n\t\t\t\tborder-radius: 1rem;\n\t\t\t\tbackground: var(--surface);\n\t\t\t\tbox-shadow: var(--shadow);\n\t\t\t\tcolor: var(--text);\n\t\t\t\tfont-size: 0.78rem;\n\t\t\t\tfont-weight: 700;\n\t\t\t\tletter-spacing: 0.01em;\n\t\t\t}\n\t\t\t.hero .release-note .pill .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--brand); }\n\t\t\t.hero .sub { margin: 0; max-width: 30rem; color: var(--muted); font-size: 1.02rem; }\n\t\t\t.hero-actions { margin-top: 2.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap; }\n\t\t\t.hero-code { width: 36rem; max-width: 100%; margin-left: auto; }\n\t\t\t.hero-code .emo-code { max-height: 34rem; overflow-y: auto; scrollbar-width: thin; }\n\n\t\t\t.targets { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }\n\t\t\t.target-chip {\n\t\t\t\tdisplay: inline-flex; align-items: center; gap: 0.5rem;\n\t\t\t\tpadding: 0.5rem 1rem;\n\t\t\t\tbackground: var(--surface); border: 1px solid var(--border); border-radius: 2rem;\n\t\t\t\tfont-size: 0.88rem; font-weight: 600; box-shadow: var(--shadow);\n\t\t\t}\n\t\t\t.target-chip .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--brand); }\n\t\t\t.target-chip small { color: var(--muted); font-weight: 400; }\n\n\t\t\t.cta-band { text-align: center; }\n\t\t\t.cta-band h2 { margin: 0 0 0.8rem; font-size: clamp(1.6rem, 3.5vw, 2.1rem); letter-spacing: -0.02em; }\n\t\t\t.cta-band p { margin: 0 auto 2rem; max-width: 36rem; color: var(--muted); }\n\t\t\t.cta-band .hero-actions { justify-content: center; margin-top: 0; }\n\t\t</style> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style>\n\t\t\t.hero-question {\n\t\t\t\tmin-height: calc(100svh - 3.5rem);\n\t\t\t\tdisplay: flex;\n\t\t\t\tflex-direction: column;\n\t\t\t\talign-items: center;\n\t\t\t\tjustify-content: center;\n\t\t\t\tgap: 3.5rem;\n\t\t\t\tpadding: 3rem 1.5rem;\n\t\t\t\ttext-align: center;\n\t\t\t}\n\t\t\t.hero-question .question {\n\t\t\t\tmargin: 0;\n\t\t\t\tfont-size: clamp(2.6rem, 9vw, 6.5rem);\n\t\t\t\tfont-weight: 800;\n\t\t\t\tline-height: 1.15;\n\t\t\t\tletter-spacing: -0.03em;\n\t\t\t\ttext-wrap: balance;\n\t\t\t}\n\t\t\t.hero-question .question .emo {\n\t\t\t\tdisplay: inline-block;\n\t\t\t\tpadding: 0 0.18em;\n\t\t\t\tmargin: 0 0.08em;\n\t\t\t\tborder-radius: 0.14em;\n\t\t\t\tbackground: var(--brand);\n\t\t\t\tcolor: var(--brand-ink);\n\t\t\t\ttransform: rotate(-2deg);\n\t\t\t}\n\t\t\t.hero-question .scroll-hint {\n\t\t\t\tdisplay: inline-flex;\n\t\t\t\tflex-direction: column;\n\t\t\t\talign-items: center;\n\t\t\t\tgap: 0.4rem;\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tfont-size: 0.85rem;\n\t\t\t\tfont-weight: 600;\n\t\t\t\tletter-spacing: 0.1em;\n\t\t\t}\n\t\t\t.hero-question .scroll-hint:hover { color: var(--text); text-decoration: none; }\n\t\t\t.hero-question .scroll-hint svg { animation: nudge 1.8s ease-in-out infinite; }\n\t\t\t@keyframes nudge {\n\t\t\t\t0%, 100% { transform: translateY(0); }\n\t\t\t\t50% { transform: translateY(6px); }\n\t\t\t}\n\t\t\t@media (prefers-reduced-motion: reduce) {\n\t\t\t\t.hero-question .scroll-hint svg { animation: none; }\n\t\t\t}\n\n\t\t\t.hero {\n\t\t\t\tdisplay: grid;\n\t\t\t\tgrid-template-columns: max-content minmax(0, 1fr);\n\t\t\t\talign-items: center;\n\t\t\t\tgap: 6rem;\n\t\t\t\tmax-width: 80rem;\n\t\t\t\tmargin: 0 auto;\n\t\t\t\tpadding: 4.5rem 1.5rem 5.5rem;\n\t\t\t}\n\t\t\t@media (max-width: 959px) {\n\t\t\t\t.hero { grid-template-columns: minmax(0, 1fr); gap: 2.5rem; padding: 3.5rem 1.5rem; }\n\t\t\t}\n\t\t\t.hero-logo { width: 72px; height: 72px; border-radius: 18px; }\n\t\t\t.hero-copy { display: flex; flex-direction: column; align-self: stretch; }\n\t\t\t.hero h2 { margin: 1.25rem 0 0.5rem; font-size: 3.25rem; line-height: 1.1; letter-spacing: -0.02em; }\n\t\t\t.hero .tagline {\n\t\t\t\tdisplay: flex; align-items: center; gap: 0.7rem;\n\t\t\t\tmargin: 0.25rem 0 0.75rem; font-size: 1.2rem; font-weight: 600; letter-spacing: 0.01em;\n\t\t\t}\n\t\t\t.hero .tagline i { color: var(--brand); font-style: normal; font-weight: 700; }\n\t\t\t.hero .release-note {\n\t\t\t\tdisplay: flex;\n\t\t\t\talign-items: center;\n\t\t\t\tflex-wrap: wrap;\n\t\t\t\tgap: 0.7rem;\n\t\t\t\tmargin: auto 0 0;\n\t\t\t\tpadding-top: 1.25rem;\n\t\t\t\tmax-width: 30rem;\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tfont-size: 0.85rem;\n\t\t\t\tletter-spacing: 0.03em;\n\t\t\t}\n\t\t\t.hero .release-note .soft { color: color-mix(in srgb, var(--muted) 70%, transparent); }\n\t\t\t.hero .release-note .pill {\n\t\t\t\tdisplay: inline-flex;\n\t\t\t\talign-items: center;\n\t\t\t\tgap: 0.4rem;\n\t\t\t\tpadding: 0.16rem 0.7rem 0.16rem 0.55rem;\n\t\t\t\tborder: 1px solid var(--border);\n\t\t\t\tborder-radius: 1rem;\n\t\t\t\tbackground: var(--surface);\n\t\t\t\tbox-shadow: var(--shadow);\n\t\t\t\tcolor: var(--text);\n\t\t\t\tfont-size: 0.78rem;\n\t\t\t\tfont-weight: 700;\n\t\t\t\tletter-spacing: 0.01em;\n\t\t\t}\n\t\t\t.hero .release-note .pill .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--brand); }\n\t\t\t.hero .sub { margin: 0; max-width: 30rem; color: var(--muted); font-size: 1.02rem; }\n\t\t\t.hero-actions { margin-top: 2.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap; }\n\t\t\t.hero-code { width: 36rem; max-width: 100%; margin-left: auto; }\n\t\t\t.hero-code .emo-code { max-height: 34rem; overflow-y: auto; scrollbar-width: thin; }\n\n\t\t\t.targets { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }\n\t\t\t.target-chip {\n\t\t\t\tdisplay: inline-flex; align-items: center; gap: 0.5rem;\n\t\t\t\tpadding: 0.5rem 1rem;\n\t\t\t\tbackground: var(--surface); border: 1px solid var(--border); border-radius: 2rem;\n\t\t\t\tfont-size: 0.88rem; font-weight: 600; box-shadow: var(--shadow);\n\t\t\t}\n\t\t\t.target-chip .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--brand); }\n\t\t\t.target-chip small { color: var(--muted); font-weight: 400; }\n\n\t\t\t.cta-band { text-align: center; }\n\t\t\t.cta-band h2 { margin: 0 0 0.8rem; font-size: clamp(1.6rem, 3.5vw, 2.1rem); letter-spacing: -0.02em; }\n\t\t\t.cta-band p { margin: 0 auto 2rem; max-width: 36rem; color: var(--muted); }\n\t\t\t.cta-band .hero-actions { justify-content: center; margin-top: 0; }\n\t\t\t.eyebrow .badge {\n\t\t\t\tdisplay: inline-block;\n\t\t\t\tmargin-left: 0.55rem;\n\t\t\t\tpadding: 0.12rem 0.6rem;\n\t\t\t\tborder: 1px solid var(--brand);\n\t\t\t\tborder-radius: 1rem;\n\t\t\t\tfont-size: 0.7rem;\n\t\t\t\tletter-spacing: 0.08em;\n\t\t\t\tvertical-align: 0.12em;\n\t\t\t}\n\t\t</style> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -165,7 +165,7 @@ func Index() templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.ResolveAttributeValue(layouts.PublicURL("logo.png"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 246, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 257, Col: 63}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
 			if templ_7745c5c3_Err != nil {
@@ -178,7 +178,7 @@ func Index() templ.Component {
 			var templ_7745c5c3_Var4 templ.SafeURL
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/quickstart"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 254, Col: 67}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 265, Col: 67}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -192,7 +192,7 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div></section><section class=\"section\" id=\"targets\"><div class=\"container\"><p class=\"eyebrow\">编译目标</p><div class=\"section-head\"><h2>一门语言，五个目标</h2><p>同一份 Emo 代码，可以编译到系统栈的每一层 —— 写应用、写服务、写前端，一直写到操作系统内核。</p></div><div class=\"targets\"><span class=\"target-chip\"><span class=\"dot\"></span>原生可执行文件 <small>单文件，免安装</small></span> <span class=\"target-chip\"><span class=\"dot\"></span>WebAssembly <small>浏览器与 WASI</small></span> <span class=\"target-chip\"><span class=\"dot\"></span>TypeScript <small>编译到其他语言</small></span> <span class=\"target-chip\"><span class=\"dot\"></span>BEAM 虚拟机 <small>Erlang 生态</small></span> <span class=\"target-chip\"><span class=\"dot\"></span>RISC-V 裸机<small>运行于 QEMU</small></span></div></div></section><section class=\"section\" id=\"highlights\"><div class=\"container\"><p class=\"eyebrow\">核心特色</p><div class=\"section-head\"><h2>为清晰而生</h2><p>Emo 汲取三十年开源编程语言的经验与教训，围绕三条原则设计:表达力强的语法、最少惊讶原则、多编译目标。</p></div><div class=\"feature-grid\"><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>明确的语法</h3><p>调用一定带括号，<code>return</code> 一定写出来，代码块只有一种形状。一切所见即所得，解析器与读者都不必猜测。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>渐进式类型</h3><p>运行时动态类型，编译期静态检查。函数签名必写类型，其余交给推断;类型信息还会反哺原生代码的性能。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>默认不可变</h3><p><code>const</code> / <code>var</code> 分层明确，类实例是值类型;长期可变状态只住在 <code>Box</code> 里，且永远不跨越进程边界。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>Actor 并发</h3><p><code>do</code> 起进程，<code>&lt;-</code> 发消息，<code>receive</code> 收信箱。崩溃隔离与监管内建，无共享内存原语。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>直接风格网络</h3><p>没有 <code>async</code>/<code>await</code>，没有函数染色。任何函数都能做 IO，调度器在 io_uring / kqueue / IOCP 之上切换进程。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>结构化模块</h3><p>目录树即模块树:没有 <code>import</code> / <code>export</code>，路径即引用，<code>internal/</code> 的可见性由编译器强制。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>自带包管理</h3><p><code>require</code> 引入依赖，精确版本 + MVS 解析，构建即安装;中心注册表支持私有部署。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>配置即代码</h3><p>Emo 就是自己的配置语言:受限 Profile 保证终止、密封、无副作用，不再需要第二种 Schema 语言。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>C 互操作</h3><p><code>foreign def</code> 一行声明即可链接 C 库;OCaml 5 实现，一流的 C FFI 直通原生后端。</p></div></div></div></section><section class=\"section\" id=\"concurrency\"><div class=\"container split\"><div><p class=\"eyebrow\">并发</p><h3>进程与消息传递，Actor 模型的嫡系</h3><p>Emo 的并发围绕进程与消息传递构建，直接映射 BEAM 进程; 原生后端则以 OCaml 5 effects 实现调度器 —— 与 Eio 同源的地基。</p><ul><li>消息传递是唯一核心原语，共享内存不在语义之内</li><li>尾调用有保证，递归就是收信循环的惯用形态</li><li>未处理的错误只杀死出错的进程，监管策略交给库</li></ul></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div></section><section class=\"section\" id=\"targets\"><div class=\"container\"><p class=\"eyebrow\">编译目标</p><div class=\"section-head\"><h2>一门语言，五个目标</h2><p>同一份 Emo 代码，可以编译到系统栈的每一层 —— 写应用、写服务、写前端，一直写到操作系统内核。</p></div><div class=\"targets\"><span class=\"target-chip\"><span class=\"dot\"></span>原生可执行文件 <small>单文件，免安装</small></span> <span class=\"target-chip\"><span class=\"dot\"></span>WebAssembly <small>浏览器与 WASI</small></span> <span class=\"target-chip\"><span class=\"dot\"></span>TypeScript <small>编译到其他语言</small></span> <span class=\"target-chip\"><span class=\"dot\"></span>BEAM 虚拟机 <small>Erlang 生态</small></span> <span class=\"target-chip\"><span class=\"dot\"></span>RISC-V 裸机<small>运行于 QEMU</small></span></div></div></section><section class=\"section\" id=\"highlights\"><div class=\"container\"><p class=\"eyebrow\">核心特色</p><div class=\"section-head\"><h2>为清晰而生</h2><p>Emo 汲取三十年开源编程语言的经验与教训，围绕三条原则设计：表达力强的语法、最少惊讶原则、多编译目标。</p></div><div class=\"feature-grid\"><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>明确的语法</h3><p>调用一定带括号，<code>return</code> 一定写出来，代码块只有一种形状。一切所见即所得，解析器与读者都不必猜测。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>渐进式类型</h3><p>运行时动态类型，编译期静态检查。函数签名必写类型，其余交给推断；类型信息还会反哺原生代码的性能。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>默认不可变</h3><p><code>const</code> / <code>var</code> 分层明确，类实例是值类型；长期可变状态只住在 <code>Box</code> 里，且永远不跨越进程边界。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>Actor 并发</h3><p><code>do</code> 起进程，<code>&lt;-</code> 发消息，<code>receive</code> 收信箱。崩溃隔离与监管内建，无共享内存原语。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>直接风格网络</h3><p>没有 <code>async</code>/<code>await</code>，没有函数染色。任何函数都能做 IO，调度器在 io_uring / kqueue / IOCP 之上切换进程。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>结构化模块</h3><p>目录树即模块树：没有 <code>import</code> / <code>export</code>，路径即引用，<code>internal/</code> 的可见性由编译器强制。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>自带包管理</h3><p><code>require</code> 引入依赖，精确版本 + MVS 解析，构建即安装；中心注册表支持私有部署。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>配置即代码</h3><p>Emo 就是自己的配置语言：受限 Profile 保证终止、密封、无副作用，不再需要第二种 Schema 语言。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>C 互操作</h3><p><code>foreign def</code> 一行声明即可链接 C 库；OCaml 5 实现，一流的 C FFI 直通原生后端。</p></div></div></div></section><section class=\"section\" id=\"concurrency\"><div class=\"container split\"><div><p class=\"eyebrow\">并发</p><h3>进程与消息传递，Actor 模型的嫡系</h3><p>Emo 的并发围绕进程与消息传递构建，直接映射 BEAM 进程； 原生后端则以 OCaml 5 effects 实现调度器 —— 与 Eio 同源的地基。</p><ul><li>消息传递是唯一核心原语，共享内存不在语义之内</li><li>尾调用有保证，递归就是收信循环的惯用形态</li><li>未处理的错误只杀死出错的进程，监管策略交给库</li></ul></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -208,7 +208,7 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div><p class=\"eyebrow\">抽象</p><h3>结构化接口，零成本多态</h3><p><code>interface</code> 声明一组方法签名，任何形状匹配的类都自动满足 —— 不需要 <code>implements</code>。接口属于调用方，实现方甚至不必知道接口存在。</p><ul><li>编译期校验形状，运行时鸭子分派，零开销</li><li>没有继承 —— 复用靠组合、鸭子类型与接口</li><li><code>g.is(Machine)</code> 为真后，<code>g</code> 自动收窄类型</li></ul></div></div></section><section class=\"section\" id=\"emoui\"><div class=\"container split\"><div><p class=\"eyebrow\">EmoUI</p><h3>UI 就是普通的 Emo 代码</h3><p>EmoUI 是用 Emo 写的组件式 UI 框架:没有模板语言， 组件树就是带代码块的嵌套调用。Emo 的语法正是为它塑形。</p><ul><li>组件即函数，Props 由内置类型检查器把关</li><li>UI 事件即进程消息 —— 天然长成 Elm 架构</li><li>响应式原语显式可预测，编译器把可静态确定的更新编译成定向刷新</li></ul></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div><p class=\"eyebrow\">抽象</p><h3>结构化接口，零成本多态</h3><p><code>interface</code> 声明一组方法签名，任何形状匹配的类都自动满足 —— 不需要 <code>implements</code>。接口属于调用方，实现方甚至不必知道接口存在。</p><ul><li>编译期校验形状，运行时鸭子分派，零开销</li><li>没有继承 —— 复用靠组合、鸭子类型与接口</li><li><code>g.is(Machine)</code> 为真后，<code>g</code> 自动收窄类型</li></ul></div></div></section><section class=\"section\" id=\"emoui\"><div class=\"container split\"><div><p class=\"eyebrow\">EmoUI <span class=\"badge\">规划中</span></p><h3>UI 就是普通的 Emo 代码</h3><p>EmoUI 是用 Emo 写的组件式 UI 框架：没有模板语言， 组件树就是带代码块的嵌套调用。Emo 的语法正是为它塑形。</p><ul><li>组件即函数，Props 由内置类型检查器把关</li><li>UI 事件即进程消息 —— 天然长成 Elm 架构</li><li>响应式原语显式可预测，编译器把可静态确定的更新编译成定向刷新</li></ul></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -224,14 +224,14 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div><p class=\"eyebrow\">EmoOS</p><h3>一门能写内核的语言</h3><p>Emo 的边界一直延伸到操作系统层:<code>qemu</code> 编译目标面向裸机， 无 OS、无 libc、无默认运行时，支持 RISC-V，直接产出 QEMU 可引导镜像。</p><ul><li>分层核心库:内核代码只用零依赖的 <code>core</code></li><li>内存原语显式命名 —— 危险的操作看起来就危险</li><li>GC、分配器、调度器可替换;内核用 qemu 目标，Shell 与应用用原生目标 —— 一门语言贯通系统两侧</li></ul></div></div></section><section class=\"section\" id=\"cta\"><div class=\"container cta-band\"><h2>现在就开始用 Emo</h2><p>开源、MIT 协议、由 OCaml 5 实现的参考编译器。读一遍语言漫游，十分钟看懂整门语言。</p><div class=\"hero-actions\"><a class=\"button primary\" href=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div><p class=\"eyebrow\">EmoOS <span class=\"badge\">规划中</span></p><h3>一门能写内核的语言</h3><p>Emo 的边界一直延伸到操作系统层：<code>qemu</code> 编译目标面向裸机， 无 OS、无 libc、无默认运行时，支持 RISC-V，直接产出 QEMU 可引导镜像。</p><ul><li>分层核心库：内核代码只用零依赖的 <code>core</code></li><li>内存原语显式命名 —— 危险的操作看起来就危险</li><li>GC、分配器、调度器可替换；内核用 qemu 目标，Shell 与应用用原生目标 —— 一门语言贯通系统两侧</li></ul></div></div></section><section class=\"section\" id=\"cta\"><div class=\"container cta-band\"><h2>现在就开始用 Emo</h2><p>开源、MIT 协议、由 OCaml 5 实现的参考编译器。读一遍语言漫游，十分钟看懂整门语言。</p><div class=\"hero-actions\"><a class=\"button primary\" href=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 templ.SafeURL
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/tour"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 414, Col: 60}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 425, Col: 60}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -244,7 +244,7 @@ func Index() templ.Component {
 			var templ_7745c5c3_Var6 templ.SafeURL
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/features"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 415, Col: 56}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 426, Col: 56}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -260,7 +260,7 @@ func Index() templ.Component {
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = layouts.Base("Emo — 语法简洁 · 显式定义 · 符合直觉的国产系统级编程语言", "Emo 是一门国产通用系统级编程语言:渐进式类型、Actor 并发、直接风格网络，可编译到原生可执行文件、WebAssembly、TypeScript、BEAM 虚拟机与裸机。").Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = layouts.Base("Emo — 语法简洁 · 显式定义 · 符合直觉的国产系统级编程语言", "Emo 是一门国产通用系统级编程语言：渐进式类型、Actor 并发、直接风格网络，可编译到原生可执行文件、WebAssembly、TypeScript、BEAM 虚拟机与裸机。").Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

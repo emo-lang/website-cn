@@ -11,11 +11,11 @@ var visits = 6
 visits = visits * 7
 print("hello, ${who} — six sevens are ${visits}")
 
-// 插值可以装任何表达式,中文就是普通的字符串数据
+// 插值可以装任何表达式, 中文就是普通的字符串数据
 const item = "伞"
 print("one ${item} costs ${19 + 9} yuan")`
 
-const tour2 = `// ---- 2 · 类:不可变值类型 ----
+const tour2 = `// ---- 2 · 类: 不可变值类型 ----
 class User {
   def init(name String, age Int) {
     self.name = name
@@ -34,11 +34,11 @@ class User {
 const ming = User.new(name: "王晓明", age: 28)
 print(ming.describe())
 print("adult? ${ming.adult?()}")
-// 字段在 init 之后冻结,相等比较的是内容:
+// 字段在 init 之后冻结, 相等比较的是内容:
 print(ming == User.new(name: "王晓明", age: 28))`
 
-const tour3 = `// ---- 3 · 接口:形状即契约 ----
-// 哪里都没有 implements:形状匹配,即满足接口。
+const tour3 = `// ---- 3 · 接口: 形状即契约 ----
+// 哪里都没有 implements: 形状匹配, 即满足接口。
 interface Greeter {
   def greet() String
 }
@@ -66,8 +66,8 @@ print(welcome(Machine.new()))
 print(welcome(Friend.new()))`
 
 const tour4 = `// ---- 4 · 枚举与标签惯用法 ----
-// 枚举是封闭的有名值集合,成员不携带数据。
-// 需要携带数据时,标签放进元组,case 按位置解构。
+// 枚举是封闭的有名值集合, 成员不携带数据。
+// 需要携带数据时, 标签放进元组, case 按位置解构。
 enum Outcome { ok, err }
 
 def classify(age Int) (Outcome, String) {
@@ -89,18 +89,18 @@ case (Outcome.ok, 42) {
   (Outcome.err, label) -> { print("no answer: ${label}") }
 }`
 
-const tour5 = `// ---- 5 · 数组:定长、变换、永不就地修改 ----
+const tour5 = `// ---- 5 · 数组: 定长、变换、永不就地修改 ----
 const nums = [3, 1, 2]
 print(nums[0] + nums.length())
-// 变换返回新数组,原数组纹丝不动:
+// 变换返回新数组, 原数组纹丝不动:
 const more = nums.append(9)
 print(more.length())
 print(nums.length())
 print([1, 2] == [1, 2])`
 
-const tour6 = `// ---- 6 · 可变性,一层一层来 ----
-// var 显式且块作用域;Box 是一个进程拥有的唯一长期可变单元
-// —— 只有 read 与 replace,刻意没有别的。
+const tour6 = `// ---- 6 · 可变性, 一层一层来 ----
+// var 显式且块作用域; Box 是一个进程拥有的唯一长期可变单元
+// —— 只有 read 与 replace, 刻意没有别的。
 var tally = 0
 tally = tally + 1
 tally = tally + 10
@@ -111,8 +111,8 @@ total.replace(total.read() + 5)
 total.replace(total.read() + 6)
 print(total.read())`
 
-const tour7 = `// ---- 7 · 代码块:唯一的函数记法 ----
-// 箭头块是匿名函数;调用可以尾随一个代码块,
+const tour7 = `// ---- 7 · 代码块: 唯一的函数记法 ----
+// 箭头块是匿名函数; 调用可以尾随一个代码块,
 // 回调与迭代因此保持同一种记法。
 const twice = -> (n Int) { return n * 2 }
 print(twice(21))
@@ -130,7 +130,7 @@ walk([10, 20, 30], 0) -> (v Int) {
   return v
 }`
 
-const tour8 = `// ---- 8 · 进程:三个进程,一条消息链 ----
+const tour8 = `// ---- 8 · 进程: 三个进程, 一条消息链 ----
 def feed(wh Pid, i Int) Int {
   if i > 3 {
     wh <- "done"
@@ -149,7 +149,7 @@ receive {
 }`
 
 templ Index() {
-	@layouts.Base("语言漫游 — Emo", "一个程序读懂 Emo:绑定、类、接口、枚举、数组、可变性、代码块与进程,每个小节几行代码。") {
+	@layouts.Base("语言漫游 — Emo", "一个程序读懂 Emo：绑定、类、接口、枚举、数组、可变性、代码块与进程，每个小节几行代码。") {
 		<style>
 			.tour-step { margin-bottom: 3.5rem; scroll-margin-top: 5rem; }
 			.tour-step h2 { margin: 0 0 0.6rem; font-size: 1.35rem; letter-spacing: -0.01em; }
@@ -169,9 +169,9 @@ templ Index() {
 				<div class="container">
 					<h1>语言漫游</h1>
 					<p>
-						一个程序,从上到下读完,每个小节几行代码就把事情说清楚。
-						Emo 的设计规则是:一切所见即所得 —— 调用有括号,返回写出来,可变性永远拼出来。
-						把各节拼成一个 <code>main.emo</code>,<code>emo run main.emo</code> 即可运行。
+						一个程序，从上到下读完，每个小节几行代码就把事情说清楚。
+						Emo 的设计规则是：一切所见即所得 —— 调用有括号，返回写出来，可变性永远拼出来。
+						把各节拼成一个 <code>main.emo</code>，<code>emo run main.emo</code> 即可运行。
 					</p>
 				</div>
 			</section>
@@ -180,49 +180,49 @@ templ Index() {
 				<div class="container">
 					<div class="tour-step" id="bindings">
 						<h2><span class="num">1</span>绑定与字符串</h2>
-						<p><code>const</code> 不变,<code>var</code> 可变但出不了块。字符串永远双引号,插值只有一种形状,花括号里可以装任意表达式。</p>
+						<p><code>const</code> 不变，<code>var</code> 可变但出不了块。字符串永远双引号，插值只有一种形状，花括号里可以装任意表达式。</p>
 						@emocode.Terminal("main.emo", tour1)
 					</div>
 
 					<div class="tour-step" id="classes">
-						<h2><span class="num">2</span>类:不可变值类型</h2>
-						<p>字段只在 <code>init</code> 里诞生,之后冻结;两个内容相同的实例 <code>==</code>。谓词方法以 <code>?</code> 结尾。</p>
+						<h2><span class="num">2</span>类：不可变值类型</h2>
+						<p>字段只在 <code>init</code> 里诞生，之后冻结；两个内容相同的实例 <code>==</code>。谓词方法以 <code>?</code> 结尾。</p>
 						@emocode.Terminal("main.emo", tour2)
 					</div>
 
 					<div class="tour-step" id="interfaces">
-						<h2><span class="num">3</span>接口:形状即契约</h2>
-						<p>接口属于调用方。类不必声明实现任何接口 —— 形状对上,契约就成立。</p>
+						<h2><span class="num">3</span>接口：形状即契约</h2>
+						<p>接口属于调用方。类不必声明实现任何接口 —— 形状对上，契约就成立。</p>
 						@emocode.Terminal("main.emo", tour3)
 					</div>
 
 					<div class="tour-step" id="enums">
 						<h2><span class="num">4</span>枚举与标签惯用法</h2>
-						<p>枚举成员不携带数据。需要数据时,标签骑在元组里,<code>case</code> 按位置解构,还能带守卫。</p>
+						<p>枚举成员不携带数据。需要数据时，标签骑在元组里，<code>case</code> 按位置解构，还能带守卫。</p>
 						@emocode.Terminal("main.emo", tour4)
 					</div>
 
 					<div class="tour-step" id="arrays">
-						<h2><span class="num">5</span>数组:定长、变换、永不就地修改</h2>
-						<p>变换总是返回新数组;<code>==</code> 逐元素比较内容。</p>
+						<h2><span class="num">5</span>数组：定长、变换、永不就地修改</h2>
+						<p>变换总是返回新数组；<code>==</code> 逐元素比较内容。</p>
 						@emocode.Terminal("main.emo", tour5)
 					</div>
 
 					<div class="tour-step" id="mutability">
-						<h2><span class="num">6</span>可变性,一层一层来</h2>
-						<p><code>var</code> 活不过它的块;长期状态只有 <code>Box</code>,只有 <code>read</code> 与 <code>replace</code>。</p>
+						<h2><span class="num">6</span>可变性，一层一层来</h2>
+						<p><code>var</code> 活不过它的块；长期状态只有 <code>Box</code>，只有 <code>read</code> 与 <code>replace</code>。</p>
 						@emocode.Terminal("main.emo", tour6)
 					</div>
 
 					<div class="tour-step" id="blocks">
-						<h2><span class="num">7</span>代码块:唯一的函数记法</h2>
-						<p><code>-&gt; (x) &#123; ... &#125;</code> 是匿名函数;<code>def</code> 是它的命名形态。尾随代码块让回调与迭代保持同一种记法。</p>
+						<h2><span class="num">7</span>代码块：唯一的函数记法</h2>
+						<p><code>-&gt; (x) &#123; ... &#125;</code> 是匿名函数；<code>def</code> 是它的命名形态。尾随代码块让回调与迭代保持同一种记法。</p>
 						@emocode.Terminal("main.emo", tour7)
 					</div>
 
 					<div class="tour-step" id="processes">
-						<h2><span class="num">8</span>进程:一条消息链</h2>
-						<p><code>do</code> 起进程,<code>&lt;-</code> 发消息,<code>receive</code> 选择性接收。尾调用有保证,递归就是收信循环。</p>
+						<h2><span class="num">8</span>进程：一条消息链</h2>
+						<p><code>do</code> 起进程，<code>&lt;-</code> 发消息，<code>receive</code> 选择性接收。尾调用有保证，递归就是收信循环。</p>
 						@emocode.Terminal("main.emo", tour8)
 					</div>
 				</div>
