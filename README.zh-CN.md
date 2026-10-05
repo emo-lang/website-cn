@@ -1,6 +1,6 @@
 # Emo 中文官网 (website-cn)
 
-[Emo](https://github.com/emo-lang/emo) 的中文宣传官网 —— 干净、明确、直觉。
+[Emo](https://github.com/emo-lang/emo) 的中文宣传官网 —— 语法简洁、显式定义、符合直觉。
 基于 [Airway](https://github.com/daqing/airway)(Gin + templ)构建,
 宣传页全部由服务端渲染,不依赖任何客户端框架。英文版 README 见
 [README.md](README.md),两份内容一一对应。
