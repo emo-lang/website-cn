@@ -25,7 +25,7 @@ print("one ${item} costs ${19 + 9} yuan")`
 
 const tour2 = `// ---- 2 · 类: 不可变值类型 ----
 class User {
-  def init(name String, age Int) {
+  def init(name String, age Int64) {
     self.name = name
     self.age = age
   }
@@ -78,7 +78,7 @@ const tour4 = `// ---- 4 · 枚举与标签惯用法 ----
 // 需要携带数据时, 标签放进元组, case 按位置解构。
 enum Outcome { ok, err }
 
-def classify(age Int) (Outcome, String) {
+def classify(age Int64) (Outcome, String) {
   if age >= 18 {
     return (Outcome.ok, "adult")
   }
@@ -122,10 +122,10 @@ print(total.read())`
 const tour7 = `// ---- 7 · 代码块: 唯一的函数记法 ----
 // 箭头块是匿名函数; 调用可以尾随一个代码块,
 // 回调与迭代因此保持同一种记法。
-const twice = -> (n Int) { return n * 2 }
+const twice = -> (n Int64) { return n * 2 }
 print(twice(21))
 
-def walk(xs Array[Int], i Int, f Block) Int {
+def walk(xs Array[Int64], i Int64, f Block) Int64 {
   if i == xs.length() {
     return 0
   }
@@ -133,13 +133,13 @@ def walk(xs Array[Int], i Int, f Block) Int {
   return walk(xs, i + 1, f)
 }
 
-walk([10, 20, 30], 0) -> (v Int) {
+walk([10, 20, 30], 0) -> (v Int64) {
   print(v)
   return v
 }`
 
 const tour8 = `// ---- 8 · 进程: 三个进程, 一条消息链 ----
-def feed(wh Pid, i Int) Int {
+def feed(wh Pid, i Int64) Int64 {
   if i > 3 {
     wh <- "done"
     return 0

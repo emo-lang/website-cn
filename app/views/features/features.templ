@@ -6,7 +6,7 @@ import (
 )
 
 const classSample = `class User {
-  def init(name String, age Int) {
+  def init(name String, age Int64) {
     self.name = name
     self.age = age
   }
@@ -56,14 +56,14 @@ const emoBlockSample = `// emo 块: 把一组函数和常量组织成命名空�
 emo Math {
   const phi = 1.618
 
-  def abs(n Int) Int {
+  def abs(n Int64) Int64 {
     if n < 0 {
       return -n
     }
     return n
   }
 
-  def square(n Int) Int {
+  def square(n Int64) Int64 {
     return n * n
   }
 }
@@ -141,7 +141,7 @@ print(divide(10, 4))   // 2.5`
 const mutabilitySample = `// const 永不改变; var 在块内可变
 const base = 10
 
-def bump() Int {
+def bump() Int64 {
   var count = base
   count = count + 1   // var: 块内可变
   return count        // 逃出去的是值, 不是可变性
@@ -271,7 +271,7 @@ templ Index() {
 						<li>运行时每个值带类型标签 —— 与 BEAM 天然对齐，日常代码没有类型仪式。</li>
 						<li>编译器内置类型检查：标注可选(函数签名除外)，未标注的代码照样推断与检查，只报告确定的错误。</li>
 						<li>结构化、流敏感：<code>user.is(Admin)</code> 为真后，<code>user</code> 收窄为 <code>Admin</code>。</li>
-						<li>没有泛型机器：参数化类型只是标注词汇(<code>Array[User]</code>、<code>Box[Int]</code>)，应用代码几乎见不到类型拼写。</li>
+						<li>没有泛型机器：参数化类型只是标注词汇(<code>Array[User]</code>、<code>Box[Int64]</code>)，应用代码几乎见不到类型拼写。</li>
 						<li>类型信息反哺性能：类型足够完整的模块在原生后端被特化 —— 去装箱表示、直接分派。</li>
 					</ul>
 
