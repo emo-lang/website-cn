@@ -1,0 +1,35 @@
+package layouts
+
+import "github.com/daqing/airway/lib/utils"
+
+// Nav renders the sticky site navigation; active is one of "", "features",
+// "tour", "quickstart".
+templ Nav(active string) {
+	<header class="site-nav">
+		<div class="nav-inner">
+			<a class="brand" href={ href("/") }>
+				<img src={ utils.URLPrefix() + "/public/logo.png" } alt="Emo logo" width="24" height="24"/>
+				<span>Emo</span>
+			</a>
+			<nav class="nav-links" aria-label="主导航">
+				<a href={ href("/") } class={ templ.KV("active", active == "home") }>首页</a>
+				<a href={ href("/features") } class={ templ.KV("active", active == "features") }>语言特性</a>
+				<a href={ href("/tour") } class={ templ.KV("active", active == "tour") }>语言漫游</a>
+				<a href={ href("/quickstart") } class={ templ.KV("active", active == "quickstart") }>快速上手</a>
+				<a class="button small primary" href="https://github.com/emo-lang/emo" target="_blank" rel="noreferrer">GitHub</a>
+			</nav>
+		</div>
+	</header>
+}
+
+// Footer renders the shared site footer.
+templ Footer() {
+	<footer class="site-footer">
+		<p>Emo — 干净 · 明确 · 直觉</p>
+		<p class="footer-links">
+			<a href="https://github.com/emo-lang/emo" target="_blank" rel="noreferrer">github.com/emo-lang/emo</a>
+			<a href="https://github.com/emo-lang/emo-ui" target="_blank" rel="noreferrer">EmoUI</a>
+			<a href="https://github.com/emo-lang/emo/blob/main/LICENSE" target="_blank" rel="noreferrer">MIT License</a>
+		</p>
+	</footer>
+}

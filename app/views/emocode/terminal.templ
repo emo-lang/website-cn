@@ -1,0 +1,65 @@
+package emocode
+
+// Styles renders the shared CSS for Emo code terminals. Include it once per
+// page (the layout does this).
+templ Styles() {
+	<style>
+		.emo-terminal {
+			border: 1px solid var(--border);
+			border-radius: 0.9rem;
+			overflow: hidden;
+			background: #1a1a1c;
+			box-shadow: var(--shadow);
+		}
+		.emo-terminal-bar {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			padding: 0.6rem 0.9rem;
+			border-bottom: 1px solid #2c2c30;
+			background: #222225;
+		}
+		.emo-dot { width: 0.72rem; height: 0.72rem; border-radius: 50%; }
+		.emo-dot.red { background: #ff5f57; }
+		.emo-dot.yellow { background: #febc2e; }
+		.emo-dot.green { background: #28c840; }
+		.emo-terminal-title {
+			margin-left: 0.4rem;
+			color: #8e8e96;
+			font-size: 0.78rem;
+			font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+		}
+		.emo-code {
+			margin: 0;
+			padding: 1.2rem 1.4rem;
+			font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+			font-size: 0.8rem;
+			line-height: 1.6;
+			color: #e8e8ec;
+			overflow-x: auto;
+			tab-size: 2;
+			white-space: pre;
+		}
+		.emo-code code { font-family: inherit; font-size: inherit; background: none; border-radius: 0; padding: 0; }
+		.emo-code .tok-k { color: #9ea0f5; }              /* keywords */
+		.emo-code .tok-t { color: #efbf6b; }              /* types */
+		.emo-code .tok-s { color: #a9dc76; }              /* strings */
+		.emo-code .tok-n { color: #d2a8ff; }              /* numbers */
+		.emo-code .tok-f { color: #79c0ff; }              /* call sites */
+		.emo-code .tok-c { color: #7a7a84; font-style: italic; } /* comments */
+		.emo-code .tok-o { color: #ff7b93; }              /* <- and -> */
+	</style>
+}
+
+// Terminal renders src as a highlighted Emo snippet inside a terminal frame.
+templ Terminal(title string, src string) {
+	<div class="emo-terminal">
+		<div class="emo-terminal-bar">
+			<span class="emo-dot red"></span>
+			<span class="emo-dot yellow"></span>
+			<span class="emo-dot green"></span>
+			<span class="emo-terminal-title">{ title }</span>
+		</div>
+		<pre class="emo-code"><code>@templ.Raw(Highlight(src))</code></pre>
+	</div>
+}
