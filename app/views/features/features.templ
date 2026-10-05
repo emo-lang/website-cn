@@ -47,7 +47,7 @@ const manifestSample = `package {
 }`
 
 const ffiSample = `// 声明 C 符号, 由生成的包装器完成编组
-foreign def sqrt(x Float) Float = "sqrt"
+foreign def sqrt(x Float64) Float64 = "sqrt"
 
 // 链接额外的 C 库:
 //   emo build main.emo --cclib m`
@@ -74,35 +74,35 @@ println(Math.phi)        // 1.618`
 
 const interfaceSample = `// 形状匹配即满足 —— 没有 implements, 接口属于消费方
 interface Shape {
-  def area() Float
+  def area() Float64
 }
 
 class Rect {
-  def init(w Float, h Float) {
+  def init(w Float64, h Float64) {
     self.w = w
     self.h = h
   }
 
-  def area() Float {
+  def area() Float64 {
     return self.w * self.h
   }
 }
 
 class Circle {
-  def init(r Float) {
+  def init(r Float64) {
     self.r = r
   }
 
-  def area() Float {
+  def area() Float64 {
     return 3.14159 * self.r * self.r
   }
 }
 
 def describe(s Shape) String {
   if s.is(Circle) {
-    return "一个圆,面积 ${s.area()}"
+    return "一个圆, 面积 ${s.area()}"
   }
-  return "一个矩形,面积 ${s.area()}"
+  return "一个矩形, 面积 ${s.area()}"
 }
 
 println(describe(Rect.new(w: 2.5, h: 4)))   // 一个矩形, 面积 10.0
@@ -129,7 +129,7 @@ show(ok)    // 成功: 42
 show(err)   // 失败: not found
 
 // 错误就是异常: 普通的类实例, raise 抛出
-def divide(a Float, b Float) Float {
+def divide(a Float64, b Float64) Float64 {
   if b == 0 {
     raise Exception.new(message: "除数为零")
   }
@@ -154,7 +154,7 @@ println(xs == ys)       // true
 
 // 类字段只在 init 内赋值, 之后冻结
 class Point {
-  def init(x Float, y Float) {
+  def init(x Float64, y Float64) {
     self.x = x
     self.y = y
   }
@@ -212,7 +212,7 @@ templ Index() {
 						<li><strong>谓词方法以 <code>?</code> 结尾：</strong><code>user.adult?()</code> 在调用点读起来就像一句话。</li>
 						<li><strong><code>return</code> 永远显式；</strong><code>if</code> 只有一种形状，没有 <code>else if</code>；<code>case</code> 按模式匹配，可带守卫。</li>
 						<li><strong>命名大小写约定由编译器强制：</strong>类型大写开头，其余一律小写 snake_case。</li>
-						<li><strong>字符串永远双引号，插值只有一种形式：</strong><code>"你好,$&#123;name&#125;"</code>。</li>
+						<li><strong>字符串永远双引号，插值只有一种形式：</strong><code>"你好, $&#123;name&#125;"</code>。</li>
 					</ul>
 
 					<h2 id="classes">类：唯一的用户自定义类型</h2>
@@ -251,7 +251,7 @@ templ Index() {
 					</p>
 					<p>
 						错误就是异常，异常就是普通的类实例：<code>raise Exception.new(message: "...")</code>。
-						未捕获的异常只杀死出错的进程；没有受检异常。
+						未捕获的异常只杀死出错的进程；异常不进函数签名，编译器也不强制处理。
 					</p>
 					@emocode.Terminal("outcome.emo", enumSample)
 

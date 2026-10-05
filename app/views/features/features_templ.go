@@ -55,7 +55,7 @@ const manifestSample = `package {
 }`
 
 const ffiSample = `// 声明 C 符号, 由生成的包装器完成编组
-foreign def sqrt(x Float) Float = "sqrt"
+foreign def sqrt(x Float64) Float64 = "sqrt"
 
 // 链接额外的 C 库:
 //   emo build main.emo --cclib m`
@@ -82,35 +82,35 @@ println(Math.phi)        // 1.618`
 
 const interfaceSample = `// 形状匹配即满足 —— 没有 implements, 接口属于消费方
 interface Shape {
-  def area() Float
+  def area() Float64
 }
 
 class Rect {
-  def init(w Float, h Float) {
+  def init(w Float64, h Float64) {
     self.w = w
     self.h = h
   }
 
-  def area() Float {
+  def area() Float64 {
     return self.w * self.h
   }
 }
 
 class Circle {
-  def init(r Float) {
+  def init(r Float64) {
     self.r = r
   }
 
-  def area() Float {
+  def area() Float64 {
     return 3.14159 * self.r * self.r
   }
 }
 
 def describe(s Shape) String {
   if s.is(Circle) {
-    return "一个圆,面积 ${s.area()}"
+    return "一个圆, 面积 ${s.area()}"
   }
-  return "一个矩形,面积 ${s.area()}"
+  return "一个矩形, 面积 ${s.area()}"
 }
 
 println(describe(Rect.new(w: 2.5, h: 4)))   // 一个矩形, 面积 10.0
@@ -137,7 +137,7 @@ show(ok)    // 成功: 42
 show(err)   // 失败: not found
 
 // 错误就是异常: 普通的类实例, raise 抛出
-def divide(a Float, b Float) Float {
+def divide(a Float64, b Float64) Float64 {
   if b == 0 {
     raise Exception.new(message: "除数为零")
   }
@@ -162,7 +162,7 @@ println(xs == ys)       // true
 
 // 类字段只在 init 内赋值, 之后冻结
 class Point {
-  def init(x Float, y Float) {
+  def init(x Float64, y Float64) {
     self.x = x
     self.y = y
   }
@@ -231,7 +231,7 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<main><section class=\"page-hero\"><div class=\"container\"><h1>语言特性</h1><p>Emo 语法简洁、显式定义、符合直觉。它汲取三十年开源编程语言的经验与教训 —— 以下是让这门语言成为它自己的那些决定。</p></div></section><section class=\"section\" style=\"border-top: none; padding-top: 1rem;\"><div class=\"container prose\"><h2 id=\"syntax\">语法：一切所见即所得</h2><p>Emo 的语法偏爱明确：调用看起来像调用，返回一定写出来，代码块只有一种形状。</p><ul><li><strong>调用永远带括号，且紧贴被调者。</strong>没有可选括号调用；<code>f (a)</code> 中间有空格就是语法错误，而不是被猜成一次调用。</li><li><strong>调用可以尾随一个代码块作为最后一个实参。</strong><code>page(title: \"Home\") &#123; ... &#125;</code> —— 这是 UI 树与回调背后的唯一记法。</li><li><strong>代码块只有一种形状：</strong><code>&#123; ... &#125;</code> 与 <code>-&gt; (x) &#123; ... &#125;</code>，后者兼作匿名函数。</li><li><strong>绑定是 <code>const</code>(不可变)或 <code>var</code>(可变、块作用域)。</strong><code>var</code> 不能逃逸出它的块，被存活期更长的闭包捕获是编译错误。</li><li><strong>实参可以按位置或按名传递。</strong>命名实参是 Props 与选项的自然形态。</li><li><strong>类型标注后置，以空格分隔；</strong>函数签名永远显式标注参数与返回值 —— 签名即契约，契约必严查。</li><li><strong>谓词方法以 <code>?</code> 结尾：</strong><code>user.adult?()</code> 在调用点读起来就像一句话。</li><li><strong><code>return</code> 永远显式；</strong><code>if</code> 只有一种形状，没有 <code>else if</code>；<code>case</code> 按模式匹配，可带守卫。</li><li><strong>命名大小写约定由编译器强制：</strong>类型大写开头，其余一律小写 snake_case。</li><li><strong>字符串永远双引号，插值只有一种形式：</strong><code>\"你好,$&#123;name&#125;\"</code>。</li></ul><h2 id=\"classes\">类：唯一的用户自定义类型</h2><p><code>class</code> 是定义类型的唯一记法，方法就住在类体里，紧挨着它所属的类型。</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<main><section class=\"page-hero\"><div class=\"container\"><h1>语言特性</h1><p>Emo 语法简洁、显式定义、符合直觉。它汲取三十年开源编程语言的经验与教训 —— 以下是让这门语言成为它自己的那些决定。</p></div></section><section class=\"section\" style=\"border-top: none; padding-top: 1rem;\"><div class=\"container prose\"><h2 id=\"syntax\">语法：一切所见即所得</h2><p>Emo 的语法偏爱明确：调用看起来像调用，返回一定写出来，代码块只有一种形状。</p><ul><li><strong>调用永远带括号，且紧贴被调者。</strong>没有可选括号调用；<code>f (a)</code> 中间有空格就是语法错误，而不是被猜成一次调用。</li><li><strong>调用可以尾随一个代码块作为最后一个实参。</strong><code>page(title: \"Home\") &#123; ... &#125;</code> —— 这是 UI 树与回调背后的唯一记法。</li><li><strong>代码块只有一种形状：</strong><code>&#123; ... &#125;</code> 与 <code>-&gt; (x) &#123; ... &#125;</code>，后者兼作匿名函数。</li><li><strong>绑定是 <code>const</code>(不可变)或 <code>var</code>(可变、块作用域)。</strong><code>var</code> 不能逃逸出它的块，被存活期更长的闭包捕获是编译错误。</li><li><strong>实参可以按位置或按名传递。</strong>命名实参是 Props 与选项的自然形态。</li><li><strong>类型标注后置，以空格分隔；</strong>函数签名永远显式标注参数与返回值 —— 签名即契约，契约必严查。</li><li><strong>谓词方法以 <code>?</code> 结尾：</strong><code>user.adult?()</code> 在调用点读起来就像一句话。</li><li><strong><code>return</code> 永远显式；</strong><code>if</code> 只有一种形状，没有 <code>else if</code>；<code>case</code> 按模式匹配，可带守卫。</li><li><strong>命名大小写约定由编译器强制：</strong>类型大写开头，其余一律小写 snake_case。</li><li><strong>字符串永远双引号，插值只有一种形式：</strong><code>\"你好, $&#123;name&#125;\"</code>。</li></ul><h2 id=\"classes\">类：唯一的用户自定义类型</h2><p><code>class</code> 是定义类型的唯一记法，方法就住在类体里，紧挨着它所属的类型。</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -255,7 +255,7 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<h2 id=\"enums\">枚举与错误</h2><p>枚举是封闭的、有名值集合 —— 仅此而已，成员不携带数据(这是刻意排除的反模式)。 带数据的场景用「枚举标签 + 元组」的惯用法：<code>(Outcome.ok, value)</code>，在 <code>case</code> 与 <code>receive</code> 里直接按位置解构。</p><p>错误就是异常，异常就是普通的类实例：<code>raise Exception.new(message: \"...\")</code>。 未捕获的异常只杀死出错的进程；没有受检异常。</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<h2 id=\"enums\">枚举与错误</h2><p>枚举是封闭的、有名值集合 —— 仅此而已，成员不携带数据(这是刻意排除的反模式)。 带数据的场景用「枚举标签 + 元组」的惯用法：<code>(Outcome.ok, value)</code>，在 <code>case</code> 与 <code>receive</code> 里直接按位置解构。</p><p>错误就是异常，异常就是普通的类实例：<code>raise Exception.new(message: \"...\")</code>。 未捕获的异常只杀死出错的进程；异常不进函数签名，编译器也不强制处理。</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
