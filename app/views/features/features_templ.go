@@ -76,9 +76,9 @@ emo Math {
   }
 }
 
-print(Math.abs(-5))    // 5
-print(Math.square(6))  // 36
-print(Math.phi)        // 1.618`
+println(Math.abs(-5))    // 5
+println(Math.square(6))  // 36
+println(Math.phi)        // 1.618`
 
 const interfaceSample = `// 形状匹配即满足 —— 没有 implements, 接口属于消费方
 interface Shape {
@@ -113,8 +113,8 @@ def describe(s Shape) String {
   return "一个矩形,面积 ${s.area()}"
 }
 
-print(describe(Rect.new(w: 2.5, h: 4)))   // 一个矩形, 面积 10.0
-print(describe(Circle.new(r: 1)))         // 一个圆, 面积 3.14159`
+println(describe(Rect.new(w: 2.5, h: 4)))   // 一个矩形, 面积 10.0
+println(describe(Circle.new(r: 1)))         // 一个圆, 面积 3.14159`
 
 const enumSample = `// 枚举: 封闭的有名值集合 —— 成员不带数据
 enum Outcome {
@@ -128,8 +128,8 @@ const err = (Outcome.error, "not found")
 
 def show(result) {
   case result {
-    (Outcome.ok, value)  -> { print("成功: ${value}") }
-    (Outcome.error, why) -> { print("失败: ${why}") }
+    (Outcome.ok, value)  -> { println("成功: ${value}") }
+    (Outcome.error, why) -> { println("失败: ${why}") }
   }
 }
 
@@ -144,7 +144,7 @@ def divide(a Float, b Float) Float {
   return a / b
 }
 
-print(divide(10, 4))   // 2.5`
+println(divide(10, 4))   // 2.5`
 
 const mutabilitySample = `// const 永不改变; var 在块内可变
 const base = 10
@@ -158,7 +158,7 @@ def bump() Int64 {
 // 数组是不可变值: == 逐元素比较
 const xs = [1, 2, 3]
 const ys = [1, 2, 3]
-print(xs == ys)       // true
+println(xs == ys)       // true
 
 // 类字段只在 init 内赋值, 之后冻结
 class Point {
@@ -172,11 +172,11 @@ const p = Point.new(x: 1, y: 2)
 
 // 长期可变状态住在 Box 里: 构造、读、换
 const box = Box.new(0)
-print(box.read())          // 0
+println(box.read())          // 0
 box.replace(box.read() + 1)
-print(box.read())          // 1
+println(box.read())          // 1
 
-print(bump())              // 11`
+println(bump())              // 11`
 
 const counterSample = `// 反例: 闭包活得比 var 长 —— 编译错误
 def make_counter() {
@@ -191,8 +191,8 @@ def make_counter() {
 }
 
 const next = make_counter()
-print(next())   // 1
-print(next())   // 2`
+println(next())   // 1
+println(next())   // 2`
 
 func Index() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {

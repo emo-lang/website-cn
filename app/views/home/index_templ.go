@@ -30,7 +30,7 @@ class User {
 }
 
 const ming = User.new(name: "晓明", age: 28)
-print(ming.describe())          // 晓明, 28 岁
+println(ming.describe())       // 晓明, 28 岁
 
 def work(user User, reply Pid) {
   var done = 0
@@ -44,7 +44,7 @@ def work(user User, reply Pid) {
 const _pid = do work(ming, self_pid())
 
 receive {
-  (who, n) -> { print("${who} 完成了 ${n} 项任务") }
+  (who, n) -> { println("${who} 完成了 ${n} 项任务") }
 }`
 
 const concurrencySample = `// 三个进程, 一条消息链
@@ -62,7 +62,7 @@ const wh = do warehouse.run(rep)
 feed(wh, 1)
 
 receive {
-  (who, handled) -> { print("处理了 ${handled} 个订单") }
+  (who, handled) -> { println("处理了 ${handled} 个订单") }
 }`
 
 const interfaceSample = `// 接口属于调用方: 形状匹配即满足, 无需 implements
@@ -84,9 +84,9 @@ class Friend {
 
 def welcome(g Greeter) String {
   if g.is(Machine) {
-    return "一台机器说:${g.greet()}"
+    return "一台机器说: ${g.greet()}"
   }
-  return "一位朋友说:${g.greet()}"
+  return "一位朋友说: ${g.greet()}"
 }`
 
 const uiSample = `// 没有模板语言 —— UI 就是普通的 Emo 代码

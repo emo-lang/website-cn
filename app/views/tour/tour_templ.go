@@ -17,11 +17,11 @@ const tour1 = `// ---- 1 · 绑定与字符串 ----
 const who = "世界"
 var visits = 6
 visits = visits * 7
-print("hello, ${who} — six sevens are ${visits}")
+println("hello, ${who} — six sevens are ${visits}")
 
 // 插值可以装任何表达式, 中文就是普通的字符串数据
 const item = "伞"
-print("one ${item} costs ${19 + 9} yuan")`
+println("one ${item} costs ${19 + 9} yuan")`
 
 const tour2 = `// ---- 2 · 类: 不可变值类型 ----
 class User {
@@ -40,10 +40,10 @@ class User {
 }
 
 const ming = User.new(name: "王晓明", age: 28)
-print(ming.describe())
-print("adult? ${ming.adult?()}")
+println(ming.describe())
+println("adult? ${ming.adult?()}")
 // 字段在 init 之后冻结, 相等比较的是内容:
-print(ming == User.new(name: "王晓明", age: 28))`
+println(ming == User.new(name: "王晓明", age: 28))`
 
 const tour3 = `// ---- 3 · 接口: 形状即契约 ----
 // 哪里都没有 implements: 形状匹配, 即满足接口。
@@ -70,8 +70,8 @@ def welcome(g Greeter) String {
   return "a friend says: ${g.greet()}"
 }
 
-print(welcome(Machine.new()))
-print(welcome(Friend.new()))`
+println(welcome(Machine.new()))
+println(welcome(Friend.new()))`
 
 const tour4 = `// ---- 4 · 枚举与标签惯用法 ----
 // 枚举是封闭的有名值集合, 成员不携带数据。
@@ -86,25 +86,25 @@ def classify(age Int64) (Outcome, String) {
 }
 
 case classify(28) {
-  (Outcome.ok, label) -> { print("28 -> ${label}") }
-  (Outcome.err, label) -> { print("28 -> ${label}") }
+  (Outcome.ok, label) -> { println("28 -> ${label}") }
+  (Outcome.err, label) -> { println("28 -> ${label}") }
 }
 
 // 分支可以带守卫:
 case (Outcome.ok, 42) {
-  (Outcome.ok, v) when v > 40 -> { print("a big answer: ${v}") }
-  (Outcome.ok, v) -> { print("a small answer: ${v}") }
-  (Outcome.err, label) -> { print("no answer: ${label}") }
+  (Outcome.ok, v) when v > 40 -> { println("a big answer: ${v}") }
+  (Outcome.ok, v) -> { println("a small answer: ${v}") }
+  (Outcome.err, label) -> { println("no answer: ${label}") }
 }`
 
 const tour5 = `// ---- 5 · 数组: 定长、变换、永不就地修改 ----
 const nums = [3, 1, 2]
-print(nums[0] + nums.length())
+println(nums[0] + nums.length())
 // 变换返回新数组, 原数组纹丝不动:
 const more = nums.append(9)
-print(more.length())
-print(nums.length())
-print([1, 2] == [1, 2])`
+println(more.length())
+println(nums.length())
+println([1, 2] == [1, 2])`
 
 const tour6 = `// ---- 6 · 可变性, 一层一层来 ----
 // var 显式且块作用域; Box 是一个进程拥有的唯一长期可变单元
@@ -112,18 +112,18 @@ const tour6 = `// ---- 6 · 可变性, 一层一层来 ----
 var tally = 0
 tally = tally + 1
 tally = tally + 10
-print(tally)
+println(tally)
 
 const total = Box.new(0)
 total.replace(total.read() + 5)
 total.replace(total.read() + 6)
-print(total.read())`
+println(total.read())`
 
 const tour7 = `// ---- 7 · 代码块: 唯一的函数记法 ----
 // 箭头块是匿名函数; 调用可以尾随一个代码块,
 // 回调与迭代因此保持同一种记法。
 const twice = -> (n Int64) { return n * 2 }
-print(twice(21))
+println(twice(21))
 
 def walk(xs Array[Int64], i Int64, f Block) Int64 {
   if i == xs.length() {
@@ -134,7 +134,7 @@ def walk(xs Array[Int64], i Int64, f Block) Int64 {
 }
 
 walk([10, 20, 30], 0) -> (v Int64) {
-  print(v)
+  println(v)
   return v
 }`
 
@@ -153,7 +153,7 @@ const wh = do warehouse.run(rep)
 feed(wh, 1)
 
 receive {
-  (who, handled) -> { print("handled ${handled} orders") }
+  (who, handled) -> { println("handled ${handled} orders") }
 }`
 
 func Index() templ.Component {

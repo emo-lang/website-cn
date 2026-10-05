@@ -15,7 +15,7 @@ import (
 
 const helloSample = `// hello.emo
 const who = "世界"
-print("你好,${who}")`
+println("你好,${who}")`
 
 const packageSample = `package {
   name = "acme/hello"
