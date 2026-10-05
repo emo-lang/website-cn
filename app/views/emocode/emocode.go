@@ -7,6 +7,7 @@ package emocode
 import (
 	"html"
 	"strings"
+	"unicode/utf8"
 )
 
 var keywords = map[string]bool{
@@ -45,6 +46,12 @@ func highlightLine(line string, out *strings.Builder) {
 
 		// comments: // to end of line
 		if c == '/' && i+1 < n && line[i+1] == '/' {
+			emit("tok-c", line[i:])
+			return
+		}
+
+		// comments: # to end of line
+		if c == '#' {
 			emit("tok-c", line[i:])
 			return
 		}
@@ -112,6 +119,14 @@ func highlightLine(line string, out *strings.Builder) {
 		if c == '-' && i+1 < n && line[i+1] == '>' {
 			emit("tok-o", "->")
 			i += 2
+			continue
+		}
+
+		// multi-byte UTF-8: emit the whole rune, not one byte at a time
+		if c >= utf8.RuneSelf {
+			r, size := utf8.DecodeRuneInString(line[i:])
+			emit("", string(r))
+			i += size
 			continue
 		}
 
