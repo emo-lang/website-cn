@@ -52,6 +52,26 @@ foreign def sqrt(x Float) Float = "sqrt"
 // 链接额外的 C 库:
 //   emo build main.emo --cclib m`
 
+const emoBlockSample = `// emo 块:把一组函数和常量组织成命名空间
+emo Math {
+  const phi = 1.618
+
+  def abs(n Int) Int {
+    if n < 0 {
+      return -n
+    }
+    return n
+  }
+
+  def square(n Int) Int {
+    return n * n
+  }
+}
+
+print(Math.abs(-5))    // 5
+print(Math.square(6))  // 36
+print(Math.phi)        // 1.618`
+
 templ Index() {
 	@layouts.Base("语言特性 — Emo", "Emo 的语言特性：明确的语法、类与结构化接口、渐进式类型、Actor 并发、直接风格网络、结构化模块与自带包管理。") {
 		@layouts.Nav("features")
@@ -88,6 +108,18 @@ templ Index() {
 						<li><strong><code>init</code> 是字段唯一能被赋值的窗口。</strong>类因而是不可变值类型：赋值即拷贝(底层写时复制)，内容相等则 <code>==</code>。</li>
 						<li><strong><code>self</code> 隐式传入、显式使用</strong> —— 字段与局部变量永不混淆。</li>
 						<li><strong>没有继承，单继承多继承都没有。</strong>复用交给鸭子类型、组合与接口。</li>
+					</ul>
+
+					<h2 id="emo">emo 块：函数组的命名空间</h2>
+					<p>
+						<code>emo</code> 块把一组函数与 <code>const</code> 常量组织在一起，充当某种程度上的命名空间 ——
+						<code>Math.abs(-5)</code> 以块名直接调用，无需创建任何实例。
+					</p>
+					@emocode.Terminal("math.emo", emoBlockSample)
+					<ul>
+						<li><strong>是函数组，不是类型。</strong>块内是普通函数与 <code>const</code> 常量，没有 <code>self</code>，也不创建实例。</li>
+						<li><strong>块名即命名空间。</strong>函数以块名直接调用，常量直接以 <code>Math.phi</code> 取用。</li>
+						<li><strong>相关函数住在一起。</strong>比裸函数多了归属，比类少了仪式，使用处自带上下文。</li>
 					</ul>
 
 					<h2 id="interfaces">接口：结构化多态</h2>
