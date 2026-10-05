@@ -104,9 +104,9 @@ page(title: "首页") {
   }
 }`
 
-const osSample = `// kernel_main.emo — qemu 目标: 无 OS, 无 libc
+const osSample = `// kernel_main.emo — RISC-V 目标: 无 OS, 无 libc
 //
-//   emo build kernel_main.emo --target qemu -o kernel.img
+//   emo build kernel_main.emo --target riscv64 -o kernel.img
 //   qemu-system-riscv64 -kernel kernel.img
 
 def kernel_main() {
@@ -224,7 +224,7 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div><p class=\"eyebrow\">EmoOS <span class=\"badge\">规划中</span></p><h3>一门能写内核的语言</h3><p>Emo 的边界一直延伸到操作系统层：<code>qemu</code> 编译目标面向裸机， 无 OS、无 libc、无默认运行时，支持 RISC-V，直接产出 QEMU 可引导镜像。</p><ul><li>分层核心库：内核代码只用零依赖的 <code>core</code></li><li>内存原语显式命名 —— 危险的操作看起来就危险</li><li>GC、分配器、调度器可替换；内核用 qemu 目标，Shell 与应用用原生目标 —— 一门语言贯通系统两侧</li></ul></div></div></section><section class=\"section\" id=\"cta\"><div class=\"container cta-band\"><h2>现在就开始用 Emo</h2><p>开源、MIT 协议、由 OCaml 5 实现的参考编译器。读一遍语言漫游，十分钟看懂整门语言。</p><div class=\"hero-actions\"><a class=\"button primary\" href=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div><p class=\"eyebrow\">EmoOS <span class=\"badge\">规划中</span></p><h3>一门能写内核的语言</h3><p>Emo 的边界一直延伸到操作系统层：<code>RISC-V</code> 编译目标面向裸机， 无 OS、无 libc、无默认运行时，直接产出 QEMU 可引导镜像。</p><ul><li>分层核心库：内核代码只用零依赖的 <code>core</code></li><li>内存原语显式命名 —— 危险的操作看起来就危险</li><li>GC、分配器、调度器可替换；内核编译到 RISC-V，Shell 与应用留在原生目标 —— 一门语言贯通系统两侧</li></ul></div></div></section><section class=\"section\" id=\"cta\"><div class=\"container cta-band\"><h2>现在就开始用 Emo</h2><p>开源、MIT 协议、由 OCaml 5 实现的参考编译器。读一遍语言漫游，十分钟看懂整门语言。</p><div class=\"hero-actions\"><a class=\"button primary\" href=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
