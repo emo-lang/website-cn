@@ -108,6 +108,36 @@ def describe(s Shape) String {
 print(describe(Rect.new(w: 2.5, h: 4)))   // 一个矩形,面积 10.0
 print(describe(Circle.new(r: 1)))         // 一个圆,面积 3.14159`
 
+const enumSample = `// 枚举:封闭的有名值集合 —— 成员不带数据
+enum Outcome {
+  ok
+  error
+}
+
+// 带数据的场景:「枚举标签 + 元组」的惯用法
+const ok = (Outcome.ok, 42)
+const err = (Outcome.error, "not found")
+
+def show(result) {
+  case result {
+    (Outcome.ok, value)  -> { print("成功: ${value}") }
+    (Outcome.error, why) -> { print("失败: ${why}") }
+  }
+}
+
+show(ok)    // 成功: 42
+show(err)   // 失败: not found
+
+// 错误就是异常:普通的类实例,raise 抛出
+def divide(a Float, b Float) Float {
+  if b == 0 {
+    raise Exception.new(message: "除数为零")
+  }
+  return a / b
+}
+
+print(divide(10, 4))   // 2.5`
+
 templ Index() {
 	@layouts.Base("语言特性 — Emo", "Emo 的语言特性：明确的语法、类与结构化接口、渐进式类型、Actor 并发、直接风格网络、结构化模块与自带包管理。") {
 		@layouts.Nav("features")
@@ -175,6 +205,7 @@ templ Index() {
 						错误就是异常，异常就是普通的类实例：<code>raise Exception.new(message: "...")</code>。
 						未捕获的异常只杀死出错的进程;没有受检异常。
 					</p>
+					@emocode.Terminal("outcome.emo", enumSample)
 
 					<h2 id="mutability">可变性：分层的，且每层都显式</h2>
 					<ul>
