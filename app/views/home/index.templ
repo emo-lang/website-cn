@@ -172,13 +172,42 @@ templ Index() {
 				.hero { grid-template-columns: minmax(0, 1fr); gap: 2.5rem; padding: 3.5rem 1.5rem; }
 			}
 			.hero-logo { width: 72px; height: 72px; border-radius: 18px; }
+			.hero-copy { display: flex; flex-direction: column; align-self: stretch; }
 			.hero h2 { margin: 1.25rem 0 0.5rem; font-size: 3.25rem; line-height: 1.1; letter-spacing: -0.02em; }
 			.hero .tagline {
 				display: flex; align-items: center; gap: 0.7rem;
-				margin: 0.75rem 0; font-size: 1.2rem; font-weight: 600; letter-spacing: 0.01em;
+				margin: 0.25rem 0 0.75rem; font-size: 1.2rem; font-weight: 600; letter-spacing: 0.01em;
 			}
 			.hero .tagline i { color: var(--brand); font-style: normal; font-weight: 700; }
-			.hero .sub { margin: 0.5rem 0 0; max-width: 30rem; color: var(--muted); font-size: 1.02rem; }
+			.hero .release-note {
+				display: flex;
+				align-items: center;
+				flex-wrap: wrap;
+				gap: 0.7rem;
+				margin: auto 0 0;
+				padding-top: 1.25rem;
+				max-width: 30rem;
+				color: var(--muted);
+				font-size: 0.85rem;
+				letter-spacing: 0.03em;
+			}
+			.hero .release-note .soft { color: color-mix(in srgb, var(--muted) 70%, transparent); }
+			.hero .release-note .pill {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				padding: 0.16rem 0.7rem 0.16rem 0.55rem;
+				border: 1px solid var(--border);
+				border-radius: 1rem;
+				background: var(--surface);
+				box-shadow: var(--shadow);
+				color: var(--text);
+				font-size: 0.78rem;
+				font-weight: 700;
+				letter-spacing: 0.01em;
+			}
+			.hero .release-note .pill .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--brand); }
+			.hero .sub { margin: 0; max-width: 30rem; color: var(--muted); font-size: 1.02rem; }
 			.hero-actions { margin-top: 2.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap; }
 			.hero-code { width: 36rem; max-width: 100%; margin-left: auto; }
 			.hero-code .emo-code { max-height: 34rem; overflow-y: auto; scrollbar-width: thin; }
@@ -216,15 +245,20 @@ templ Index() {
 				<div class="hero-copy">
 					<img class="hero-logo" src={ layouts.PublicURL("logo.png") } alt="Emo logo" width="72" height="72"/>
 					<h2>Emo</h2>
-					<p class="tagline"><span>语法简洁</span><i>·</i><span>显式定义</span><i>·</i><span>符合直觉</span></p>
-					<p class="sub">
+						<p class="tagline"><span>语法简洁</span><i>·</i><span>显式定义</span><i>·</i><span>符合直觉</span></p>
+						<p class="sub">
 一门国产系统级编程语言。从原生可执行文件到 WebAssembly，
 						从 BEAM 虚拟机到裸机内核 —— 一门语言，贯通整个系统栈。
 					</p>
-					<div class="hero-actions">
-						<a class="button primary" href={ layouts.Href("/quickstart") }>快速上手</a>
-						<a class="button" href="https://github.com/emo-lang/emo" target="_blank" rel="noreferrer">GitHub 仓库</a>
-					</div>
+						<div class="hero-actions">
+							<a class="button primary" href={ layouts.Href("/quickstart") }>快速上手</a>
+							<a class="button" href="https://github.com/emo-lang/emo" target="_blank" rel="noreferrer">GitHub 仓库</a>
+						</div>
+						<p class="release-note">
+							<span class="pill"><span class="dot"></span>当前版本：v1.0.0</span>
+							<span class="">冬至(2026)</span>
+							<span class="soft">「立冬，十月节。冬，终也，万物收藏也。」</span>
+						</p>
 				</div>
 				<div class="hero-code">
 					@emocode.Terminal("main.emo", heroSample)
