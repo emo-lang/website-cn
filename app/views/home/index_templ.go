@@ -229,28 +229,28 @@ func Index() templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 templ.SafeURL
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/tour"))
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/features"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 425, Col: 60}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 425, Col: 64}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\">语言漫游</a> <a class=\"button\" href=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\">语言特性</a> <a class=\"button\" href=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var6 templ.SafeURL
-			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/features"))
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/tour"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 426, Col: 56}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 426, Col: 52}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\">语言特性</a> <a class=\"button\" href=\"https://github.com/emo-lang/emo\" target=\"_blank\" rel=\"noreferrer\">GitHub 仓库</a></div></div></section></main>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\">语言漫游</a> <a class=\"button\" href=\"https://github.com/emo-lang/emo\" target=\"_blank\" rel=\"noreferrer\">GitHub 仓库</a></div></div></section></main>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
