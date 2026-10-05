@@ -218,6 +218,23 @@ def label(u User) String {
 println(label(User.new(name: "小明")))   // 用户 小明
 println(label(Admin.new(name: "大刘")))  // 管理员 大刘`
 
+const workerSample = `// do 起进程, <- 发消息, receive 收信箱
+def worker() {
+  receive {
+    (from, n) -> {
+      from <- ("done", n * n)   // 惯用回复: 收信人随消息一起传进来
+      worker()                  // 尾调用: 递归就是收信循环
+    }
+  }
+}
+
+const pid = do worker()
+pid <- (self_pid(), 9)
+
+receive {
+  (tag, result) -> { println("${tag}: ${result}") }   // done: 81
+}`
+
 templ Index() {
 	@layouts.Base("语言特性 — Emo", "Emo 的语言特性：明确的语法、类与结构化接口、渐进式类型、Actor 并发、直接风格网络、结构化模块与自带包管理。") {
 		@layouts.Nav("features")
@@ -344,6 +361,7 @@ templ Index() {
 						<li>数据默认不可变，消息在 BEAM 上拷贝、在原生后端传引用，可观察语义完全一致。</li>
 						<li>尾调用有保证；递归就是收信循环的惯用形态。</li>
 					</ul>
+					@emocode.Terminal("worker.emo", workerSample)
 
 					<h2 id="networking">网络：一等公民，直接风格</h2>
 					<p>

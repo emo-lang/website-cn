@@ -226,6 +226,23 @@ def label(u User) String {
 println(label(User.new(name: "小明")))   // 用户 小明
 println(label(Admin.new(name: "大刘")))  // 管理员 大刘`
 
+const workerSample = `// do 起进程, <- 发消息, receive 收信箱
+def worker() {
+  receive {
+    (from, n) -> {
+      from <- ("done", n * n)   // 惯用回复: 收信人随消息一起传进来
+      worker()                  // 尾调用: 递归就是收信循环
+    }
+  }
+}
+
+const pid = do worker()
+pid <- (self_pid(), 9)
+
+receive {
+  (tag, result) -> { println("${tag}: ${result}") }   // done: 81
+}`
+
 func Index() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -335,7 +352,15 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<ul><li>中心注册表，端点可配(<code>EMO_REGISTRY</code>)，支持私有与内网分发；全局内容寻址缓存，项目间共享。</li><li>作用域包名，杜绝抢注；官方标准库独占顶层短名(<code>json.decode()</code>、<code>http.get(url)</code>)。</li><li>语义化版本 + MVS 解析，升级永远是显式动作；<code>emo.lock</code> 记录校验和，纳入版本控制，构建永不静默改写。</li><li>目标兼容性在解析期检查：不支持当前目标的依赖直接报清晰的错。</li></ul><h2 id=\"concurrency\">并发：进程与消息传递</h2><p>Emo 内建围绕进程与消息传递的原生并发模型，Actor 模型的嫡系 —— 直接映射 BEAM 进程，原生后端用 OCaml 5 effects 实现调度器。</p><ul><li><code>do</code> 启动进程并返回 pid；<code>pid &lt;- message</code> 发送；<code>receive</code> 复用 <code>case</code> 的分支语法，选择性接收来自普通模式。</li><li>惯用回复模式只有一行：<code>sender &lt;- (self_pid(), request)</code>，元组在接收分支里直接解构。</li><li><code>halt()</code> 或未处理的错误只杀死出错的进程；kill、wait、重启策略是库的领土。</li><li>数据默认不可变，消息在 BEAM 上拷贝、在原生后端传引用，可观察语义完全一致。</li><li>尾调用有保证；递归就是收信循环的惯用形态。</li></ul><h2 id=\"networking\">网络：一等公民，直接风格</h2><p>统一的异步网络 API，由每个后端的原生设施实现：io_uring(Linux)、kqueue(macOS)、IOCP(Windows)， BEAM 上一连接一进程，Wasm 上用 WASI sockets 或 fetch/WebSocket。</p><ul><li><strong>直接风格：</strong>网络调用看起来就是普通阻塞调用，调度器在底下切换进程。没有 <code>async</code>/<code>await</code>，因而没有函数染色。</li><li>核心库提供 <code>net</code>(TCP/UDP/Unix domain + TLS)，标准库提供 <code>http</code>(客户端与服务端)。</li><li>TLS 证书校验默认开启；不安全变体是显式的、看起来就危险的 <code>net.tls_connect_insecure</code>。</li><li>超时以秒计；每种失败都抛出消息里写明对端、操作与原因的普通异常。</li></ul><h2 id=\"native\">原生构建：一条命令，一个可执行文件</h2><div class=\"cli\"><span class=\"tok-p\">$</span> emo build main.emo -o myapp<br>built myapp</div><ul><li><strong>运行时随二进制发布。</strong>起进程、跑 HTTP 服务的程序，编译后行为一致，无需解释器、无需下载运行时。</li><li><strong>编译输出对齐解释器标准。</strong>每个示例的二进制输出与 <code>emo run</code> 逐字节一致 —— CI 断言，不是假设。</li><li><strong>类型反哺性能。</strong>类型完全已知的函数编译成特化原生代码；<code>benchmarks/</code> 记录着数字。</li><li><strong>增量构建。</strong>按内容哈希缓存，未变更的重建直接报告 <code>(cached)</code>。</li></ul>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<ul><li>中心注册表，端点可配(<code>EMO_REGISTRY</code>)，支持私有与内网分发；全局内容寻址缓存，项目间共享。</li><li>作用域包名，杜绝抢注；官方标准库独占顶层短名(<code>json.decode()</code>、<code>http.get(url)</code>)。</li><li>语义化版本 + MVS 解析，升级永远是显式动作；<code>emo.lock</code> 记录校验和，纳入版本控制，构建永不静默改写。</li><li>目标兼容性在解析期检查：不支持当前目标的依赖直接报清晰的错。</li></ul><h2 id=\"concurrency\">并发：进程与消息传递</h2><p>Emo 内建围绕进程与消息传递的原生并发模型，Actor 模型的嫡系 —— 直接映射 BEAM 进程，原生后端用 OCaml 5 effects 实现调度器。</p><ul><li><code>do</code> 启动进程并返回 pid；<code>pid &lt;- message</code> 发送；<code>receive</code> 复用 <code>case</code> 的分支语法，选择性接收来自普通模式。</li><li>惯用回复模式只有一行：<code>sender &lt;- (self_pid(), request)</code>，元组在接收分支里直接解构。</li><li><code>halt()</code> 或未处理的错误只杀死出错的进程；kill、wait、重启策略是库的领土。</li><li>数据默认不可变，消息在 BEAM 上拷贝、在原生后端传引用，可观察语义完全一致。</li><li>尾调用有保证；递归就是收信循环的惯用形态。</li></ul>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = emocode.Terminal("worker.emo", workerSample).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<h2 id=\"networking\">网络：一等公民，直接风格</h2><p>统一的异步网络 API，由每个后端的原生设施实现：io_uring(Linux)、kqueue(macOS)、IOCP(Windows)， BEAM 上一连接一进程，Wasm 上用 WASI sockets 或 fetch/WebSocket。</p><ul><li><strong>直接风格：</strong>网络调用看起来就是普通阻塞调用，调度器在底下切换进程。没有 <code>async</code>/<code>await</code>，因而没有函数染色。</li><li>核心库提供 <code>net</code>(TCP/UDP/Unix domain + TLS)，标准库提供 <code>http</code>(客户端与服务端)。</li><li>TLS 证书校验默认开启；不安全变体是显式的、看起来就危险的 <code>net.tls_connect_insecure</code>。</li><li>超时以秒计；每种失败都抛出消息里写明对端、操作与原因的普通异常。</li></ul><h2 id=\"native\">原生构建：一条命令，一个可执行文件</h2><div class=\"cli\"><span class=\"tok-p\">$</span> emo build main.emo -o myapp<br>built myapp</div><ul><li><strong>运行时随二进制发布。</strong>起进程、跑 HTTP 服务的程序，编译后行为一致，无需解释器、无需下载运行时。</li><li><strong>编译输出对齐解释器标准。</strong>每个示例的二进制输出与 <code>emo run</code> 逐字节一致 —— CI 断言，不是假设。</li><li><strong>类型反哺性能。</strong>类型完全已知的函数编译成特化原生代码；<code>benchmarks/</code> 记录着数字。</li><li><strong>增量构建。</strong>按内容哈希缓存，未变更的重建直接报告 <code>(cached)</code>。</li></ul>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -343,7 +368,7 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<h2 id=\"config\">配置：Emo 就是自己的配置语言</h2><p>配置文件就是一个 Emo 表达式，加载即求值 —— 不需要学第二种格式。 求值运行在受限 Profile 下：<strong>保证终止、结果密封、无副作用</strong>。 类型检查器内置，配置 Schema 就是类型标注，由同一趟检查完成。 对外交换仍支持 JSON / YAML / TOML：Emo 是事实之源，它们是导出产物。</p></div></section></main>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<h2 id=\"config\">配置：Emo 就是自己的配置语言</h2><p>配置文件就是一个 Emo 表达式，加载即求值 —— 不需要学第二种格式。 求值运行在受限 Profile 下：<strong>保证终止、结果密封、无副作用</strong>。 类型检查器内置，配置 Schema 就是类型标注，由同一趟检查完成。 对外交换仍支持 JSON / YAML / TOML：Emo 是事实之源，它们是导出产物。</p></div></section></main>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
