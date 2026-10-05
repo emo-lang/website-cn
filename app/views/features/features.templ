@@ -186,6 +186,38 @@ const next = make_counter()
 println(next())   // 1
 println(next())   // 2`
 
+const typesSample = `// 函数签名必写类型 —— 签名即契约
+def add(a Int64, b Int64) Int64 {
+  return a + b
+}
+
+// 其余标注可选, 编译器照样推断与检查
+const total = add(19, 23)     // Int64
+const xs = [1, 2, 3]          // Array[Int64]
+
+// 想写得更具体时, 参数化类型只是标注词汇
+const bigs Array[Int64] = [100, 200]
+
+// 流敏感: is() 为真后, 类型自动收窄
+class User {
+  def init(name String) { self.name = name }
+}
+
+class Admin {
+  def init(name String) { self.name = name }
+  def title() String { return "管理员 ${self.name}" }
+}
+
+def label(u User) String {
+  if u.is(Admin) {
+    return u.title()   // u 已收窄为 Admin
+  }
+  return "用户 ${u.name}"
+}
+
+println(label(User.new(name: "小明")))   // 用户 小明
+println(label(Admin.new(name: "大刘")))  // 管理员 大刘`
+
 templ Index() {
 	@layouts.Base("语言特性 — Emo", "Emo 的语言特性：明确的语法、类与结构化接口、渐进式类型、Actor 并发、直接风格网络、结构化模块与自带包管理。") {
 		@layouts.Nav("features")
@@ -274,6 +306,7 @@ templ Index() {
 						<li>没有泛型机器：参数化类型只是标注词汇(<code>Array[User]</code>、<code>Box[Int64]</code>)，应用代码几乎见不到类型拼写。</li>
 						<li>类型信息反哺性能：类型足够完整的模块在原生后端被特化 —— 去装箱表示、直接分派。</li>
 					</ul>
+					@emocode.Terminal("types.emo", typesSample)
 
 					<h2 id="modules">模块：目录树即模块树</h2>
 					<p>完全结构化的模块系统：没有 <code>import</code>，没有 <code>export</code>，没有可见性关键字。</p>
