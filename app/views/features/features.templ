@@ -72,6 +72,42 @@ print(Math.abs(-5))    // 5
 print(Math.square(6))  // 36
 print(Math.phi)        // 1.618`
 
+const interfaceSample = `// 形状匹配即满足 —— 没有 implements,接口属于消费方
+interface Shape {
+  def area() Float
+}
+
+class Rect {
+  def init(w Float, h Float) {
+    self.w = w
+    self.h = h
+  }
+
+  def area() Float {
+    return self.w * self.h
+  }
+}
+
+class Circle {
+  def init(r Float) {
+    self.r = r
+  }
+
+  def area() Float {
+    return 3.14159 * self.r * self.r
+  }
+}
+
+def describe(s Shape) String {
+  if s.is(Circle) {
+    return "一个圆,面积 ${s.area()}"
+  }
+  return "一个矩形,面积 ${s.area()}"
+}
+
+print(describe(Rect.new(w: 2.5, h: 4)))   // 一个矩形,面积 10.0
+print(describe(Circle.new(r: 1)))         // 一个圆,面积 3.14159`
+
 templ Index() {
 	@layouts.Base("语言特性 — Emo", "Emo 的语言特性：明确的语法、类与结构化接口、渐进式类型、Actor 并发、直接风格网络、结构化模块与自带包管理。") {
 		@layouts.Nav("features")
@@ -128,6 +164,7 @@ templ Index() {
 						接口属于消费方;检查在编译期，分派在运行时保持鸭子类型，零开销。
 						收窄一视同仁：<code>g.is(Admin)</code> 为真后，<code>g</code> 的类型自动变窄。
 					</p>
+					@emocode.Terminal("shape.emo", interfaceSample)
 
 					<h2 id="enums">枚举与错误</h2>
 					<p>
