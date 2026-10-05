@@ -235,6 +235,17 @@ receive {
   (tag, result) -> { println("${tag}: ${result}") }   // done: 81
 }`
 
+const netSample = `// 网络调用看起来就是普通调用 —— 没有 async, 没有函数染色
+def fetch_body(url String) String {
+  const resp = http.get(url)   // 看起来会阻塞, 调度器在底下切换进程
+  if resp.status() != 200 {
+    raise Exception.new(message: "GET ${url} 返回 ${resp.status()}")
+  }
+  return resp.body()
+}
+
+println(fetch_body("https://example.com"))`
+
 templ Index() {
 	@layouts.Base("语言特性 — Emo", "Emo 的语言特性：明确的语法、类与结构化接口、渐进式类型、Actor 并发、直接风格网络、结构化模块与自带包管理。") {
 		@layouts.Nav("features")
@@ -374,6 +385,7 @@ templ Index() {
 						<li>TLS 证书校验默认开启；不安全变体是显式的、看起来就危险的 <code>net.tls_connect_insecure</code>。</li>
 						<li>超时以秒计；每种失败都抛出消息里写明对端、操作与原因的普通异常。</li>
 					</ul>
+					@emocode.Terminal("fetch.emo", netSample)
 
 					<h2 id="native">原生构建：一条命令，一个可执行文件</h2>
 					<div class="cli"><span class="tok-p">$</span> emo build main.emo -o myapp<br/>built myapp</div>

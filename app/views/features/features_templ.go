@@ -243,6 +243,17 @@ receive {
   (tag, result) -> { println("${tag}: ${result}") }   // done: 81
 }`
 
+const netSample = `// 网络调用看起来就是普通调用 —— 没有 async, 没有函数染色
+def fetch_body(url String) String {
+  const resp = http.get(url)   // 看起来会阻塞, 调度器在底下切换进程
+  if resp.status() != 200 {
+    raise Exception.new(message: "GET ${url} 返回 ${resp.status()}")
+  }
+  return resp.body()
+}
+
+println(fetch_body("https://example.com"))`
+
 func Index() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -360,7 +371,15 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<h2 id=\"networking\">网络：一等公民，直接风格</h2><p>统一的异步网络 API，由每个后端的原生设施实现：io_uring(Linux)、kqueue(macOS)、IOCP(Windows)， BEAM 上一连接一进程，Wasm 上用 WASI sockets 或 fetch/WebSocket。</p><ul><li><strong>直接风格：</strong>网络调用看起来就是普通阻塞调用，调度器在底下切换进程。没有 <code>async</code>/<code>await</code>，因而没有函数染色。</li><li>核心库提供 <code>net</code>(TCP/UDP/Unix domain + TLS)，标准库提供 <code>http</code>(客户端与服务端)。</li><li>TLS 证书校验默认开启；不安全变体是显式的、看起来就危险的 <code>net.tls_connect_insecure</code>。</li><li>超时以秒计；每种失败都抛出消息里写明对端、操作与原因的普通异常。</li></ul><h2 id=\"native\">原生构建：一条命令，一个可执行文件</h2><div class=\"cli\"><span class=\"tok-p\">$</span> emo build main.emo -o myapp<br>built myapp</div><ul><li><strong>运行时随二进制发布。</strong>起进程、跑 HTTP 服务的程序，编译后行为一致，无需解释器、无需下载运行时。</li><li><strong>编译输出对齐解释器标准。</strong>每个示例的二进制输出与 <code>emo run</code> 逐字节一致 —— CI 断言，不是假设。</li><li><strong>类型反哺性能。</strong>类型完全已知的函数编译成特化原生代码；<code>benchmarks/</code> 记录着数字。</li><li><strong>增量构建。</strong>按内容哈希缓存，未变更的重建直接报告 <code>(cached)</code>。</li></ul>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<h2 id=\"networking\">网络：一等公民，直接风格</h2><p>统一的异步网络 API，由每个后端的原生设施实现：io_uring(Linux)、kqueue(macOS)、IOCP(Windows)， BEAM 上一连接一进程，Wasm 上用 WASI sockets 或 fetch/WebSocket。</p><ul><li><strong>直接风格：</strong>网络调用看起来就是普通阻塞调用，调度器在底下切换进程。没有 <code>async</code>/<code>await</code>，因而没有函数染色。</li><li>核心库提供 <code>net</code>(TCP/UDP/Unix domain + TLS)，标准库提供 <code>http</code>(客户端与服务端)。</li><li>TLS 证书校验默认开启；不安全变体是显式的、看起来就危险的 <code>net.tls_connect_insecure</code>。</li><li>超时以秒计；每种失败都抛出消息里写明对端、操作与原因的普通异常。</li></ul>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = emocode.Terminal("fetch.emo", netSample).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<h2 id=\"native\">原生构建：一条命令，一个可执行文件</h2><div class=\"cli\"><span class=\"tok-p\">$</span> emo build main.emo -o myapp<br>built myapp</div><ul><li><strong>运行时随二进制发布。</strong>起进程、跑 HTTP 服务的程序，编译后行为一致，无需解释器、无需下载运行时。</li><li><strong>编译输出对齐解释器标准。</strong>每个示例的二进制输出与 <code>emo run</code> 逐字节一致 —— CI 断言，不是假设。</li><li><strong>类型反哺性能。</strong>类型完全已知的函数编译成特化原生代码；<code>benchmarks/</code> 记录着数字。</li><li><strong>增量构建。</strong>按内容哈希缓存，未变更的重建直接报告 <code>(cached)</code>。</li></ul>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -368,7 +387,7 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<h2 id=\"config\">配置：Emo 就是自己的配置语言</h2><p>配置文件就是一个 Emo 表达式，加载即求值 —— 不需要学第二种格式。 求值运行在受限 Profile 下：<strong>保证终止、结果密封、无副作用</strong>。 类型检查器内置，配置 Schema 就是类型标注，由同一趟检查完成。 对外交换仍支持 JSON / YAML / TOML：Emo 是事实之源，它们是导出产物。</p></div></section></main>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<h2 id=\"config\">配置：Emo 就是自己的配置语言</h2><p>配置文件就是一个 Emo 表达式，加载即求值 —— 不需要学第二种格式。 求值运行在受限 Profile 下：<strong>保证终止、结果密封、无副作用</strong>。 类型检查器内置，配置 Schema 就是类型标注，由同一趟检查完成。 对外交换仍支持 JSON / YAML / TOML：Emo 是事实之源，它们是导出产物。</p></div></section></main>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
