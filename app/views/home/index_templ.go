@@ -13,15 +13,10 @@ import (
 	"github.com/emo-lang/website-cn/app/views/layouts"
 )
 
-const heroSample = `// main.emo
+const heroSample = `// 这是一行注释
 class User {
-  def init(name String, age Int64) {
-    self.name = name
+  def init(age Int64) {
     self.age = age
-  }
-
-  def describe() String {
-    return "${self.name}, ${self.age} 岁"
   }
 
   def adult?() Bool {
@@ -29,23 +24,19 @@ class User {
   }
 }
 
-const fuxi = User.new(name: "伏羲", age: 128)
-println(fuxi.describe())       // 伏羲, 128 岁
+const fuxi = User.new(age: 128)
 
-def work(user User, reply Pid) {
-  var done = 0
-  if user.adult?() {
-    done = done + 3
-  }
-  reply <- (user.name, done)
+emo Company {
+	def can_hire?(u User) Bool {
+		return u.adult?()
+	}
 }
 
-// do 起进程, <- 发消息, receive 收信箱
-const _pid = do work(fuxi, self_pid())
+const can_hire = Company.can_hire?(fuxi)
+var result = if can_hire { "能啊" } else { "肯定不行" }
 
-receive {
-  (who, n) -> { println("${who} 完成了 ${n} 项任务") }
-}`
+println("这人能要吗？${result}")
+`
 
 const concurrencySample = `// 三个进程, 一条消息链
 def feed(wh Pid, i Int64) Int64 {
@@ -165,7 +156,7 @@ func Index() templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.ResolveAttributeValue(layouts.PublicURL("logo.png"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 257, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 247, Col: 63}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
 			if templ_7745c5c3_Err != nil {
@@ -178,7 +169,7 @@ func Index() templ.Component {
 			var templ_7745c5c3_Var4 templ.SafeURL
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/quickstart"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 265, Col: 67}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 255, Col: 67}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -231,7 +222,7 @@ func Index() templ.Component {
 			var templ_7745c5c3_Var5 templ.SafeURL
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/features"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 425, Col: 64}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 415, Col: 64}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -244,7 +235,7 @@ func Index() templ.Component {
 			var templ_7745c5c3_Var6 templ.SafeURL
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/tour"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 426, Col: 52}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 416, Col: 52}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {

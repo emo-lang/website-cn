@@ -5,15 +5,10 @@ import (
 	"github.com/emo-lang/website-cn/app/views/layouts"
 )
 
-const heroSample = `// main.emo
+const heroSample = `// 这是一行注释
 class User {
-  def init(name String, age Int64) {
-    self.name = name
+  def init(age Int64) {
     self.age = age
-  }
-
-  def describe() String {
-    return "${self.name}, ${self.age} 岁"
   }
 
   def adult?() Bool {
@@ -21,24 +16,19 @@ class User {
   }
 }
 
-const fuxi = User.new(name: "伏羲", age: 128)
-println(fuxi.describe())       // 伏羲, 128 岁
+const fuxi = User.new(age: 128)
 
-def work(user User, reply Pid) {
-  var done = 0
-  if user.adult?() {
-    done = done + 3
-  }
-  reply <- (user.name, done)
+emo Company {
+	def can_hire?(u User) Bool {
+		return u.adult?()
+	}
 }
 
-// do 起进程, <- 发消息, receive 收信箱
-const _pid = do work(fuxi, self_pid())
+const can_hire = Company.can_hire?(fuxi)
+var result = if can_hire { "能啊" } else { "肯定不行" }
 
-receive {
-  (who, n) -> { println("${who} 完成了 ${n} 项任务") }
-}`
-
+println("这人能要吗？${result}")
+`
 
 const concurrencySample = `// 三个进程, 一条消息链
 def feed(wh Pid, i Int64) Int64 {
