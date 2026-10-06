@@ -21,8 +21,8 @@ class User {
   }
 }
 
-const ming = User.new(name: "晓明", age: 28)
-println(ming.describe())       // 晓明, 28 岁
+const fuxi = User.new(name: "伏羲", age: 128)
+println(fuxi.describe())       // 伏羲, 128 岁
 
 def work(user User, reply Pid) {
   var done = 0
@@ -33,7 +33,7 @@ def work(user User, reply Pid) {
 }
 
 // do 起进程, <- 发消息, receive 收信箱
-const _pid = do work(ming, self_pid())
+const _pid = do work(fuxi, self_pid())
 
 receive {
   (who, n) -> { println("${who} 完成了 ${n} 项任务") }

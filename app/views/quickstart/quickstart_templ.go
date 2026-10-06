@@ -14,8 +14,8 @@ import (
 )
 
 const helloSample = `// hello.emo
-const who = "世界"
-println("你好,${who}")`
+const who = "中国"
+println("你好, ${who}")`
 
 const packageSample = `package {
   name = "acme/hello"
@@ -78,7 +78,7 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<p>直接运行，无需编译步骤：</p><div class=\"cli\"><span class=\"tok-p\">$</span> emo run hello.emo<br>你好,世界</div><h2 id=\"build\">3 · 编译成原生可执行文件</h2><p><code>emo build</code> 把程序编译成独立的原生二进制 —— 一条命令，一个可执行文件： 调度器与网络栈随二进制发布，没有解释器，没有运行时下载。</p><div class=\"cli\"><span class=\"tok-p\">$</span> emo build hello.emo -o hello<br>built hello<br><span class=\"tok-p\">$</span> ./hello<br>你好,世界</div><p>编译输出与 <code>emo run</code> 逐字节一致 —— 这是 CI 里的断言，不是口头承诺。</p><h2 id=\"packages\">4 · 使用包</h2><p>项目的 manifest 就是一个 Emo 配置文件，依赖写精确版本； 用 <code>require</code> 把包的短名带进作用域：</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<p>直接运行，无需编译步骤：</p><div class=\"cli\"><span class=\"tok-p\">$</span> emo run hello.emo<br>你好, 中国</div><h2 id=\"build\">3 · 编译成原生可执行文件</h2><p><code>emo build</code> 把程序编译成独立的原生二进制 —— 一条命令，一个可执行文件： 调度器与网络栈随二进制发布，没有解释器，没有运行时下载。</p><div class=\"cli\"><span class=\"tok-p\">$</span> emo build hello.emo -o hello<br>built hello<br><span class=\"tok-p\">$</span> ./hello<br>你好, 中国</div><p>编译输出与 <code>emo run</code> 逐字节一致 —— 这是 CI 里的断言，不是口头承诺。</p><h2 id=\"packages\">4 · 使用包</h2><p>项目的 manifest 就是一个 Emo 配置文件，依赖写精确版本； 用 <code>require</code> 把包的短名带进作用域：</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
