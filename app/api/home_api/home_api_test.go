@@ -43,8 +43,9 @@ func TestIndexActionRendersHomePage(t *testing.T) {
 
 	w := serve(t, "/", IndexAction)
 	assertBodyContains(t, w,
-		"<title>Emo — 干净 · 明确 · 直觉的国产系统级编程语言</title>",
-		"一门语言,五个目标",
+		"<title>Emo — 语法简洁 · 显式定义 · 符合直觉的国产系统级编程语言</title>",
+		"今天你 <span class=\"emo\">Emo</span> 了没?",
+		"一门语言，五个目标",
 		"Actor 并发",
 		"EmoUI",
 		"EmoOS",
@@ -69,7 +70,7 @@ func TestTourActionRendersTourPage(t *testing.T) {
 	assertBodyContains(t, w,
 		"<title>语言漫游 — Emo</title>",
 		"绑定与字符串",
-		"进程:一条消息链",
+		"进程：一条消息链",
 	)
 }
 

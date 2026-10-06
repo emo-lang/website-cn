@@ -229,7 +229,7 @@ func Footer() templ.Component {
 			templ_7745c5c3_Var16 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<footer class=\"site-footer\"><p>Emo — 干净 · 明确 · 直觉</p><p class=\"footer-links\"><a href=\"https://github.com/emo-lang/emo\" target=\"_blank\" rel=\"noreferrer\">github.com/emo-lang/emo</a> <a href=\"https://github.com/emo-lang/emo-ui\" target=\"_blank\" rel=\"noreferrer\">EmoUI</a> <a href=\"https://github.com/emo-lang/emo/blob/main/LICENSE\" target=\"_blank\" rel=\"noreferrer\">MIT License</a></p></footer>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<footer class=\"site-footer\"><p>Emo — 语法简洁 · 显式定义 · 符合直觉</p><p class=\"footer-links\"><a href=\"https://github.com/emo-lang/emo\" target=\"_blank\" rel=\"noreferrer\">github.com/emo-lang/emo</a> <a href=\"https://github.com/emo-lang/emo/blob/main/LICENSE\" target=\"_blank\" rel=\"noreferrer\">MIT License</a></p></footer>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

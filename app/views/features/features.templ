@@ -6,7 +6,7 @@ import (
 )
 
 const classSample = `class User {
-  def init(name String, age Int) {
+  def init(name String, age Int64) {
     self.name = name
     self.age = age
   }
@@ -21,16 +21,16 @@ const classSample = `class User {
 }`
 
 const moduleSample = `shop/
-  order.emo           # 模块 shop.order
-  pricing.emo         # 模块 shop.pricing
+  order.emo           // 模块 shop.order
+  pricing.emo         // 模块 shop.pricing
   internal/
-    discounts.emo     # 模块 shop.internal.discounts —— 子树私有
-  checkout.emo        # 模块 shop.checkout`
+    discounts.emo     // 模块 shop.internal.discounts —— 子树私有
+  checkout.emo        // 模块 shop.checkout`
 
-const aliasSample = `// 没有 import:路径即引用,别名就是一个普通的 const
+const aliasSample = `// 没有 import: 路径即引用, 别名就是一个普通的 const
 const order = shop.order
 
-def checkout(cart Cart) Decimal {
+def checkout(cart Cart) Float64 {
   const total = order.total(cart)
   return total
 }`
@@ -46,150 +46,363 @@ const manifestSample = `package {
   }
 }`
 
-const ffiSample = `// 声明 C 符号,由生成的包装器完成编组
-foreign def sqrt(x Float) Float = "sqrt"
+const ffiSample = `// 声明 C 符号, 由生成的包装器完成编组
+foreign def sqrt(x Float64) Float64 = "sqrt"
 
 // 链接额外的 C 库:
 //   emo build main.emo --cclib m`
 
+const emoBlockSample = `// emo 块: 把一组函数和常量组织成命名空间
+emo Math {
+  const phi = 1.618
+
+  def abs(n Int64) Int64 {
+    if n < 0 {
+      return -n
+    }
+    return n
+  }
+
+  def square(n Int64) Int64 {
+    return n * n
+  }
+}
+
+println(Math.abs(-5))    // 5
+println(Math.square(6))  // 36
+println(Math.phi)        // 1.618`
+
+const interfaceSample = `// 形状匹配即满足 —— 没有 implements, 接口属于消费方
+interface Shape {
+  def area() Float64
+}
+
+class Rect {
+  def init(w Float64, h Float64) {
+    self.w = w
+    self.h = h
+  }
+
+  def area() Float64 {
+    return self.w * self.h
+  }
+}
+
+class Circle {
+  def init(r Float64) {
+    self.r = r
+  }
+
+  def area() Float64 {
+    return 3.14159 * self.r * self.r
+  }
+}
+
+def describe(s Shape) String {
+  if s.is(Circle) {
+    return "一个圆, 面积 ${s.area()}"
+  }
+  return "一个矩形, 面积 ${s.area()}"
+}
+
+println(describe(Rect.new(w: 2.5, h: 4)))   // 一个矩形, 面积 10.0
+println(describe(Circle.new(r: 1)))         // 一个圆, 面积 3.14159`
+
+const enumSample = `// 枚举: 封闭的有名值集合 —— 成员不带数据
+enum Outcome {
+  ok
+  error
+}
+
+// 带数据的场景: 「枚举标签 + 元组」的惯用法
+const ok = (Outcome.ok, 42)
+const err = (Outcome.error, "not found")
+
+def show(result) {
+  case result {
+    (Outcome.ok, value)  -> { println("成功: ${value}") }
+    (Outcome.error, why) -> { println("失败: ${why}") }
+  }
+}
+
+show(ok)    // 成功: 42
+show(err)   // 失败: not found
+
+// 错误就是异常: 普通的类实例, raise 抛出
+def divide(a Float64, b Float64) Float64 {
+  if b == 0 {
+    raise Exception.new(message: "除数为零")
+  }
+  return a / b
+}
+
+println(divide(10, 4))   // 2.5`
+
+const mutabilitySample = `// const 永不改变; var 在块内可变
+const base = 10
+
+def bump() Int64 {
+  var count = base
+  count = count + 1   // var: 块内可变
+  return count        // 逃出去的是值, 不是可变性
+}
+
+// 数组是不可变值: == 逐元素比较
+const xs = [1, 2, 3]
+const ys = [1, 2, 3]
+println(xs == ys)       // true
+
+// 类字段只在 init 内赋值, 之后冻结
+class Point {
+  def init(x Float64, y Float64) {
+    self.x = x
+    self.y = y
+  }
+}
+
+const p = Point.new(x: 1, y: 2)
+
+// 长期可变状态住在 Box 里: 构造、读、换
+const box = Box.new(0)
+println(box.read())          // 0
+box.replace(box.read() + 1)
+println(box.read())          // 1
+
+println(bump())              // 11`
+
+const counterSample = `// 反例: 闭包活得比 var 长 —— 编译错误
+def make_counter() {
+  var count = 0
+  return -> { count = count + 1 }   // 编译错误: var 不能逃逸它的块
+}
+
+// 正解: 长命可变状态, 显式住进 Box
+def make_counter() {
+  const box = Box.new(0)
+  return -> { box.replace(box.read() + 1) }   // box 是 const，可以逃逸
+}
+
+const next = make_counter()
+println(next())   // 1
+println(next())   // 2`
+
+const typesSample = `// 函数签名必写类型 —— 签名即契约
+def add(a Int64, b Int64) Int64 {
+  return a + b
+}
+
+// 其余标注可选, 编译器照样推断与检查
+const total = add(19, 23)     // Int64
+const xs = [1, 2, 3]          // Array[Int64]
+
+// 想写得更具体时, 参数化类型只是标注词汇
+const bigs Array[Int64] = [100, 200]
+
+// 流敏感: is() 为真后, 类型自动收窄
+class User {
+  def init(name String) { self.name = name }
+}
+
+class Admin {
+  def init(name String) { self.name = name }
+  def title() String { return "管理员 ${self.name}" }
+}
+
+def label(u User) String {
+  if u.is(Admin) {
+    return u.title()   // u 已收窄为 Admin
+  }
+  return "用户 ${u.name}"
+}
+
+println(label(User.new(name: "小明")))   // 用户 小明
+println(label(Admin.new(name: "大刘")))  // 管理员 大刘`
+
+const workerSample = `// do 起进程, <- 发消息, receive 收信箱
+def worker() {
+  receive {
+    (from, n) -> {
+      from <- ("done", n * n)   // 惯用回复: 收信人随消息一起传进来
+      worker()                  // 尾调用: 递归就是收信循环
+    }
+  }
+}
+
+const pid = do worker()
+pid <- (self_pid(), 9)
+
+receive {
+  (tag, result) -> { println("${tag}: ${result}") }   // done: 81
+}`
+
+const netSample = `// 网络调用看起来就是普通调用 —— 没有 async, 没有函数染色
+def fetch_body(url String) String {
+  const resp = http.get(url)   // 看起来会阻塞, 调度器在底下切换进程
+  if resp.status() != 200 {
+    raise Exception.new(message: "GET ${url} 返回 ${resp.status()}")
+  }
+  return resp.body()
+}
+
+println(fetch_body("https://example.com"))`
+
 templ Index() {
-	@layouts.Base("语言特性 — Emo", "Emo 的语言特性:明确的语法、类与结构化接口、渐进式类型、Actor 并发、直接风格网络、结构化模块与自带包管理。") {
+	@layouts.Base("语言特性 — Emo", "Emo 的语言特性：明确的语法、类与结构化接口、渐进式类型、Actor 并发、直接风格网络、结构化模块与自带包管理。") {
 		@layouts.Nav("features")
 
 		<main>
 			<section class="page-hero">
 				<div class="container">
 					<h1>语言特性</h1>
-					<p>Emo 是干净、明确、直觉的。它汲取三十年开源编程语言的经验与教训 —— 以下是让这门语言成为它自己的那些决定。</p>
+					<p>Emo 语法简洁、显式定义、符合直觉。它汲取三十年开源编程语言的经验与教训 —— 以下是让这门语言成为它自己的那些决定。</p>
 				</div>
 			</section>
 
 			<section class="section" style="border-top: none; padding-top: 1rem;">
 				<div class="container prose">
-					<h2 id="syntax">语法:一切所见即所得</h2>
-					<p>Emo 的语法偏爱明确:调用看起来像调用,返回一定写出来,代码块只有一种形状。</p>
+					<h2 id="syntax">语法：一切所见即所得</h2>
+					<p>Emo 的语法偏爱明确：调用看起来像调用，返回一定写出来，代码块只有一种形状。</p>
 					<ul>
-						<li><strong>调用永远带括号,且紧贴被调者。</strong>没有可选括号调用;<code>f (a)</code> 中间有空格就是语法错误,而不是被猜成一次调用。</li>
+						<li><strong>调用永远带括号，且紧贴被调者。</strong>没有可选括号调用；<code>f (a)</code> 中间有空格就是语法错误，而不是被猜成一次调用。</li>
 						<li><strong>调用可以尾随一个代码块作为最后一个实参。</strong><code>page(title: "Home") &#123; ... &#125;</code> —— 这是 UI 树与回调背后的唯一记法。</li>
-						<li><strong>代码块只有一种形状:</strong><code>&#123; ... &#125;</code> 与 <code>-&gt; (x) &#123; ... &#125;</code>,后者兼作匿名函数。</li>
-						<li><strong>绑定是 <code>const</code>(不可变)或 <code>var</code>(可变、块作用域)。</strong><code>var</code> 不能逃逸出它的块,被存活期更长的闭包捕获是编译错误。</li>
+						<li><strong>代码块只有一种形状：</strong><code>&#123; ... &#125;</code> 与 <code>-&gt; (x) &#123; ... &#125;</code>，后者兼作匿名函数。</li>
+						<li><strong>绑定是 <code>const</code>(不可变)或 <code>var</code>(可变、块作用域)。</strong><code>var</code> 不能逃逸出它的块，被存活期更长的闭包捕获是编译错误。</li>
 						<li><strong>实参可以按位置或按名传递。</strong>命名实参是 Props 与选项的自然形态。</li>
-						<li><strong>类型标注后置,以空格分隔;</strong>函数签名永远显式标注参数与返回值 —— 签名即契约,契约必严查。</li>
-						<li><strong>谓词方法以 <code>?</code> 结尾:</strong><code>user.adult?()</code> 在调用点读起来就像一句话。</li>
-						<li><strong><code>return</code> 永远显式;</strong><code>if</code> 只有一种形状,没有 <code>else if</code>;<code>case</code> 按模式匹配,可带守卫。</li>
-						<li><strong>命名大小写约定由编译器强制:</strong>类型大写开头,其余一律小写 snake_case。</li>
-						<li><strong>字符串永远双引号,插值只有一种形式:</strong><code>"你好,$&#123;name&#125;"</code>。</li>
+						<li><strong>类型标注后置，以空格分隔；</strong>函数签名永远显式标注参数与返回值 —— 签名即契约，契约必严查。</li>
+						<li><strong>谓词方法以 <code>?</code> 结尾：</strong><code>user.adult?()</code> 在调用点读起来就像一句话。</li>
+						<li><strong><code>return</code> 永远显式；</strong><code>if</code> 只有一种形状，没有 <code>else if</code>；<code>case</code> 按模式匹配，可带守卫。</li>
+						<li><strong>命名大小写约定由编译器强制：</strong>类型大写开头，其余一律小写 snake_case。</li>
+						<li><strong>字符串永远双引号，插值只有一种形式：</strong><code>"你好, $&#123;name&#125;"</code>。</li>
 					</ul>
 
-					<h2 id="classes">类:唯一的用户自定义类型</h2>
-					<p><code>class</code> 是定义类型的唯一记法,方法就住在类体里,紧挨着它所属的类型。</p>
+					<h2 id="classes">类：唯一的用户自定义类型</h2>
+					<p><code>class</code> 是定义类型的唯一记法，方法就住在类体里，紧挨着它所属的类型。</p>
 					@emocode.Terminal("user.emo", classSample)
 					<ul>
-						<li><strong><code>init</code> 是字段唯一能被赋值的窗口。</strong>类因而是不可变值类型:赋值即拷贝(底层写时复制),内容相等则 <code>==</code>。</li>
+						<li><strong><code>init</code> 是字段唯一能被赋值的窗口。</strong>类因而是不可变值类型：赋值即拷贝(底层写时复制)，内容相等则 <code>==</code>。</li>
 						<li><strong><code>self</code> 隐式传入、显式使用</strong> —— 字段与局部变量永不混淆。</li>
-						<li><strong>没有继承,单继承多继承都没有。</strong>复用交给鸭子类型、组合与接口。</li>
+						<li><strong>没有继承，单继承多继承都没有。</strong>复用交给鸭子类型、组合与接口。</li>
 					</ul>
 
-					<h2 id="interfaces">接口:结构化多态</h2>
+					<h2 id="emo">emo 块：函数组的命名空间</h2>
 					<p>
-						<code>interface</code> 声明一组方法签名,任何形状匹配的类都满足它 —— 没有 <code>implements</code>。
-						接口属于消费方;检查在编译期,分派在运行时保持鸭子类型,零开销。
-						收窄一视同仁:<code>g.is(Admin)</code> 为真后,<code>g</code> 的类型自动变窄。
+						<code>emo</code> 块把一组函数与 <code>const</code> 常量组织在一起，充当某种程度上的命名空间 ——
+						<code>Math.abs(-5)</code> 以块名直接调用，无需创建任何实例。
 					</p>
+					@emocode.Terminal("math.emo", emoBlockSample)
+					<ul>
+						<li><strong>是函数组，不是类型。</strong>块内是普通函数与 <code>const</code> 常量，没有 <code>self</code>，也不创建实例。</li>
+						<li><strong>块名即命名空间。</strong>函数以块名直接调用，常量直接以 <code>Math.phi</code> 取用。</li>
+						<li><strong>相关函数住在一起。</strong>比裸函数多了归属，比类少了仪式，使用处自带上下文。</li>
+					</ul>
+
+					<h2 id="interfaces">接口：结构化多态</h2>
+					<p>
+						<code>interface</code> 声明一组方法签名，任何形状匹配的类都满足它 —— 没有 <code>implements</code>。
+						接口属于消费方；检查在编译期，分派在运行时保持鸭子类型，零开销。
+						收窄一视同仁：<code>g.is(Admin)</code> 为真后，<code>g</code> 的类型自动变窄。
+					</p>
+					@emocode.Terminal("shape.emo", interfaceSample)
 
 					<h2 id="enums">枚举与错误</h2>
 					<p>
-						枚举是封闭的、有名值集合 —— 仅此而已,成员不携带数据(这是刻意排除的反模式)。
-						带数据的场景用「枚举标签 + 元组」的惯用法:<code>(Outcome.ok, value)</code>,在 <code>case</code> 与 <code>receive</code> 里直接按位置解构。
+						枚举是封闭的、有名值集合 —— 仅此而已，成员不携带数据(这是刻意排除的反模式)。
+						带数据的场景用「枚举标签 + 元组」的惯用法：<code>(Outcome.ok, value)</code>，在 <code>case</code> 与 <code>receive</code> 里直接按位置解构。
 					</p>
 					<p>
-						错误就是异常,异常就是普通的类实例:<code>raise Exception.new(message: "...")</code>。
-						未捕获的异常只杀死出错的进程;没有受检异常。
+						错误就是异常，异常就是普通的类实例：<code>raise Exception.new(message: "...")</code>。
+						未捕获的异常只杀死出错的进程；异常不进函数签名，编译器也不强制处理。
 					</p>
+					@emocode.Terminal("outcome.emo", enumSample)
 
-					<h2 id="mutability">可变性:分层的,且每层都显式</h2>
+					<h2 id="mutability">可变性：分层的，且每层都显式</h2>
 					<ul>
-						<li><code>const</code> 绑定永不改变;<code>var</code> 在块内可变、不能逃逸。</li>
-						<li>数组是不可变值:变换返回新数组,<code>==</code> 逐元素比较。</li>
-						<li>类字段只在 <code>init</code> 内赋值,之后冻结。</li>
-						<li>长期可变状态住在 <code>Box</code> 里:<code>Box.new(0)</code> 构造,<code>box.read()</code> 读,<code>box.replace(v)</code> 换 —— 刻意没有别的操作。Box 发往另一个进程时是快照拷贝,可变性永不跨越进程边界。</li>
-					</ul>
+						<li><code>const</code> 绑定永不改变；<code>var</code> 在块内可变、不能逃逸。</li>
+						<li>数组是不可变值：变换返回新数组，<code>==</code> 逐元素比较。</li>
+						<li>类字段只在 <code>init</code> 内赋值，之后冻结。</li>
+						<li>长期可变状态住在 <code>Box</code> 里：<code>Box.new(0)</code> 构造，<code>box.read()</code> 读，<code>box.replace(v)</code> 换 —— 刻意没有别的操作。Box 发往另一个进程时是快照拷贝，可变性永不跨越进程边界。</li>
+						</ul>
+						@emocode.Terminal("mutability.emo", mutabilitySample)
+						@emocode.Terminal("counter.emo", counterSample)
 
-					<h2 id="types">类型系统:渐进式</h2>
-					<p><strong>运行时动态类型,编译期静态检查。</strong></p>
+					<h2 id="types">类型系统：渐进式</h2>
+					<p><strong>运行时动态类型，编译期静态检查。</strong></p>
 					<ul>
-						<li>运行时每个值带类型标签 —— 与 BEAM 天然对齐,日常代码没有类型仪式。</li>
-						<li>编译器内置类型检查:标注可选(函数签名除外),未标注的代码照样推断与检查,只报告确定的错误。</li>
-						<li>结构化、流敏感:<code>user.is(Admin)</code> 为真后,<code>user</code> 收窄为 <code>Admin</code>。</li>
-						<li>没有泛型机器:参数化类型只是标注词汇(<code>Array[User]</code>、<code>Box[Int]</code>),应用代码几乎见不到类型拼写。</li>
-						<li>类型信息反哺性能:类型足够完整的模块在原生后端被特化 —— 去装箱表示、直接分派。</li>
+						<li>运行时每个值带类型标签 —— 与 BEAM 天然对齐，日常代码没有类型仪式。</li>
+						<li>编译器内置类型检查：标注可选(函数签名除外)，未标注的代码照样推断与检查，只报告确定的错误。</li>
+						<li>结构化、流敏感：<code>user.is(Admin)</code> 为真后，<code>user</code> 收窄为 <code>Admin</code>。</li>
+						<li>没有泛型机器：参数化类型只是标注词汇(<code>Array[User]</code>、<code>Box[Int64]</code>)，应用代码几乎见不到类型拼写。</li>
+						<li>类型信息反哺性能：类型足够完整的模块在原生后端被特化 —— 去装箱表示、直接分派。</li>
 					</ul>
+					@emocode.Terminal("types.emo", typesSample)
 
-					<h2 id="modules">模块:目录树即模块树</h2>
-					<p>完全结构化的模块系统:没有 <code>import</code>,没有 <code>export</code>,没有可见性关键字。</p>
+					<h2 id="modules">模块：目录树即模块树</h2>
+					<p>完全结构化的模块系统：没有 <code>import</code>，没有 <code>export</code>，没有可见性关键字。</p>
 					@emocode.Terminal("目录结构", moduleSample)
 					@emocode.Terminal("checkout.emo", aliasSample)
 					<ul>
-						<li><strong>路径即模块。</strong>文件自动成为其路径上的模块,无需注册与声明。</li>
-						<li><strong>引用即限定路径。</strong>像 URL 一样直接使用;路径太长时,一个普通的 <code>const</code> 就是别名。</li>
-						<li><strong>可见性是结构性的。</strong><code>internal/</code> 目录子树私有,由编译器强制。</li>
-						<li><strong>依赖图是显式的。</strong>路径引用就是依赖声明,自动获得模块发现、增量编译与编译期循环检测。</li>
+						<li><strong>路径即模块。</strong>文件自动成为其路径上的模块，无需注册与声明。</li>
+						<li><strong>引用即限定路径。</strong>像 URL 一样直接使用；路径太长时，一个普通的 <code>const</code> 就是别名。</li>
+						<li><strong>可见性是结构性的。</strong><code>internal/</code> 目录子树私有，由编译器强制。</li>
+						<li><strong>依赖图是显式的。</strong>路径引用就是依赖声明，自动获得模块发现、增量编译与编译期循环检测。</li>
 					</ul>
 
-					<h2 id="packages">包管理:构建即安装</h2>
+					<h2 id="packages">包管理：构建即安装</h2>
 					<p>
-						包直接嵌入模块系统:包名成为顶层模块路径前缀。库没有 install 步骤 —— 依赖解析是构建的副产品。
-						使用一个包就是 <code>require "acme/json_tools"</code>;manifest 里缺失的 <code>require</code> 是编译错误。
+						包直接嵌入模块系统：包名成为顶层模块路径前缀。库没有 install 步骤 —— 依赖解析是构建的副产品。
+						使用一个包就是 <code>require "acme/json_tools"</code>；manifest 里缺失的 <code>require</code> 是编译错误。
 					</p>
 					@emocode.Terminal("package.emo", manifestSample)
 					<ul>
-						<li>中心注册表,端点可配(<code>EMO_REGISTRY</code>),支持私有与内网分发;全局内容寻址缓存,项目间共享。</li>
-						<li>作用域包名,杜绝抢注;官方标准库独占顶层短名(<code>json.decode()</code>、<code>http.get(url)</code>)。</li>
-						<li>语义化版本 + MVS 解析,升级永远是显式动作;<code>emo.lock</code> 记录校验和,纳入版本控制,构建永不静默改写。</li>
-						<li>目标兼容性在解析期检查:不支持当前目标的依赖直接报清晰的错。</li>
+						<li>中心注册表，端点可配(<code>EMO_REGISTRY</code>)，支持私有与内网分发；全局内容寻址缓存，项目间共享。</li>
+						<li>作用域包名，杜绝抢注；官方标准库独占顶层短名(<code>json.decode()</code>、<code>http.get(url)</code>)。</li>
+						<li>语义化版本 + MVS 解析，升级永远是显式动作；<code>package.lock</code> 记录校验和，纳入版本控制，构建永不静默改写。</li>
+						<li>目标兼容性在解析期检查：不支持当前目标的依赖直接报清晰的错。</li>
 					</ul>
 
-					<h2 id="concurrency">并发:进程与消息传递</h2>
+					<h2 id="concurrency">并发：进程与消息传递</h2>
 					<p>
-						Emo 内建围绕进程与消息传递的原生并发模型,Actor 模型的嫡系 ——
-						直接映射 BEAM 进程,原生后端用 OCaml 5 effects 实现调度器。
+						Emo 内建围绕进程与消息传递的原生并发模型，Actor 模型的嫡系 ——
+						直接映射 BEAM 进程，原生后端用 OCaml 5 effects 实现调度器。
 					</p>
 					<ul>
-						<li><code>do</code> 启动进程并返回 pid;<code>pid &lt;- message</code> 发送;<code>receive</code> 复用 <code>case</code> 的分支语法,选择性接收来自普通模式。</li>
-						<li>惯用回复模式只有一行:<code>sender &lt;- (self_pid(), request)</code>,元组在接收分支里直接解构。</li>
-						<li><code>halt()</code> 或未处理的错误只杀死出错的进程;kill、wait、重启策略是库的领土。</li>
-						<li>数据默认不可变,消息在 BEAM 上拷贝、在原生后端传引用,可观察语义完全一致。</li>
-						<li>尾调用有保证;递归就是收信循环的惯用形态。</li>
+						<li><code>do</code> 启动进程并返回 pid；<code>pid &lt;- message</code> 发送；<code>receive</code> 复用 <code>case</code> 的分支语法，选择性接收来自普通模式。</li>
+						<li>惯用回复模式只有一行：<code>sender &lt;- (self_pid(), request)</code>，元组在接收分支里直接解构。</li>
+						<li><code>halt()</code> 或未处理的错误只杀死出错的进程；kill、wait、重启策略是库的领土。</li>
+						<li>数据默认不可变，消息在 BEAM 上拷贝、在原生后端传引用，可观察语义完全一致。</li>
+						<li>尾调用有保证；递归就是收信循环的惯用形态。</li>
 					</ul>
+					@emocode.Terminal("worker.emo", workerSample)
 
-					<h2 id="networking">网络:一等公民,直接风格</h2>
+					<h2 id="networking">网络：一等公民，直接风格</h2>
 					<p>
-						统一的异步网络 API,由每个后端的原生设施实现:io_uring(Linux)、kqueue(macOS)、IOCP(Windows),
-						BEAM 上一连接一进程,Wasm 上用 WASI sockets 或 fetch/WebSocket。
+						统一的异步网络 API，由每个后端的原生设施实现：io_uring(Linux)、kqueue(macOS)、IOCP(Windows)，
+						BEAM 上一连接一进程，Wasm 上用 WASI sockets 或 fetch/WebSocket。
 					</p>
 					<ul>
-						<li><strong>直接风格:</strong>网络调用看起来就是普通阻塞调用,调度器在底下切换进程。没有 <code>async</code>/<code>await</code>,因而没有函数染色。</li>
-						<li>核心库提供 <code>net</code>(TCP/UDP/Unix domain + TLS),标准库提供 <code>http</code>(客户端与服务端)。</li>
-						<li>TLS 证书校验默认开启;不安全变体是显式的、看起来就危险的 <code>net.tls_connect_insecure</code>。</li>
-						<li>超时以秒计;每种失败都抛出消息里写明对端、操作与原因的普通异常。</li>
+						<li><strong>直接风格：</strong>网络调用看起来就是普通阻塞调用，调度器在底下切换进程。没有 <code>async</code>/<code>await</code>，因而没有函数染色。</li>
+						<li>核心库提供 <code>net</code>(TCP/UDP/Unix domain + TLS)，标准库提供 <code>http</code>(客户端与服务端)。</li>
+						<li>TLS 证书校验默认开启；不安全变体是显式的、看起来就危险的 <code>net.tls_connect_insecure</code>。</li>
+						<li>超时以秒计；每种失败都抛出消息里写明对端、操作与原因的普通异常。</li>
 					</ul>
+					@emocode.Terminal("fetch.emo", netSample)
 
-					<h2 id="native">原生构建:一条命令,一个可执行文件</h2>
-					<div class="cli"><span class="tok-p">$</span> emo build main.emo -o myapp<br/>built myapp</div>
+					<h2 id="native">原生构建：一条命令，一个可执行文件</h2>
+					<div class="cli"><span class="tok-p">$</span> emo build app.emo -o app<br/>built app</div>
 					<ul>
-						<li><strong>运行时随二进制发布。</strong>起进程、跑 HTTP 服务的程序,编译后行为一致,无需解释器、无需下载运行时。</li>
-						<li><strong>编译输出对齐解释器标准。</strong>每个示例的二进制输出与 <code>emo run</code> 逐字节一致 —— CI 断言,不是假设。</li>
-						<li><strong>类型反哺性能。</strong>类型完全已知的函数编译成特化原生代码;<code>benchmarks/</code> 记录着数字。</li>
-						<li><strong>增量构建。</strong>按内容哈希缓存,未变更的重建直接报告 <code>(cached)</code>。</li>
+						<li><strong>单一二进制即可完整运行。</strong>起进程、跑 HTTP 服务的程序，编译后行为一致，无需解释器、无需下载运行时。</li>
+						<li><strong>编译输出对齐解释器标准。</strong>每个示例的二进制输出与 <code>emo run</code> 逐字节一致 —— CI 断言，不是假设。</li>
+						<li><strong>类型反哺性能。</strong>类型完全已知的函数编译成特化原生代码；<code>benchmarks/</code> 记录着数字。</li>
+						<li><strong>增量构建。</strong>按内容哈希缓存，未变更的重建直接报告 <code>(cached)</code>。</li>
 					</ul>
 					@emocode.Terminal("ffi.emo", ffiSample)
 
-					<h2 id="config">配置:Emo 就是自己的配置语言</h2>
+					<h2 id="config">配置：Emo 就是自己的配置语言</h2>
 					<p>
-						配置文件就是一个 Emo 表达式,加载即求值 —— 不需要学第二种格式。
-						求值运行在受限 Profile 下:<strong>保证终止、结果密封、无副作用</strong>。
-						类型检查器内置,配置 Schema 就是类型标注,由同一趟检查完成。
-						对外交换仍支持 JSON / YAML / TOML:Emo 是事实之源,它们是导出产物。
+						配置文件就是一个 Emo 表达式，加载即求值 —— 不需要学第二种格式。
+						求值运行在受限 Profile 下：<strong>保证终止、结果密封、无副作用</strong>。
+						类型检查器内置，配置 Schema 就是类型标注，由同一趟检查完成。
+						对外交换仍支持 JSON / YAML / TOML：Emo 是事实之源，其他格式是导出产物。
 					</p>
 				</div>
 			</section>

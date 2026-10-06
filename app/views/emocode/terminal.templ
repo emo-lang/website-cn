@@ -48,7 +48,72 @@ templ Styles() {
 		.emo-code .tok-f { color: #79c0ff; }              /* call sites */
 		.emo-code .tok-c { color: #7a7a84; font-style: italic; } /* comments */
 		.emo-code .tok-o { color: #ff7b93; }              /* <- and -> */
+		.emo-copy {
+			margin-left: auto;
+			display: inline-flex;
+			align-items: center;
+			gap: 0.3rem;
+			padding: 0.24rem 0.6rem;
+			border: 1px solid #3a3a3f;
+			border-radius: 0.45rem;
+			background: transparent;
+			color: #8e8e96;
+			font-size: 0.72rem;
+			line-height: 1;
+			cursor: pointer;
+			transition: color 0.15s ease, border-color 0.15s ease;
+		}
+		.emo-copy:hover { color: #e8e8ec; border-color: #52525a; }
+		.emo-copy:focus-visible { outline: 2px solid #7678ED; outline-offset: 2px; }
+		.emo-copy.copied { color: #28c840; border-color: #28c840; }
 	</style>
+	<script>
+		(function () {
+			if (window.__emoCopyInit) return;
+			window.__emoCopyInit = true;
+
+			function flash(btn) {
+				var label = btn.querySelector('.emo-copy-label');
+				btn.classList.add('copied');
+				if (label) label.textContent = '已复制';
+				clearTimeout(btn.__emoCopyTimer);
+				btn.__emoCopyTimer = setTimeout(function () {
+					btn.classList.remove('copied');
+					if (label) label.textContent = '复制';
+				}, 2000);
+			}
+
+			function legacyCopy(text) {
+				var ta = document.createElement('textarea');
+				ta.value = text;
+				ta.setAttribute('readonly', '');
+				ta.style.position = 'fixed';
+				ta.style.opacity = '0';
+				document.body.appendChild(ta);
+				ta.select();
+				try { document.execCommand('copy'); } catch (err) {}
+				document.body.removeChild(ta);
+			}
+
+			document.addEventListener('click', function (e) {
+				var btn = e.target && e.target.closest ? e.target.closest('.emo-copy') : null;
+				if (!btn) return;
+				var terminal = btn.closest('.emo-terminal');
+				var code = terminal && terminal.querySelector('.emo-code code');
+				if (!code) return;
+				var text = code.innerText.replace(/\n$/, '');
+				if (navigator.clipboard && navigator.clipboard.writeText) {
+					navigator.clipboard.writeText(text).then(
+						function () { flash(btn); },
+						function () { legacyCopy(text); flash(btn); }
+					);
+				} else {
+					legacyCopy(text);
+					flash(btn);
+				}
+			});
+		})();
+	</script>
 }
 
 // Terminal renders src as a highlighted Emo snippet inside a terminal frame.
@@ -59,6 +124,13 @@ templ Terminal(title string, src string) {
 			<span class="emo-dot yellow"></span>
 			<span class="emo-dot green"></span>
 			<span class="emo-terminal-title">{ title }</span>
+			<button class="emo-copy" type="button" title="复制代码" aria-label="复制代码">
+				<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+					<rect x="5.5" y="5.5" width="8" height="8" rx="1.5"></rect>
+					<path d="M3.5 10.5h-1A1 1 0 0 1 1.5 9.5v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1"></path>
+				</svg>
+				<span class="emo-copy-label">复制</span>
+			</button>
 		</div>
 		<pre class="emo-code"><code>@templ.Raw(Highlight(src))</code></pre>
 	</div>

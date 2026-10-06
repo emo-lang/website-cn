@@ -6,8 +6,8 @@ import (
 )
 
 const helloSample = `// hello.emo
-const who = "世界"
-print("你好,${who}")`
+const who = "中国"
+println("你好, ${who}")`
 
 const packageSample = `package {
   name = "acme/hello"
@@ -26,14 +26,14 @@ def parse_config(text String) Json {
 }`
 
 templ Index() {
-	@layouts.Base("快速上手 — Emo", "十分钟上手 Emo:构建编译器,写下第一行代码,emo run 运行,emo build 编译成原生可执行文件。") {
+	@layouts.Base("快速上手 — Emo", "十分钟上手 Emo：构建编译器，写下第一行代码，emo run 运行，emo build 编译成原生可执行文件。") {
 		@layouts.Nav("quickstart")
 
 		<main>
 			<section class="page-hero">
 				<div class="container">
 					<h1>快速上手</h1>
-					<p>从源码到第一个原生可执行文件,只需要几分钟。</p>
+					<p>从源码到第一个原生可执行文件，只需要几分钟。</p>
 				</div>
 			</section>
 
@@ -41,43 +41,43 @@ templ Index() {
 				<div class="container prose">
 					<h2 id="install">1 · 构建编译器</h2>
 					<p>
-						Emo 的参考实现用 OCaml 5 写成,仓库自带一切 —— 不需要安装第二个编译器。
-						克隆仓库,用 OCaml 工具链(Dune)构建即可得到 <code>emo</code> 命令:
+						Emo 的参考实现用 OCaml 5 写成，仓库自带一切 —— 不需要安装第二个编译器。
+						克隆仓库，用 OCaml 工具链(Dune)构建即可得到 <code>emo</code> 命令：
 					</p>
-					<div class="cli"><span class="tok-p">$</span> git clone https://github.com/emo-lang/emo.git<br/><span class="tok-p">$</span> cd emo<br/><span class="tok-c"># 使用 OCaml 5 + Dune 构建,详见仓库 README</span></div>
+					<div class="cli"><span class="tok-p">$</span> git clone https://github.com/emo-lang/emo.git<br/><span class="tok-p">$</span> cd emo<br/><span class="tok-c"># 使用 OCaml 5 + Dune 构建, 详见仓库 README</span></div>
 
 					<h2 id="hello">2 · 第一行代码</h2>
-					<p>新建 <code>hello.emo</code>:</p>
+					<p>新建 <code>hello.emo</code>：</p>
 					@emocode.Terminal("hello.emo", helloSample)
-					<p>直接运行,无需编译步骤:</p>
-					<div class="cli"><span class="tok-p">$</span> emo run hello.emo<br/>你好,世界</div>
+					<p>直接运行，无需编译步骤：</p>
+					<div class="cli"><span class="tok-p">$</span> emo run hello.emo<br/>你好, 中国</div>
 
 					<h2 id="build">3 · 编译成原生可执行文件</h2>
 					<p>
-						<code>emo build</code> 把程序编译成独立的原生二进制 —— 一条命令,一个可执行文件:
-						调度器与网络栈随二进制发布,没有解释器,没有运行时下载。
+						<code>emo build</code> 把程序编译成独立的原生二进制 —— 一条命令，一个可执行文件：
+						调度器与网络栈随二进制发布，没有解释器，没有运行时下载。
 					</p>
-					<div class="cli"><span class="tok-p">$</span> emo build hello.emo -o hello<br/>built hello<br/><span class="tok-p">$</span> ./hello<br/>你好,世界</div>
-					<p>编译输出与 <code>emo run</code> 逐字节一致 —— 这是 CI 里的断言,不是口头承诺。</p>
+					<div class="cli"><span class="tok-p">$</span> emo build hello.emo -o hello<br/>built hello<br/><span class="tok-p">$</span> ./hello<br/>你好, 中国</div>
+					<p>编译输出与 <code>emo run</code> 逐字节一致 —— 这是 CI 里的断言，不是口头承诺。</p>
 
 					<h2 id="packages">4 · 使用包</h2>
 					<p>
-						项目的 manifest 就是一个 Emo 配置文件,依赖写精确版本;
-						用 <code>require</code> 把包的短名带进作用域:
+						项目的 manifest 就是一个 Emo 配置文件，依赖写精确版本；
+						用 <code>require</code> 把包的短名带进作用域：
 					</p>
 					@emocode.Terminal("package.emo", packageSample)
 					@emocode.Terminal("main.emo", requireSample)
-					<div class="cli"><span class="tok-p">$</span> emo deps resolve   <span class="tok-c"># 解析依赖,写入 emo.lock</span><br/><span class="tok-p">$</span> emo deps list      <span class="tok-c"># 查看解析结果</span><br/><span class="tok-p">$</span> emo build main.emo -o app</div>
-					<p>依赖解析是构建的副产品 —— 库没有单独的 install 步骤,<code>emo.lock</code> 纳入版本控制,构建永不静默改写它。</p>
+					<div class="cli"><span class="tok-p">$</span> emo deps resolve   <span class="tok-c"># 解析依赖, 写入 emo.lock</span><br/><span class="tok-p">$</span> emo deps list      <span class="tok-c"># 查看解析结果</span><br/><span class="tok-p">$</span> emo build main.emo -o app</div>
+					<p>依赖解析是构建的副产品 —— 库没有单独的 install 步骤，<code>emo.lock</code> 纳入版本控制，构建永不静默改写它。</p>
 
 					<h2 id="examples">5 · 探索示例</h2>
-					<p>仓库的 <code>examples/</code> 目录里,每个目录都是一个可运行的演示项目:</p>
+					<p>仓库的 <code>examples/</code> 目录里，每个目录都是一个可运行的演示项目：</p>
 					<ul>
-						<li><a href="https://github.com/emo-lang/emo/tree/main/examples/language_tour" target="_blank" rel="noreferrer">language_tour</a> —— 一个带讲解的程序读懂核心概念,从这里开始</li>
-						<li><a href="https://github.com/emo-lang/emo/tree/main/examples/pipeline" target="_blank" rel="noreferrer">pipeline</a> —— 并发流水线:<code>do</code> / <code>&lt;-</code> / <code>receive</code></li>
-						<li><a href="https://github.com/emo-lang/emo/tree/main/examples/tcp_echo" target="_blank" rel="noreferrer">tcp_echo</a> —— 直接风格网络:一个程序里的服务端与客户端</li>
-						<li><a href="https://github.com/emo-lang/emo/tree/main/examples/numerics" target="_blank" rel="noreferrer">numerics</a> —— 原生后端:<code>foreign def</code> C 绑定与特化数值内核</li>
-						<li><a href="https://github.com/emo-lang/emo/tree/main/examples/shop" target="_blank" rel="noreferrer">shop</a> —— 模块系统:目录树即模块树,含 <code>internal/</code> 私有子树</li>
+						<li><a href="https://github.com/emo-lang/emo/tree/main/examples/language_tour" target="_blank" rel="noreferrer">language_tour</a> —— 一个带讲解的程序读懂核心概念，从这里开始</li>
+						<li><a href="https://github.com/emo-lang/emo/tree/main/examples/pipeline" target="_blank" rel="noreferrer">pipeline</a> —— 并发流水线：<code>do</code> / <code>&lt;-</code> / <code>receive</code></li>
+						<li><a href="https://github.com/emo-lang/emo/tree/main/examples/tcp_echo" target="_blank" rel="noreferrer">tcp_echo</a> —— 直接风格网络：一个程序里的服务端与客户端</li>
+						<li><a href="https://github.com/emo-lang/emo/tree/main/examples/numerics" target="_blank" rel="noreferrer">numerics</a> —— 原生后端：<code>foreign def</code> C 绑定与特化数值内核</li>
+						<li><a href="https://github.com/emo-lang/emo/tree/main/examples/shop" target="_blank" rel="noreferrer">shop</a> —— 模块系统：目录树即模块树，含 <code>internal/</code> 私有子树</li>
 						<li><a href="https://github.com/emo-lang/emo/tree/main/examples/http_roundtrip" target="_blank" rel="noreferrer">http_roundtrip</a> —— 本机 HTTP 服务端与客户端的一次往返</li>
 					</ul>
 
