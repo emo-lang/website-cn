@@ -16,3 +16,7 @@ generate:
 # Regenerate the views, then keep them fresh while you edit .templ files.
 generate-watch:
   go tool templ generate -path app/views -watch
+
+# Compile the landing-page Emo samples to WebAssembly for the in-browser runner.
+demo-wasm:
+  ./scripts/build-demo-wasm.sh

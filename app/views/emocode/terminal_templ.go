@@ -8,8 +8,8 @@ package emocode
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-// Styles renders the shared CSS for Emo code terminals. Include it once per
-// page (the layout does this).
+// Styles renders the shared CSS and behaviour for Emo code terminals.
+// Include it once per page (the layout does this).
 func Styles() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -31,7 +31,7 @@ func Styles() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style>\n\t\t.emo-terminal {\n\t\t\tborder: 1px solid var(--border);\n\t\t\tborder-radius: 0.9rem;\n\t\t\toverflow: hidden;\n\t\t\tbackground: #1a1a1c;\n\t\t\tbox-shadow: var(--shadow);\n\t\t}\n\t\t.emo-terminal-bar {\n\t\t\tdisplay: flex;\n\t\t\talign-items: center;\n\t\t\tgap: 0.5rem;\n\t\t\tpadding: 0.6rem 0.9rem;\n\t\t\tborder-bottom: 1px solid #2c2c30;\n\t\t\tbackground: #222225;\n\t\t}\n\t\t.emo-dot { width: 0.72rem; height: 0.72rem; border-radius: 50%; }\n\t\t.emo-dot.red { background: #ff5f57; }\n\t\t.emo-dot.yellow { background: #febc2e; }\n\t\t.emo-dot.green { background: #28c840; }\n\t\t.emo-terminal-title {\n\t\t\tmargin-left: 0.4rem;\n\t\t\tcolor: #8e8e96;\n\t\t\tfont-size: 0.78rem;\n\t\t\tfont-family: ui-monospace, \"SF Mono\", SFMono-Regular, Menlo, Consolas, \"Liberation Mono\", monospace;\n\t\t}\n\t\t.emo-code {\n\t\t\tmargin: 0;\n\t\t\tpadding: 1.2rem 1.4rem;\n\t\t\tfont-family: ui-monospace, \"SF Mono\", SFMono-Regular, Menlo, Consolas, \"Liberation Mono\", monospace;\n\t\t\tfont-size: 0.8rem;\n\t\t\tline-height: 1.6;\n\t\t\tcolor: #e8e8ec;\n\t\t\toverflow-x: auto;\n\t\t\ttab-size: 2;\n\t\t\twhite-space: pre;\n\t\t}\n\t\t.emo-code code { font-family: inherit; font-size: inherit; background: none; border-radius: 0; padding: 0; }\n\t\t.emo-code .tok-k { color: #9ea0f5; }              /* keywords */\n\t\t.emo-code .tok-t { color: #efbf6b; }              /* types */\n\t\t.emo-code .tok-s { color: #a9dc76; }              /* strings */\n\t\t.emo-code .tok-n { color: #d2a8ff; }              /* numbers */\n\t\t.emo-code .tok-f { color: #79c0ff; }              /* call sites */\n\t\t.emo-code .tok-c { color: #7a7a84; font-style: italic; } /* comments */\n\t\t.emo-code .tok-o { color: #ff7b93; }              /* <- and -> */\n\t\t.emo-copy {\n\t\t\tmargin-left: auto;\n\t\t\tdisplay: inline-flex;\n\t\t\talign-items: center;\n\t\t\tgap: 0.3rem;\n\t\t\tpadding: 0.24rem 0.6rem;\n\t\t\tborder: 1px solid #3a3a3f;\n\t\t\tborder-radius: 0.45rem;\n\t\t\tbackground: transparent;\n\t\t\tcolor: #8e8e96;\n\t\t\tfont-size: 0.72rem;\n\t\t\tline-height: 1;\n\t\t\tcursor: pointer;\n\t\t\ttransition: color 0.15s ease, border-color 0.15s ease;\n\t\t}\n\t\t.emo-copy:hover { color: #e8e8ec; border-color: #52525a; }\n\t\t.emo-copy:focus-visible { outline: 2px solid #7678ED; outline-offset: 2px; }\n\t\t.emo-copy.copied { color: #28c840; border-color: #28c840; }\n\t</style><script>\n\t\t(function () {\n\t\t\tif (window.__emoCopyInit) return;\n\t\t\twindow.__emoCopyInit = true;\n\n\t\t\tfunction flash(btn) {\n\t\t\t\tvar label = btn.querySelector('.emo-copy-label');\n\t\t\t\tbtn.classList.add('copied');\n\t\t\t\tif (label) label.textContent = '已复制';\n\t\t\t\tclearTimeout(btn.__emoCopyTimer);\n\t\t\t\tbtn.__emoCopyTimer = setTimeout(function () {\n\t\t\t\t\tbtn.classList.remove('copied');\n\t\t\t\t\tif (label) label.textContent = '复制';\n\t\t\t\t}, 2000);\n\t\t\t}\n\n\t\t\tfunction legacyCopy(text) {\n\t\t\t\tvar ta = document.createElement('textarea');\n\t\t\t\tta.value = text;\n\t\t\t\tta.setAttribute('readonly', '');\n\t\t\t\tta.style.position = 'fixed';\n\t\t\t\tta.style.opacity = '0';\n\t\t\t\tdocument.body.appendChild(ta);\n\t\t\t\tta.select();\n\t\t\t\ttry { document.execCommand('copy'); } catch (err) {}\n\t\t\t\tdocument.body.removeChild(ta);\n\t\t\t}\n\n\t\t\tdocument.addEventListener('click', function (e) {\n\t\t\t\tvar btn = e.target && e.target.closest ? e.target.closest('.emo-copy') : null;\n\t\t\t\tif (!btn) return;\n\t\t\t\tvar terminal = btn.closest('.emo-terminal');\n\t\t\t\tvar code = terminal && terminal.querySelector('.emo-code code');\n\t\t\t\tif (!code) return;\n\t\t\t\tvar text = code.innerText.replace(/\\n$/, '');\n\t\t\t\tif (navigator.clipboard && navigator.clipboard.writeText) {\n\t\t\t\t\tnavigator.clipboard.writeText(text).then(\n\t\t\t\t\t\tfunction () { flash(btn); },\n\t\t\t\t\t\tfunction () { legacyCopy(text); flash(btn); }\n\t\t\t\t\t);\n\t\t\t\t} else {\n\t\t\t\t\tlegacyCopy(text);\n\t\t\t\t\tflash(btn);\n\t\t\t\t}\n\t\t\t});\n\t\t})();\n\t</script>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style>\n\t\t.emo-terminal {\n\t\t\tborder: 1px solid var(--border);\n\t\t\tborder-radius: 0.9rem;\n\t\t\toverflow: hidden;\n\t\t\tbackground: #1a1a1c;\n\t\t\tbox-shadow: var(--shadow);\n\t\t}\n\t\t.emo-terminal-bar {\n\t\t\tdisplay: flex;\n\t\t\talign-items: center;\n\t\t\tgap: 0.5rem;\n\t\t\tpadding: 0.6rem 0.9rem;\n\t\t\tborder-bottom: 1px solid #2c2c30;\n\t\t\tbackground: #222225;\n\t\t}\n\t\t.emo-dot { width: 0.72rem; height: 0.72rem; border-radius: 50%; }\n\t\t.emo-dot.red { background: #ff5f57; }\n\t\t.emo-dot.yellow { background: #febc2e; }\n\t\t.emo-dot.green { background: #28c840; }\n\t\t.emo-terminal-title {\n\t\t\tmargin-left: 0.4rem;\n\t\t\tcolor: #8e8e96;\n\t\t\tfont-size: 0.78rem;\n\t\t\tfont-family: ui-monospace, \"SF Mono\", SFMono-Regular, Menlo, Consolas, \"Liberation Mono\", monospace;\n\t\t}\n\t\t.emo-actions {\n\t\t\tmargin-left: auto;\n\t\t\tdisplay: inline-flex;\n\t\t\talign-items: center;\n\t\t\tgap: 0.35rem;\n\t\t}\n\t\t.emo-code {\n\t\t\tmargin: 0;\n\t\t\tpadding: 1.2rem 1.4rem;\n\t\t\tfont-family: ui-monospace, \"SF Mono\", SFMono-Regular, Menlo, Consolas, \"Liberation Mono\", monospace;\n\t\t\tfont-size: 0.8rem;\n\t\t\tline-height: 1.6;\n\t\t\tcolor: #e8e8ec;\n\t\t\toverflow-x: auto;\n\t\t\ttab-size: 2;\n\t\t\twhite-space: pre;\n\t\t}\n\t\t.emo-code code { font-family: inherit; font-size: inherit; background: none; border-radius: 0; padding: 0; }\n\t\t.emo-code .tok-k { color: #9ea0f5; }              /* keywords */\n\t\t.emo-code .tok-t { color: #efbf6b; }              /* types */\n\t\t.emo-code .tok-s { color: #a9dc76; }              /* strings */\n\t\t.emo-code .tok-n { color: #d2a8ff; }              /* numbers */\n\t\t.emo-code .tok-f { color: #79c0ff; }              /* call sites */\n\t\t.emo-code .tok-c { color: #7a7a84; font-style: italic; } /* comments */\n\t\t.emo-code .tok-o { color: #ff7b93; }              /* <- and -> */\n\t\t.emo-output {\n\t\t\tmargin: 0;\n\t\t\tpadding: 1rem 1.4rem 1.1rem;\n\t\t\tborder-top: 1px solid #2c2c30;\n\t\t\tbackground: #161618;\n\t\t\tfont-family: ui-monospace, \"SF Mono\", SFMono-Regular, Menlo, Consolas, \"Liberation Mono\", monospace;\n\t\t\tfont-size: 0.8rem;\n\t\t\tline-height: 1.6;\n\t\t\tcolor: #a9dc76;\n\t\t\twhite-space: pre-wrap;\n\t\t\toverflow-wrap: anywhere;\n\t\t}\n\t\t.emo-output.emo-output-error { color: #ff7b93; }\n\t\t.emo-btn {\n\t\t\tdisplay: inline-flex;\n\t\t\talign-items: center;\n\t\t\tgap: 0.3rem;\n\t\t\tpadding: 0.24rem 0.6rem;\n\t\t\tborder: 1px solid #3a3a3f;\n\t\t\tborder-radius: 0.45rem;\n\t\t\tbackground: transparent;\n\t\t\tcolor: #8e8e96;\n\t\t\tfont-size: 0.72rem;\n\t\t\tline-height: 1;\n\t\t\tcursor: pointer;\n\t\t\ttransition: color 0.15s ease, border-color 0.15s ease;\n\t\t}\n\t\t.emo-btn:hover { color: #e8e8ec; border-color: #52525a; }\n\t\t.emo-btn:focus-visible { outline: 2px solid #7678ED; outline-offset: 2px; }\n\t\t.emo-copy.copied { color: #28c840; border-color: #28c840; }\n\t\t.emo-run { color: #a9dc76; border-color: #3f5038; }\n\t\t.emo-run:hover { color: #c6f28a; border-color: #5d7a4d; }\n\t\t.emo-run:disabled { color: #6f6f78; border-color: #3a3a3f; cursor: default; }\n\t</style><script>\n\t\t(function () {\n\t\t\tif (window.__emoCopyInit) return;\n\t\t\twindow.__emoCopyInit = true;\n\n\t\t\tfunction flash(btn) {\n\t\t\t\tvar label = btn.querySelector('.emo-copy-label');\n\t\t\t\tbtn.classList.add('copied');\n\t\t\t\tif (label) label.textContent = '已复制';\n\t\t\t\tclearTimeout(btn.__emoCopyTimer);\n\t\t\t\tbtn.__emoCopyTimer = setTimeout(function () {\n\t\t\t\t\tbtn.classList.remove('copied');\n\t\t\t\t\tif (label) label.textContent = '复制';\n\t\t\t\t}, 2000);\n\t\t\t}\n\n\t\t\tfunction legacyCopy(text) {\n\t\t\t\tvar ta = document.createElement('textarea');\n\t\t\t\tta.value = text;\n\t\t\t\tta.setAttribute('readonly', '');\n\t\t\t\tta.style.position = 'fixed';\n\t\t\t\tta.style.opacity = '0';\n\t\t\t\tdocument.body.appendChild(ta);\n\t\t\t\tta.select();\n\t\t\t\ttry { document.execCommand('copy'); } catch (err) {}\n\t\t\t\tdocument.body.removeChild(ta);\n\t\t\t}\n\n\t\t\tdocument.addEventListener('click', function (e) {\n\t\t\t\tvar btn = e.target && e.target.closest ? e.target.closest('.emo-copy') : null;\n\t\t\t\tif (!btn) return;\n\t\t\t\tvar terminal = btn.closest('.emo-terminal');\n\t\t\t\tvar code = terminal && terminal.querySelector('.emo-code code');\n\t\t\t\tif (!code) return;\n\t\t\t\tvar text = code.innerText.replace(/\\n$/, '');\n\t\t\t\tif (navigator.clipboard && navigator.clipboard.writeText) {\n\t\t\t\t\tnavigator.clipboard.writeText(text).then(\n\t\t\t\t\t\tfunction () { flash(btn); },\n\t\t\t\t\t\tfunction () { legacyCopy(text); flash(btn); }\n\t\t\t\t\t);\n\t\t\t\t} else {\n\t\t\t\t\tlegacyCopy(text);\n\t\t\t\t\tflash(btn);\n\t\t\t\t}\n\t\t\t});\n\t\t})();\n\n\t\t// The in-browser WebAssembly runner. The host contract is fixed by\n\t\t// the wasm backend (src/emo_codegen/emo_wasm.ml): a module imports\n\t\t// emo.println/abort/float_str, exports `mem` and `main`, and is\n\t\t// WasmGC — so the browser needs the GC proposal (Chrome 119+,\n\t\t// Firefox 120+, Safari 18.2+), which the probe below detects.\n\t\t(function () {\n\t\t\tif (window.__emoRunnerInit) return;\n\t\t\twindow.__emoRunnerInit = true;\n\n\t\t\t// (module (type (struct))) — a module only WasmGC engines accept.\n\t\t\tvar gcProbe = new Uint8Array([\n\t\t\t\t0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00,\n\t\t\t\t0x01, 0x03, 0x01, 0x5f, 0x00\n\t\t\t]);\n\t\t\tvar gcSupported = false;\n\t\t\ttry { gcSupported = WebAssembly.validate(gcProbe); } catch (err) {}\n\n\t\t\tvar modules = {};\n\n\t\t\t// OCaml's %g — the rule the interpreter's emo_to_string follows,\n\t\t\t// and the one the wasm host must reproduce for Float64 output:\n\t\t\t// six significant digits, exponent form below 1e-4 or at 1e6\n\t\t\t// and above, exponent spelled with a sign and two digits.\n\t\t\tfunction g6(x) {\n\t\t\t\tvar exp = Math.floor(Math.log10(Math.abs(x)));\n\t\t\t\tif (exp < -4 || exp >= 6) {\n\t\t\t\t\tvar r = Number((x / Math.pow(10, exp)).toFixed(5));\n\t\t\t\t\tvar e = exp;\n\t\t\t\t\tif (Math.abs(r) >= 10) {\n\t\t\t\t\t\tr = Number((r / 10).toFixed(5));\n\t\t\t\t\t\te += 1;\n\t\t\t\t\t}\n\t\t\t\t\tvar ms = r.toFixed(5);\n\t\t\t\t\tif (ms.indexOf('.') >= 0) ms = ms.replace(/0+$/, '').replace(/\\.$/, '');\n\t\t\t\t\treturn ms + 'e' + (e < 0 ? '-' : '+') + String(Math.abs(e)).padStart(2, '0');\n\t\t\t\t}\n\t\t\t\tvar decimals = Math.max(0, 5 - exp);\n\t\t\t\tvar s = x.toFixed(decimals);\n\t\t\t\tif (s.indexOf('.') >= 0) s = s.replace(/0+$/, '').replace(/\\.$/, '');\n\t\t\t\treturn s;\n\t\t\t}\n\n\t\t\tfunction floatStr(f) {\n\t\t\t\treturn (Number.isInteger(f) && Math.abs(f) < 1e16) ? f.toFixed(1) : g6(f);\n\t\t\t}\n\n\t\t\tfunction compile(url) {\n\t\t\t\tif (!modules[url]) {\n\t\t\t\t\tmodules[url] = fetch(url).then(function (res) {\n\t\t\t\t\t\tif (!res.ok) throw new Error('无法加载 ' + url + '（HTTP ' + res.status + '）');\n\t\t\t\t\t\treturn res.arrayBuffer();\n\t\t\t\t\t}).then(function (buf) {\n\t\t\t\t\t\treturn WebAssembly.compile(buf);\n\t\t\t\t\t});\n\t\t\t\t}\n\t\t\t\treturn modules[url];\n\t\t\t}\n\n\t\t\tfunction setBusy(btn, busy) {\n\t\t\t\tbtn.disabled = busy;\n\t\t\t\tvar label = btn.querySelector('.emo-run-label');\n\t\t\t\tif (label) label.textContent = busy ? '运行中' : '运行';\n\t\t\t}\n\n\t\t\tfunction run(btn, terminal) {\n\t\t\t\tvar out = terminal.querySelector('.emo-output');\n\t\t\t\tvar dec = new TextDecoder();\n\t\t\t\tvar mem = null;\n\n\t\t\t\tout.hidden = false;\n\t\t\t\tout.classList.remove('emo-output-error');\n\t\t\t\tout.textContent = '';\n\t\t\t\tsetBusy(btn, true);\n\n\t\t\t\tcompile(btn.getAttribute('data-emo-wasm')).then(function (module) {\n\t\t\t\t\treturn WebAssembly.instantiate(module, { emo: {\n\t\t\t\t\t\tprintln: function (ptr, len) {\n\t\t\t\t\t\t\tout.textContent += dec.decode(new Uint8Array(mem.buffer, ptr, len)) + '\\n';\n\t\t\t\t\t\t},\n\t\t\t\t\t\tabort: function (ptr, len) {\n\t\t\t\t\t\t\tthrow new Error(dec.decode(new Uint8Array(mem.buffer, ptr, len)));\n\t\t\t\t\t\t},\n\t\t\t\t\t\tfloat_str: function (f) {\n\t\t\t\t\t\t\tvar bytes = new TextEncoder().encode(floatStr(f));\n\t\t\t\t\t\t\tnew Uint8Array(mem.buffer, 60000, bytes.length).set(bytes);\n\t\t\t\t\t\t\treturn [60000, bytes.length];\n\t\t\t\t\t\t},\n\t\t\t\t\t}});\n\t\t\t\t}).then(function (instance) {\n\t\t\t\t\tmem = instance.exports.mem;\n\t\t\t\t\tinstance.exports.main();\n\t\t\t\t\tif (out.textContent === '') out.textContent = '（程序正常结束，没有输出）';\n\t\t\t\t}).catch(function (err) {\n\t\t\t\t\tout.classList.add('emo-output-error');\n\t\t\t\t\tout.textContent += (err && err.message) ? err.message : String(err);\n\t\t\t\t}).then(function () {\n\t\t\t\t\tsetBusy(btn, false);\n\t\t\t\t});\n\t\t\t}\n\n\t\t\tfunction init() {\n\t\t\t\tvar buttons = document.querySelectorAll('.emo-run');\n\t\t\t\tif (gcSupported) return;\n\t\t\t\tfor (var i = 0; i < buttons.length; i++) {\n\t\t\t\t\tbuttons[i].disabled = true;\n\t\t\t\t\tbuttons[i].title = '当前浏览器不支持 WebAssembly GC，请升级浏览器';\n\t\t\t\t\tvar label = buttons[i].querySelector('.emo-run-label');\n\t\t\t\t\tif (label) label.textContent = '不支持';\n\t\t\t\t}\n\t\t\t}\n\n\t\t\tif (document.readyState === 'loading') {\n\t\t\t\tdocument.addEventListener('DOMContentLoaded', init);\n\t\t\t} else {\n\t\t\t\tinit();\n\t\t\t}\n\n\t\t\tdocument.addEventListener('click', function (e) {\n\t\t\t\tvar btn = e.target && e.target.closest ? e.target.closest('.emo-run') : null;\n\t\t\t\tif (!btn || btn.disabled) return;\n\t\t\t\tvar terminal = btn.closest('.emo-terminal');\n\t\t\t\tif (!terminal) return;\n\t\t\t\trun(btn, terminal);\n\t\t\t});\n\t\t})();\n\t</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -61,20 +61,103 @@ func Terminal(title string, src string) templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Err = terminalFrame(title, src, "").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return nil
+	})
+}
+
+// RunnableTerminal renders src like Terminal, plus a Run button that fetches
+// the precompiled WebAssembly at wasmURL and executes it in the browser.
+func RunnableTerminal(title string, src string, wasmURL string) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var3 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var3 == nil {
+			templ_7745c5c3_Var3 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Err = terminalFrame(title, src, wasmURL).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return nil
+	})
+}
+
+func terminalFrame(title string, src string, wasmURL string) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var4 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var4 == nil {
+			templ_7745c5c3_Var4 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
 		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"emo-terminal\"><div class=\"emo-terminal-bar\"><span class=\"emo-dot red\"></span> <span class=\"emo-dot yellow\"></span> <span class=\"emo-dot green\"></span> <span class=\"emo-terminal-title\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var3 string
-		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(title)
+		var templ_7745c5c3_Var5 string
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `emocode/terminal.templ`, Line: 126, Col: 43}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `emocode/terminal.templ`, Line: 283, Col: 43}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span> <button class=\"emo-copy\" type=\"button\" title=\"复制代码\" aria-label=\"复制代码\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" aria-hidden=\"true\"><rect x=\"5.5\" y=\"5.5\" width=\"8\" height=\"8\" rx=\"1.5\"></rect> <path d=\"M3.5 10.5h-1A1 1 0 0 1 1.5 9.5v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1\"></path></svg> <span class=\"emo-copy-label\">复制</span></button></div><pre class=\"emo-code\"><code>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span><div class=\"emo-actions\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if wasmURL != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<button class=\"emo-btn emo-run\" type=\"button\" data-emo-wasm=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var6 string
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.ResolveAttributeValue(wasmURL)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `emocode/terminal.templ`, Line: 286, Col: 74}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" title=\"在浏览器中运行\" aria-label=\"在浏览器中运行\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M5 3.5l7 4.5-7 4.5z\"></path></svg> <span class=\"emo-run-label\">运行</span></button> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<button class=\"emo-btn emo-copy\" type=\"button\" title=\"复制代码\" aria-label=\"复制代码\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" aria-hidden=\"true\"><rect x=\"5.5\" y=\"5.5\" width=\"8\" height=\"8\" rx=\"1.5\"></rect> <path d=\"M3.5 10.5h-1A1 1 0 0 1 1.5 9.5v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1\"></path></svg> <span class=\"emo-copy-label\">复制</span></button></div></div><pre class=\"emo-code\"><code>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -82,7 +165,17 @@ func Terminal(title string, src string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</code></pre></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</code></pre>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if wasmURL != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<pre class=\"emo-output\" hidden></pre>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

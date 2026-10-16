@@ -18,7 +18,8 @@
 
 - `app/views/layouts` —— 页面骨架(`Base`)、品牌设计系统(`SiteStyles`)、共享的 `Nav`/`Footer`
 - `app/views/emocode` —— 一个小型 Emo 语法高亮器,以及各页通用的终端风格代码块
-- `app/assets/public` —— 随仓库提交的静态文件(logo),由 `assets.PublicHandler` 在 `/public/` 下提供
+- `app/views/home/samples` —— 落地页可运行的 Emo 程序,每个样例一个独立项目
+- `app/assets/public` —— 随仓库提交的静态文件(logo、演示 WebAssembly),由 `assets.PublicHandler` 在 `/public/` 下提供
 
 品牌色与英文站一致:Yellow `#EFBF6B` · Dark `#202022` ·
 Grey `#F9FAFC` · Blue `#7678ED`,通过 `prefers-color-scheme` 支持明暗两色。
@@ -40,6 +41,25 @@ go test ./...       # 运行测试
 - 元素文本不能以 `if ` / `for ` / `switch ` 开头 —— templ 会把它当成控制流语句,换种措辞即可。
 - 文本中的字面 `{` 和 `${` 必须写成 HTML 实体(`&#123;`、`&#125;`)—— 它们在 templ 里是表达式定界符。
 - 文本里的换行会被折叠;预格式化的命令块要用 `<br/>` 换行。
+
+## 浏览器内运行演示代码
+
+落地页可以直接在浏览器里运行代码样例。每个可运行的样例都是
+`app/views/home/samples/<name>/` 下一个真实的 Emo 项目;构建期用
+`emo build --target wasm` 预编译,产物提交到
+`app/assets/public/demo/<name>.wasm`。页面拉取该模块,由
+`app/views/emocode` 中的 runner 完成实例化,并把程序的 `println` 输出流式写入终端。
+
+浏览器需要 WasmGC 提案(Chrome/Edge 119+、Firefox 120+、Safari 18.2+)。
+runner 会做特性探测,不支持时禁用「运行」按钮并给出提示。普通的
+`go build` 不需要 Emo 工具链 —— `.wasm` 已随仓库提交。
+
+修改样例后重新编译提交的模块:
+
+```bash
+just demo-wasm                  # 或: ./scripts/build-demo-wasm.sh
+EMO_BIN=/path/to/emo just demo-wasm   # 指定 emo 二进制
+```
 
 ## 静态导出
 

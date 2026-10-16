@@ -6,7 +6,7 @@ tool github.com/a-h/templ/cmd/templ
 
 require (
 	github.com/a-h/templ v0.3.1070
-	github.com/daqing/airway v0.19.1
+	github.com/daqing/airway v0.19.2
 	github.com/gin-gonic/gin v1.12.0
 	github.com/joho/godotenv v1.5.1
 )

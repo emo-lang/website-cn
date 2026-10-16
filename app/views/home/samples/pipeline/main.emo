@@ -1,0 +1,43 @@
+// 三个进程, 一条消息链
+def doubler(next Pid) Int64 {
+  receive {
+    (i, n) -> {
+      next <- (i, n * 2)
+      return doubler(next)
+    }
+    "done" -> {
+      next <- "done"
+      return halt()
+    }
+  }
+}
+
+def labeler(count Int64, boss Pid) Int64 {
+  receive {
+    (i, n) -> {
+      println("订单 ${i}: ${n} 件")
+      return labeler(count + 1, boss)
+    }
+    "done" -> {
+      boss <- (self_pid(), count)
+      return halt()
+    }
+  }
+}
+
+def feed(line Pid, i Int64) Int64 {
+  if i > 3 {
+    line <- "done"
+    return 0
+  }
+  line <- (i, i)
+  return feed(line, i + 1)
+}
+
+const lab = do labeler(0, self_pid())
+const line = do doubler(lab)
+feed(line, 1)
+
+receive {
+  (who, handled) -> { println("处理了 ${handled} 个订单") }
+}

@@ -1,0 +1,6 @@
+package {
+  name = "demo/hero"
+  version = "0.1.0"
+  targets = ["wasm"]
+  deps {}
+}

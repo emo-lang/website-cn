@@ -1,0 +1,26 @@
+// 接口属于调用方: 形状匹配即满足, 无需 implements
+interface Greeter {
+  def greet() String
+}
+
+class Machine {
+  def greet() String {
+    return "[beep] 你好"
+  }
+}
+
+class Friend {
+  def greet() String {
+    return "很高兴见到你"
+  }
+}
+
+def welcome(g Greeter) String {
+  if g.is(Machine) {
+    return "一台机器说: ${g.greet()}"
+  }
+  return "一位朋友说: ${g.greet()}"
+}
+
+println(welcome(Machine.new()))
+println(welcome(Friend.new()))

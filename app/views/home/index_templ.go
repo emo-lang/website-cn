@@ -13,73 +13,6 @@ import (
 	"github.com/emo-lang/website-cn/app/views/layouts"
 )
 
-const heroSample = `// 这是一行注释
-class User {
-  def init(age Int64) {
-    self.age = age
-  }
-
-  def adult?() Bool {
-    return self.age >= 18
-  }
-}
-
-const fuxi = User.new(age: 128)
-
-emo Company {
-	def can_hire?(u User) Bool {
-		return u.adult?()
-	}
-}
-
-const can_hire = Company.can_hire?(fuxi)
-var result = if can_hire { "能啊" } else { "肯定不行" }
-
-println("这人能要吗？${result}")
-`
-
-const concurrencySample = `// 三个进程, 一条消息链
-def feed(wh Pid, i Int64) Int64 {
-  if i > 3 {
-    wh <- "done"
-    return 0
-  }
-  wh <- (i, i)
-  return feed(wh, i + 1)
-}
-
-const rep = do reporter.run(0, self_pid())
-const wh = do warehouse.run(rep)
-feed(wh, 1)
-
-receive {
-  (who, handled) -> { println("处理了 ${handled} 个订单") }
-}`
-
-const interfaceSample = `// 接口属于调用方: 形状匹配即满足, 无需 implements
-interface Greeter {
-  def greet() String
-}
-
-class Machine {
-  def greet() String {
-    return "[beep] 你好"
-  }
-}
-
-class Friend {
-  def greet() String {
-    return "很高兴见到你"
-  }
-}
-
-def welcome(g Greeter) String {
-  if g.is(Machine) {
-    return "一台机器说: ${g.greet()}"
-  }
-  return "一位朋友说: ${g.greet()}"
-}`
-
 const uiSample = `// 没有模板语言 —— UI 就是普通的 Emo 代码
 page(title: "首页") {
   navbar() {
@@ -156,7 +89,7 @@ func Index(siteVersion string) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.ResolveAttributeValue(layouts.PublicURL("logo.png"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 247, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 180, Col: 63}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
 			if templ_7745c5c3_Err != nil {
@@ -169,7 +102,7 @@ func Index(siteVersion string) templ.Component {
 			var templ_7745c5c3_Var4 templ.SafeURL
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/quickstart"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 255, Col: 67}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 188, Col: 67}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -182,7 +115,7 @@ func Index(siteVersion string) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(siteVersion)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 259, Col: 79}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 192, Col: 79}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -192,7 +125,7 @@ func Index(siteVersion string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = emocode.Terminal("main.emo", heroSample).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = emocode.RunnableTerminal("main.emo", heroSample, layouts.PublicURL("demo/hero.wasm")).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -200,7 +133,7 @@ func Index(siteVersion string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = emocode.Terminal("pipeline.emo", concurrencySample).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = emocode.RunnableTerminal("pipeline.emo", concurrencySample, layouts.PublicURL("demo/pipeline.wasm")).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -208,7 +141,7 @@ func Index(siteVersion string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = emocode.Terminal("greeter.emo", interfaceSample).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = emocode.RunnableTerminal("greeter.emo", interfaceSample, layouts.PublicURL("demo/greeter.wasm")).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -235,7 +168,7 @@ func Index(siteVersion string) templ.Component {
 			var templ_7745c5c3_Var6 templ.SafeURL
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/features"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 415, Col: 64}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 348, Col: 64}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -248,7 +181,7 @@ func Index(siteVersion string) templ.Component {
 			var templ_7745c5c3_Var7 templ.SafeURL
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/tour"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 416, Col: 52}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 349, Col: 52}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
