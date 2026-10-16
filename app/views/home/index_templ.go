@@ -175,7 +175,7 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\">快速上手</a> <a class=\"button\" href=\"https://github.com/emo-lang/emo\" target=\"_blank\" rel=\"noreferrer\">GitHub 仓库</a></div><p class=\"release-note\"><span class=\"pill\"><span class=\"dot\"></span>当前版本：v1.0.0</span> <span class=\"\">冬至(2026)</span> <span class=\"soft\">「立冬，十月节。冬，终也，万物收藏也。」</span></p></div><div class=\"hero-code\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\">快速上手</a> <a class=\"button\" href=\"https://github.com/emo-lang/emo\" target=\"_blank\" rel=\"noreferrer\">GitHub 仓库</a></div><p class=\"release-note\"><span class=\"pill\"><span class=\"dot\"></span>当前版本：v0.26.11</span> <span class=\"\">2026 (冬至)</span> <span class=\"soft\">「立冬，十月节。冬，终也，万物收藏也。」</span></p></div><div class=\"hero-code\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
