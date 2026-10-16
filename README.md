@@ -54,7 +54,7 @@ sample is a real Emo project under `app/views/home/samples/<name>/`; it is
 compiled ahead of time with `emo build --target wasm` and the `.wasm` is
 committed under `app/assets/public/demo/<name>.wasm`. The page fetches that
 module, and the runner in `app/views/emocode` instantiates it and streams the
-program's `println` output into the terminal.
+program's `println` output into a modal result overlay.
 
 The browser needs the WasmGC proposal (Chrome/Edge 119+, Firefox 120+,
 Safari 18.2+). The runner feature-detects it and disables the Run button with

@@ -48,7 +48,7 @@ go test ./...       # 运行测试
 `app/views/home/samples/<name>/` 下一个真实的 Emo 项目;构建期用
 `emo build --target wasm` 预编译,产物提交到
 `app/assets/public/demo/<name>.wasm`。页面拉取该模块,由
-`app/views/emocode` 中的 runner 完成实例化,并把程序的 `println` 输出流式写入终端。
+`app/views/emocode` 中的 runner 完成实例化,并把程序的 `println` 输出流式写入浮层中的运行结果区。
 
 浏览器需要 WasmGC 提案(Chrome/Edge 119+、Firefox 120+、Safari 18.2+)。
 runner 会做特性探测,不支持时禁用「运行」按钮并给出提示。普通的
