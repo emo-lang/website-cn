@@ -16,7 +16,7 @@ import (
 // `generate scaffold` — each resource adds its own export_<name>.go.
 func init() {
 	cmd.SetStaticPages(
-		static.Page{Slug: "/", Component: home.Index()},
+		static.Page{Slug: "/", Component: home.Index(versionString())},
 		static.Page{Slug: "/features", Component: features.Index()},
 		static.Page{Slug: "/tour", Component: tour.Index()},
 		static.Page{Slug: "/quickstart", Component: quickstart.Index()},

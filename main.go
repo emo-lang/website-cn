@@ -17,6 +17,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
+	appversion "github.com/emo-lang/website-cn/app/version"
 	"github.com/emo-lang/website-cn/config"
 
 	// Registers the Go DSL migrations under db/migrate with
@@ -50,6 +51,8 @@ func main() {
 }
 
 func runServer() {
+	appversion.Set(versionString())
+
 	// .env supplies fallbacks for anything the process environment does not
 	// set (godotenv.Load never overrides existing values), so
 	// `LISTEN=0.0.0.0:1988 airway server` wins over a LISTEN in .env. Load it

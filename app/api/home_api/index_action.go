@@ -3,6 +3,7 @@ package home_api
 import (
 	"github.com/gin-gonic/gin"
 
+	"github.com/emo-lang/website-cn/app/version"
 	"github.com/emo-lang/website-cn/app/views/features"
 	"github.com/emo-lang/website-cn/app/views/home"
 	"github.com/emo-lang/website-cn/app/views/quickstart"
@@ -11,7 +12,7 @@ import (
 )
 
 func IndexAction(c *gin.Context) {
-	render.HTML(c, home.Index())
+	render.HTML(c, home.Index(version.String()))
 }
 
 func FeaturesAction(c *gin.Context) {

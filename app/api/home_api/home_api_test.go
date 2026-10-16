@@ -7,6 +7,8 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/emo-lang/website-cn/app/version"
 )
 
 func serve(t *testing.T, path string, handler gin.HandlerFunc) *httptest.ResponseRecorder {
@@ -40,12 +42,14 @@ func assertBodyContains(t *testing.T, w *httptest.ResponseRecorder, wants ...str
 
 func TestIndexActionRendersHomePage(t *testing.T) {
 	gin.SetMode(gin.TestMode)
+	version.Set("v9.9.9")
 
 	w := serve(t, "/", IndexAction)
 	assertBodyContains(t, w,
 		"<title>Emo — 语法简洁 · 显式定义 · 符合直觉的国产系统级编程语言</title>",
 		"今天你 <span class=\"emo\">Emo</span> 了没?",
 		"一门语言，五个目标",
+		"当前版本：v9.9.9",
 		"Actor 并发",
 		"EmoUI",
 		"EmoOS",

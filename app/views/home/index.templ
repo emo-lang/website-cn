@@ -100,7 +100,7 @@ def kernel_main() {
   poke(uart_data_addr, status)
 }`
 
-templ Index() {
+templ Index(siteVersion string) {
 	@layouts.Base("Emo — 语法简洁 · 显式定义 · 符合直觉的国产系统级编程语言", "Emo 是一门国产通用系统级编程语言：渐进式类型、Actor 并发、直接风格网络，可编译到原生可执行文件、WebAssembly、TypeScript、BEAM 虚拟机与裸机。") {
 		<style>
 			.hero-question {
@@ -256,7 +256,7 @@ templ Index() {
 							<a class="button" href="https://github.com/emo-lang/emo" target="_blank" rel="noreferrer">GitHub 仓库</a>
 						</div>
 						<p class="release-note">
-							<span class="pill"><span class="dot"></span>当前版本：v0.26.11</span>
+							<span class="pill"><span class="dot"></span>当前版本：{ siteVersion }</span>
 							<span class="">2026 (冬至)</span>
 							<span class="soft">「立冬，十月节。冬，终也，万物收藏也。」</span>
 						</p>
