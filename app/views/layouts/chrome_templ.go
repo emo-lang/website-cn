@@ -59,7 +59,7 @@ func Nav(active string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" alt=\"Emo logo\" width=\"24\" height=\"24\"> <span>Emo</span></a><nav class=\"nav-links\" aria-label=\"主导航\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" alt=\"Emo logo\" width=\"24\" height=\"24\"> <span>Emo</span></a> <button class=\"nav-toggle\" type=\"button\" aria-label=\"打开导航菜单\" aria-expanded=\"false\" aria-controls=\"site-nav-links\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M4 7h16M4 12h16M4 17h16\"></path></svg></button><nav class=\"nav-links\" id=\"site-nav-links\" aria-label=\"主导航\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -75,7 +75,7 @@ func Nav(active string) templ.Component {
 		var templ_7745c5c3_Var5 templ.SafeURL
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinURLErrs(href("/"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/chrome.templ`, Line: 15, Col: 23}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/chrome.templ`, Line: 20, Col: 23}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -110,7 +110,7 @@ func Nav(active string) templ.Component {
 		var templ_7745c5c3_Var8 templ.SafeURL
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinURLErrs(href("/features"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/chrome.templ`, Line: 16, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/chrome.templ`, Line: 21, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -145,7 +145,7 @@ func Nav(active string) templ.Component {
 		var templ_7745c5c3_Var11 templ.SafeURL
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinURLErrs(href("/tour"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/chrome.templ`, Line: 17, Col: 27}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/chrome.templ`, Line: 22, Col: 27}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
@@ -180,7 +180,7 @@ func Nav(active string) templ.Component {
 		var templ_7745c5c3_Var14 templ.SafeURL
 		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinURLErrs(href("/quickstart"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/chrome.templ`, Line: 18, Col: 33}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/chrome.templ`, Line: 23, Col: 33}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
@@ -199,7 +199,7 @@ func Nav(active string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\">快速上手</a><div class=\"nav-actions\"><button class=\"theme-toggle\" type=\"button\" aria-label=\"切换浅色/深色主题\" title=\"切换浅色/深色主题\"><svg class=\"icon-moon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z\"></path></svg> <svg class=\"icon-sun\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"5\"></circle> <path d=\"M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42\"></path></svg></button> <a class=\"button small primary\" href=\"https://github.com/emo-lang/emo\" target=\"_blank\" rel=\"noreferrer\">GitHub</a></div></nav></div></header><script>\n\t\t(function () {\n\t\t\tif (window.__emoThemeToggle) return;\n\t\t\twindow.__emoThemeToggle = true;\n\t\t\tdocument.addEventListener('click', function (e) {\n\t\t\t\tvar btn = e.target && e.target.closest ? e.target.closest('.theme-toggle') : null;\n\t\t\t\tif (!btn) return;\n\t\t\t\tvar root = document.documentElement;\n\t\t\t\tvar current = root.getAttribute('data-theme');\n\t\t\t\tif (!current) {\n\t\t\t\t\tcurrent = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';\n\t\t\t\t}\n\t\t\t\tvar next = current === 'dark' ? 'light' : 'dark';\n\t\t\t\troot.setAttribute('data-theme', next);\n\t\t\t\ttry { localStorage.setItem('emo-theme', next); } catch (err) {}\n\t\t\t});\n\t\t})();\n\t</script>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\">快速上手</a><div class=\"nav-actions\"><button class=\"theme-toggle\" type=\"button\" aria-label=\"切换浅色/深色主题\" title=\"切换浅色/深色主题\"><svg class=\"icon-moon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z\"></path></svg> <svg class=\"icon-sun\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"5\"></circle> <path d=\"M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42\"></path></svg></button> <a class=\"button small primary\" href=\"https://github.com/emo-lang/emo\" target=\"_blank\" rel=\"noreferrer\">GitHub</a></div></nav></div></header><script>\n\t\t(function () {\n\t\t\tif (window.__emoThemeToggle) return;\n\t\t\twindow.__emoThemeToggle = true;\n\t\t\tdocument.addEventListener('click', function (e) {\n\t\t\t\tvar btn = e.target && e.target.closest ? e.target.closest('.theme-toggle') : null;\n\t\t\t\tif (!btn) return;\n\t\t\t\tvar root = document.documentElement;\n\t\t\t\tvar current = root.getAttribute('data-theme');\n\t\t\t\tif (!current) {\n\t\t\t\t\tcurrent = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';\n\t\t\t\t}\n\t\t\t\tvar next = current === 'dark' ? 'light' : 'dark';\n\t\t\t\troot.setAttribute('data-theme', next);\n\t\t\t\ttry { localStorage.setItem('emo-theme', next); } catch (err) {}\n\t\t\t});\n\t\t})();\n\t\t(function () {\n\t\t\tif (window.__emoNavToggle) return;\n\t\t\twindow.__emoNavToggle = true;\n\t\t\tfunction setOpen(open) {\n\t\t\t\tvar links = document.getElementById('site-nav-links');\n\t\t\t\tvar btn = document.querySelector('.nav-toggle');\n\t\t\t\tif (!links || !btn) return;\n\t\t\t\tlinks.classList.toggle('open', open);\n\t\t\t\tbtn.setAttribute('aria-expanded', open ? 'true' : 'false');\n\t\t\t\tbtn.setAttribute('aria-label', open ? '关闭导航菜单' : '打开导航菜单');\n\t\t\t}\n\t\t\tdocument.addEventListener('click', function (e) {\n\t\t\t\tvar btn = e.target && e.target.closest ? e.target.closest('.nav-toggle') : null;\n\t\t\t\tif (btn) {\n\t\t\t\t\tsetOpen(btn.getAttribute('aria-expanded') !== 'true');\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t\tvar links = document.getElementById('site-nav-links');\n\t\t\t\tif (!links || !links.classList.contains('open')) return;\n\t\t\t\tif (e.target.closest) {\n\t\t\t\t\tif (!e.target.closest('.nav-links')) {\n\t\t\t\t\t\tsetOpen(false);\n\t\t\t\t\t} else if (e.target.closest('a')) {\n\t\t\t\t\t\tsetOpen(false);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t});\n\t\t\tdocument.addEventListener('keydown', function (e) {\n\t\t\t\tif (e.key === 'Escape') setOpen(false);\n\t\t\t});\n\t\t\twindow.addEventListener('resize', function () {\n\t\t\t\tif (window.innerWidth > 640) setOpen(false);\n\t\t\t});\n\t\t})();\n\t</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -11,7 +11,12 @@ templ Nav(active string) {
 				<img src={ utils.URLPrefix() + "/public/logo.png" } alt="Emo logo" width="24" height="24"/>
 				<span>Emo</span>
 			</a>
-			<nav class="nav-links" aria-label="主导航">
+			<button class="nav-toggle" type="button" aria-label="打开导航菜单" aria-expanded="false" aria-controls="site-nav-links">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+					<path d="M4 7h16M4 12h16M4 17h16"></path>
+				</svg>
+			</button>
+			<nav class="nav-links" id="site-nav-links" aria-label="主导航">
 				<a href={ href("/") } class={ templ.KV("active", active == "home") }>首页</a>
 				<a href={ href("/features") } class={ templ.KV("active", active == "features") }>语言特性</a>
 				<a href={ href("/tour") } class={ templ.KV("active", active == "tour") }>语言漫游</a>
@@ -46,6 +51,40 @@ templ Nav(active string) {
 				var next = current === 'dark' ? 'light' : 'dark';
 				root.setAttribute('data-theme', next);
 				try { localStorage.setItem('emo-theme', next); } catch (err) {}
+			});
+		})();
+		(function () {
+			if (window.__emoNavToggle) return;
+			window.__emoNavToggle = true;
+			function setOpen(open) {
+				var links = document.getElementById('site-nav-links');
+				var btn = document.querySelector('.nav-toggle');
+				if (!links || !btn) return;
+				links.classList.toggle('open', open);
+				btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+				btn.setAttribute('aria-label', open ? '关闭导航菜单' : '打开导航菜单');
+			}
+			document.addEventListener('click', function (e) {
+				var btn = e.target && e.target.closest ? e.target.closest('.nav-toggle') : null;
+				if (btn) {
+					setOpen(btn.getAttribute('aria-expanded') !== 'true');
+					return;
+				}
+				var links = document.getElementById('site-nav-links');
+				if (!links || !links.classList.contains('open')) return;
+				if (e.target.closest) {
+					if (!e.target.closest('.nav-links')) {
+						setOpen(false);
+					} else if (e.target.closest('a')) {
+						setOpen(false);
+					}
+				}
+			});
+			document.addEventListener('keydown', function (e) {
+				if (e.key === 'Escape') setOpen(false);
+			});
+			window.addEventListener('resize', function () {
+				if (window.innerWidth > 640) setOpen(false);
 			});
 		})();
 	</script>
