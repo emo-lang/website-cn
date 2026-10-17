@@ -95,33 +95,20 @@ func Index(siteVersion string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" alt=\"Emo logo\" width=\"72\" height=\"72\"><h2>Emo</h2><p class=\"tagline\"><span>语法简洁</span><i>·</i><span>显式定义</span><i>·</i><span>符合直觉</span></p><p class=\"sub\">一门国产系统级编程语言。从原生可执行文件到 WebAssembly， 从 BEAM 虚拟机到裸机内核 —— 一门语言，贯通整个系统栈。</p><div class=\"hero-actions\"><a class=\"button primary\" href=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" alt=\"Emo logo\" width=\"72\" height=\"72\"><h2>Emo</h2><p class=\"tagline\"><span>语法简洁</span><i>·</i><span>显式定义</span><i>·</i><span>符合直觉</span></p><p class=\"sub\">一门国产系统级编程语言。从原生可执行文件到 WebAssembly， 从 BEAM 虚拟机到裸机内核 —— 一门语言，贯通整个系统栈。</p><p class=\"release-note\"><span class=\"pill\"><span class=\"dot\"></span>当前版本：")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var4 templ.SafeURL
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/quickstart"))
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(siteVersion)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 200, Col: 67}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 200, Col: 79}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\">快速上手</a> <a class=\"button\" href=\"https://github.com/emo-lang/emo\" target=\"_blank\" rel=\"noreferrer\">GitHub 仓库</a></div><p class=\"release-note\"><span class=\"pill\"><span class=\"dot\"></span>当前版本：")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(siteVersion)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 204, Col: 79}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</span> <span class=\"\">2026 (冬至)</span> <span class=\"soft\">「立冬，十月节。冬，终也，万物收藏也。」</span></p></div><div class=\"hero-code\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</span> <span class=\"\">2026 (冬至)</span> <span class=\"soft\">「立冬，十月节。冬，终也，万物收藏也。」</span></p></div><div class=\"hero-code\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -129,7 +116,7 @@ func Index(siteVersion string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div></section><section class=\"section\" id=\"targets\"><div class=\"container\"><p class=\"eyebrow\">编译目标</p><div class=\"section-head\"><h2>一门语言，五个目标</h2><p>同一份 Emo 代码，可以编译到系统栈的每一层 —— 写应用、写服务、写前端，一直写到操作系统内核。</p></div><div class=\"targets\"><span class=\"target-chip\"><span class=\"dot\"></span>原生可执行文件 <small>单文件，免安装</small></span> <span class=\"target-chip\"><span class=\"dot\"></span>WebAssembly <small>浏览器与 WASI</small></span> <span class=\"target-chip\"><span class=\"dot\"></span>TypeScript <small>编译到其他语言</small></span> <span class=\"target-chip\"><span class=\"dot\"></span>BEAM 虚拟机 <small>Erlang 生态</small></span> <span class=\"target-chip\"><span class=\"dot\"></span>RISC-V 裸机<small>运行于 QEMU</small></span></div></div></section><section class=\"section\" id=\"highlights\"><div class=\"container\"><p class=\"eyebrow\">核心特色</p><div class=\"section-head\"><h2>为清晰而生</h2><p>Emo 汲取三十年开源编程语言的经验与教训，围绕三条原则设计：表达力强的语法、最少惊讶原则、多编译目标。</p></div><div class=\"feature-grid\"><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>明确的语法</h3><p>调用一定带括号，<code>return</code> 一定写出来，代码块只有一种形状。一切所见即所得，解析器与读者都不必猜测。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>渐进式类型</h3><p>运行时动态类型，编译期静态检查。函数签名必写类型，其余交给推断；类型信息还会反哺原生代码的性能。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>默认不可变</h3><p><code>const</code> / <code>var</code> 分层明确，类实例是值类型；长期可变状态只住在 <code>Box</code> 里，且永远不跨越进程边界。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>Actor 并发</h3><p><code>do</code> 起进程，<code>&lt;-</code> 发消息，<code>receive</code> 收信箱。崩溃隔离与监管内建，无共享内存原语。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>直接风格网络</h3><p>没有 <code>async</code>/<code>await</code>，没有函数染色。任何函数都能做 IO，调度器在 io_uring / kqueue / IOCP 之上切换进程。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>结构化模块</h3><p>目录树即模块树：没有 <code>import</code> / <code>export</code>，路径即引用，<code>internal/</code> 的可见性由编译器强制。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>自带包管理</h3><p><code>require</code> 引入依赖，精确版本 + MVS 解析，构建即安装；中心注册表支持私有部署。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>配置即代码</h3><p>Emo 就是自己的配置语言：受限 Profile 保证终止、密封、无副作用，不再需要第二种 Schema 语言。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>C 互操作</h3><p><code>foreign def</code> 一行声明即可链接 C 库；OCaml 5 实现，一流的 C FFI 直通原生后端。</p></div></div></div></section><section class=\"section\" id=\"concurrency\"><div class=\"container split\"><div><p class=\"eyebrow\">并发</p><h3>进程与消息传递，Actor 模型的嫡系</h3><p>Emo 的并发围绕进程与消息传递构建，直接映射 BEAM 进程； 原生后端则以 OCaml 5 effects 实现调度器 —— 与 Eio 同源的地基。</p><ul><li>消息传递是唯一核心原语，共享内存不在语义之内</li><li>尾调用有保证，递归就是收信循环的惯用形态</li><li>未处理的错误只杀死出错的进程，监管策略交给库</li></ul></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div></section><section class=\"section\" id=\"targets\"><div class=\"container\"><p class=\"eyebrow\">编译目标</p><div class=\"section-head\"><h2>一门语言，五个目标</h2><p>同一份 Emo 代码，可以编译到系统栈的每一层 —— 写应用、写服务、写前端，一直写到操作系统内核。</p></div><div class=\"targets\"><span class=\"target-chip\"><span class=\"dot\"></span>原生可执行文件 <small>单文件，免安装</small></span> <span class=\"target-chip\"><span class=\"dot\"></span>WebAssembly <small>浏览器与 WASI</small></span> <span class=\"target-chip\"><span class=\"dot\"></span>TypeScript <small>编译到其他语言</small></span> <span class=\"target-chip\"><span class=\"dot\"></span>BEAM 虚拟机 <small>Erlang 生态</small></span> <span class=\"target-chip\"><span class=\"dot\"></span>RISC-V 裸机<small>运行于 QEMU</small></span></div></div></section><section class=\"section\" id=\"highlights\"><div class=\"container\"><p class=\"eyebrow\">核心特色</p><div class=\"section-head\"><h2>为清晰而生</h2><p>Emo 汲取三十年开源编程语言的经验与教训，围绕三条原则设计：表达力强的语法、最少惊讶原则、多编译目标。</p></div><div class=\"feature-grid\"><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>明确的语法</h3><p>调用一定带括号，<code>return</code> 一定写出来，代码块只有一种形状。一切所见即所得，解析器与读者都不必猜测。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>渐进式类型</h3><p>运行时动态类型，编译期静态检查。函数签名必写类型，其余交给推断；类型信息还会反哺原生代码的性能。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>默认不可变</h3><p><code>const</code> / <code>var</code> 分层明确，类实例是值类型；长期可变状态只住在 <code>Box</code> 里，且永远不跨越进程边界。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>Actor 并发</h3><p><code>do</code> 起进程，<code>&lt;-</code> 发消息，<code>receive</code> 收信箱。崩溃隔离与监管内建，无共享内存原语。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>直接风格网络</h3><p>没有 <code>async</code>/<code>await</code>，没有函数染色。任何函数都能做 IO，调度器在 io_uring / kqueue / IOCP 之上切换进程。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>结构化模块</h3><p>目录树即模块树：没有 <code>import</code> / <code>export</code>，路径即引用，<code>internal/</code> 的可见性由编译器强制。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>自带包管理</h3><p><code>require</code> 引入依赖，精确版本 + MVS 解析，构建即安装；中心注册表支持私有部署。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>配置即代码</h3><p>Emo 就是自己的配置语言：受限 Profile 保证终止、密封、无副作用，不再需要第二种 Schema 语言。</p></div><div class=\"feature-card\"><h3><span class=\"glyph\">◆</span>C 互操作</h3><p><code>foreign def</code> 一行声明即可链接 C 库；OCaml 5 实现，一流的 C FFI 直通原生后端。</p></div></div></div></section><section class=\"section\" id=\"concurrency\"><div class=\"container split\"><div><p class=\"eyebrow\">并发</p><h3>进程与消息传递，Actor 模型的嫡系</h3><p>Emo 的并发围绕进程与消息传递构建，直接映射 BEAM 进程； 原生后端则以 OCaml 5 effects 实现调度器 —— 与 Eio 同源的地基。</p><ul><li>消息传递是唯一核心原语，共享内存不在语义之内</li><li>尾调用有保证，递归就是收信循环的惯用形态</li><li>未处理的错误只杀死出错的进程，监管策略交给库</li></ul></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -137,7 +124,7 @@ func Index(siteVersion string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div></section><section class=\"section\" id=\"interfaces\"><div class=\"container split\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div></section><section class=\"section\" id=\"interfaces\"><div class=\"container split\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -145,7 +132,7 @@ func Index(siteVersion string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<div><p class=\"eyebrow\">抽象</p><h3>结构化接口，零成本多态</h3><p><code>interface</code> 声明一组方法签名，任何形状匹配的类都自动满足 —— 不需要 <code>implements</code>。接口属于调用方，实现方甚至不必知道接口存在。</p><ul><li>编译期校验形状，运行时鸭子分派，零开销</li><li>没有继承 —— 复用靠组合、鸭子类型与接口</li><li><code>g.is(Machine)</code> 为真后，<code>g</code> 自动收窄类型</li></ul></div></div></section><section class=\"section\" id=\"emoui\"><div class=\"container split\"><div><p class=\"eyebrow\">EmoUI <span class=\"badge\">规划中</span></p><h3>UI 就是普通的 Emo 代码</h3><p>EmoUI 是用 Emo 写的组件式 UI 框架：没有模板语言， 组件树就是带代码块的嵌套调用。Emo 的语法正是为它塑形。</p><ul><li>组件即函数，Props 由内置类型检查器把关</li><li>UI 事件即进程消息 —— 天然长成 Elm 架构</li><li>响应式原语显式可预测，编译器把可静态确定的更新编译成定向刷新</li></ul></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div><p class=\"eyebrow\">抽象</p><h3>结构化接口，零成本多态</h3><p><code>interface</code> 声明一组方法签名，任何形状匹配的类都自动满足 —— 不需要 <code>implements</code>。接口属于调用方，实现方甚至不必知道接口存在。</p><ul><li>编译期校验形状，运行时鸭子分派，零开销</li><li>没有继承 —— 复用靠组合、鸭子类型与接口</li><li><code>g.is(Machine)</code> 为真后，<code>g</code> 自动收窄类型</li></ul></div></div></section><section class=\"section\" id=\"emoui\"><div class=\"container split\"><div><p class=\"eyebrow\">EmoUI <span class=\"badge\">规划中</span></p><h3>UI 就是普通的 Emo 代码</h3><p>EmoUI 是用 Emo 写的组件式 UI 框架：没有模板语言， 组件树就是带代码块的嵌套调用。Emo 的语法正是为它塑形。</p><ul><li>组件即函数，Props 由内置类型检查器把关</li><li>UI 事件即进程消息 —— 天然长成 Elm 架构</li><li>响应式原语显式可预测，编译器把可静态确定的更新编译成定向刷新</li></ul></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -153,7 +140,7 @@ func Index(siteVersion string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div></section><section class=\"section\" id=\"emoos\"><div class=\"container split\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div></section><section class=\"section\" id=\"emoos\"><div class=\"container split\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -161,33 +148,33 @@ func Index(siteVersion string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div><p class=\"eyebrow\">EmoOS <span class=\"badge\">规划中</span></p><h3>一门能写内核的语言</h3><p>Emo 的边界一直延伸到操作系统层：<code>RISC-V</code> 编译目标面向裸机， 无 OS、无 libc、无默认运行时，直接产出 QEMU 可引导镜像。</p><ul><li>分层核心库：内核代码只用零依赖的 <code>core</code></li><li>内存原语显式命名 —— 危险的操作看起来就危险</li><li>GC、分配器、调度器可替换；内核编译到 RISC-V，Shell 与应用留在原生目标 —— 一门语言贯通系统两侧</li></ul></div></div></section><section class=\"section\" id=\"cta\"><div class=\"container cta-band\"><h2>现在就开始用 Emo</h2><p>开源、MIT 协议、由 OCaml 5 实现的参考编译器。读一遍语言漫游，十分钟看懂整门语言。</p><div class=\"hero-actions\"><a class=\"button primary\" href=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div><p class=\"eyebrow\">EmoOS <span class=\"badge\">规划中</span></p><h3>一门能写内核的语言</h3><p>Emo 的边界一直延伸到操作系统层：<code>RISC-V</code> 编译目标面向裸机， 无 OS、无 libc、无默认运行时，直接产出 QEMU 可引导镜像。</p><ul><li>分层核心库：内核代码只用零依赖的 <code>core</code></li><li>内存原语显式命名 —— 危险的操作看起来就危险</li><li>GC、分配器、调度器可替换；内核编译到 RISC-V，Shell 与应用留在原生目标 —— 一门语言贯通系统两侧</li></ul></div></div></section><section class=\"section\" id=\"cta\"><div class=\"container cta-band\"><h2>现在就开始用 Emo</h2><p>开源、MIT 协议、由 OCaml 5 实现的参考编译器。读一遍语言漫游，十分钟看懂整门语言。</p><div class=\"hero-actions\"><a class=\"button primary\" href=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var5 templ.SafeURL
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/features"))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 356, Col: 64}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\">语言特性</a> <a class=\"button\" href=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var6 templ.SafeURL
-			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/features"))
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/tour"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 360, Col: 64}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 357, Col: 52}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\">语言特性</a> <a class=\"button\" href=\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var7 templ.SafeURL
-			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/tour"))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 361, Col: 52}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "\">语言漫游</a> <a class=\"button\" href=\"https://github.com/emo-lang/emo\" target=\"_blank\" rel=\"noreferrer\">GitHub 仓库</a></div></div></section></main>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\">语言漫游</a> <a class=\"button\" href=\"https://github.com/emo-lang/emo\" target=\"_blank\" rel=\"noreferrer\">GitHub 仓库</a></div></div></section></main>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
