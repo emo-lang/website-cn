@@ -20,3 +20,6 @@ generate-watch:
 # Compile the landing-page Emo samples to WebAssembly for the in-browser runner.
 demo-wasm:
   ./scripts/build-demo-wasm.sh
+
+push:
+  git push origin develop && git push atom develop
