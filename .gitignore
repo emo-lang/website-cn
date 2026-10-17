@@ -10,6 +10,9 @@
 /data/storage
 !/data/storage/.keep
 
+/static/*
+!/static/.keep
+
 *.sock
 
 # Emo build cache for the landing-page samples (see scripts/build-demo-wasm.sh)
