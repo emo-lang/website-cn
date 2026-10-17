@@ -5,73 +5,6 @@ import (
 	"github.com/emo-lang/website-cn/app/views/layouts"
 )
 
-const heroSample = `// 这是一行注释
-class User {
-  def init(age Int64) {
-    self.age = age
-  }
-
-  def adult?() Bool {
-    return self.age >= 18
-  }
-}
-
-const fuxi = User.new(age: 128)
-
-emo Company {
-	def can_hire?(u User) Bool {
-		return u.adult?()
-	}
-}
-
-const can_hire = Company.can_hire?(fuxi)
-var result = if can_hire { "能啊" } else { "肯定不行" }
-
-println("这人能要吗？${result}")
-`
-
-const concurrencySample = `// 三个进程, 一条消息链
-def feed(wh Pid, i Int64) Int64 {
-  if i > 3 {
-    wh <- "done"
-    return 0
-  }
-  wh <- (i, i)
-  return feed(wh, i + 1)
-}
-
-const rep = do reporter.run(0, self_pid())
-const wh = do warehouse.run(rep)
-feed(wh, 1)
-
-receive {
-  (who, handled) -> { println("处理了 ${handled} 个订单") }
-}`
-
-const interfaceSample = `// 接口属于调用方: 形状匹配即满足, 无需 implements
-interface Greeter {
-  def greet() String
-}
-
-class Machine {
-  def greet() String {
-    return "[beep] 你好"
-  }
-}
-
-class Friend {
-  def greet() String {
-    return "很高兴见到你"
-  }
-}
-
-def welcome(g Greeter) String {
-  if g.is(Machine) {
-    return "一台机器说: ${g.greet()}"
-  }
-  return "一位朋友说: ${g.greet()}"
-}`
-
 const uiSample = `// 没有模板语言 —— UI 就是普通的 Emo 代码
 page(title: "首页") {
   navbar() {
@@ -262,7 +195,7 @@ templ Index(siteVersion string) {
 						</p>
 				</div>
 				<div class="hero-code">
-					@emocode.Terminal("main.emo", heroSample)
+					@emocode.RunnableTerminal("main.emo", heroSample, layouts.PublicURL("demo/hero.wasm"))
 				</div>
 			</section>
 
@@ -346,13 +279,13 @@ templ Index(siteVersion string) {
 							<li>未处理的错误只杀死出错的进程，监管策略交给库</li>
 						</ul>
 					</div>
-					@emocode.Terminal("pipeline.emo", concurrencySample)
+					@emocode.RunnableTerminal("pipeline.emo", concurrencySample, layouts.PublicURL("demo/pipeline.wasm"))
 				</div>
 			</section>
 
 			<section class="section" id="interfaces">
 				<div class="container split">
-					@emocode.Terminal("greeter.emo", interfaceSample)
+					@emocode.RunnableTerminal("greeter.emo", interfaceSample, layouts.PublicURL("demo/greeter.wasm"))
 					<div>
 						<p class="eyebrow">抽象</p>
 						<h3>结构化接口，零成本多态</h3>

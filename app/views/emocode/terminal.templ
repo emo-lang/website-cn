@@ -1,7 +1,7 @@
 package emocode
 
-// Styles renders the shared CSS for Emo code terminals. Include it once per
-// page (the layout does this).
+// Styles renders the shared CSS and behaviour for Emo code terminals.
+// Include it once per page (the layout does this).
 templ Styles() {
 	<style>
 		.emo-terminal {
@@ -29,6 +29,12 @@ templ Styles() {
 			font-size: 0.78rem;
 			font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 		}
+		.emo-actions {
+			margin-left: auto;
+			display: inline-flex;
+			align-items: center;
+			gap: 0.35rem;
+		}
 		.emo-code {
 			margin: 0;
 			padding: 1.2rem 1.4rem;
@@ -48,8 +54,60 @@ templ Styles() {
 		.emo-code .tok-f { color: #79c0ff; }              /* call sites */
 		.emo-code .tok-c { color: #7a7a84; font-style: italic; } /* comments */
 		.emo-code .tok-o { color: #ff7b93; }              /* <- and -> */
-		.emo-copy {
-			margin-left: auto;
+		.emo-run-overlay {
+			position: fixed;
+			inset: 0;
+			z-index: 1000;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 1.25rem;
+			background: rgba(0, 0, 0, 0.68);
+		}
+		.emo-run-overlay[hidden] { display: none; }
+		.emo-run-dialog {
+			width: min(42rem, 100%);
+			max-height: 80vh;
+			display: flex;
+			flex-direction: column;
+			overflow: hidden;
+			border: 1px solid #3a3a3f;
+			border-radius: 0.9rem;
+			background: #161618;
+			box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.45);
+		}
+		.emo-run-dialog-bar {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+			padding: 0.75rem 1rem 0.75rem 1.25rem;
+			border-bottom: 1px solid #2c2c30;
+			background: #222225;
+			color: #e8e8ec;
+			font-size: 0.85rem;
+		}
+		.emo-run-dialog-title {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		.emo-run-close { margin-left: auto; }
+		.emo-output {
+			flex: 1 1 auto;
+			min-height: 5rem;
+			margin: 0;
+			padding: 1rem 1.4rem 1.1rem;
+			background: #161618;
+			font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+			font-size: 0.8rem;
+			line-height: 1.6;
+			color: #a9dc76;
+			white-space: pre-wrap;
+			overflow-wrap: anywhere;
+			overflow: auto;
+		}
+		.emo-output.emo-output-error { color: #ff7b93; }
+		.emo-btn {
 			display: inline-flex;
 			align-items: center;
 			gap: 0.3rem;
@@ -63,9 +121,12 @@ templ Styles() {
 			cursor: pointer;
 			transition: color 0.15s ease, border-color 0.15s ease;
 		}
-		.emo-copy:hover { color: #e8e8ec; border-color: #52525a; }
-		.emo-copy:focus-visible { outline: 2px solid #7678ED; outline-offset: 2px; }
+		.emo-btn:hover { color: #e8e8ec; border-color: #52525a; }
+		.emo-btn:focus-visible { outline: 2px solid #7678ED; outline-offset: 2px; }
 		.emo-copy.copied { color: #28c840; border-color: #28c840; }
+		.emo-run { color: #a9dc76; border-color: #3f5038; }
+		.emo-run:hover { color: #c6f28a; border-color: #5d7a4d; }
+		.emo-run:disabled { color: #6f6f78; border-color: #3a3a3f; cursor: default; }
 	</style>
 	<script>
 		(function () {
@@ -113,24 +174,249 @@ templ Styles() {
 				}
 			});
 		})();
+
+		// The in-browser WebAssembly runner. The host contract is fixed by
+		// the wasm backend (src/emo_codegen/emo_wasm.ml): a module imports
+		// emo.println/abort/float_str, exports `mem` and `main`, and is
+		// WasmGC — so the browser needs the GC proposal (Chrome 119+,
+		// Firefox 120+, Safari 18.2+), which the probe below detects.
+		(function () {
+			if (window.__emoRunnerInit) return;
+			window.__emoRunnerInit = true;
+
+			// (module (type (struct))) — a module only WasmGC engines accept.
+			var gcProbe = new Uint8Array([
+				0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00,
+				0x01, 0x03, 0x01, 0x5f, 0x00
+			]);
+			var gcSupported = false;
+			try { gcSupported = WebAssembly.validate(gcProbe); } catch (err) {}
+
+			var modules = {};
+
+			// OCaml's %g — the rule the interpreter's emo_to_string follows,
+			// and the one the wasm host must reproduce for Float64 output:
+			// six significant digits, exponent form below 1e-4 or at 1e6
+			// and above, exponent spelled with a sign and two digits.
+			function g6(x) {
+				var exp = Math.floor(Math.log10(Math.abs(x)));
+				if (exp < -4 || exp >= 6) {
+					var r = Number((x / Math.pow(10, exp)).toFixed(5));
+					var e = exp;
+					if (Math.abs(r) >= 10) {
+						r = Number((r / 10).toFixed(5));
+						e += 1;
+					}
+					var ms = r.toFixed(5);
+					if (ms.indexOf('.') >= 0) ms = ms.replace(/0+$/, '').replace(/\.$/, '');
+					return ms + 'e' + (e < 0 ? '-' : '+') + String(Math.abs(e)).padStart(2, '0');
+				}
+				var decimals = Math.max(0, 5 - exp);
+				var s = x.toFixed(decimals);
+				if (s.indexOf('.') >= 0) s = s.replace(/0+$/, '').replace(/\.$/, '');
+				return s;
+			}
+
+			function floatStr(f) {
+				return (Number.isInteger(f) && Math.abs(f) < 1e16) ? f.toFixed(1) : g6(f);
+			}
+
+			function compile(url) {
+				if (!modules[url]) {
+					modules[url] = fetch(url).then(function (res) {
+						if (!res.ok) throw new Error('无法加载 ' + url + '（HTTP ' + res.status + '）');
+						return res.arrayBuffer();
+					}).then(function (buf) {
+						return WebAssembly.compile(buf);
+					});
+				}
+				return modules[url];
+			}
+
+			var overlay = null;
+			var overlayDialog = null;
+			var overlayTitle = null;
+			var overlayOut = null;
+			var overlayClose = null;
+			var previousOverflow = '';
+			var lastRunButton = null;
+
+			function closeOverlay() {
+				if (!overlay || overlay.hidden) return;
+				overlay.hidden = true;
+				document.body.style.overflow = previousOverflow;
+				if (lastRunButton) lastRunButton.focus();
+			}
+
+			function openOverlay(btn, terminal) {
+				if (!overlay) {
+					overlay = document.createElement('div');
+					overlay.className = 'emo-run-overlay';
+					overlay.hidden = true;
+
+					overlayDialog = document.createElement('div');
+					overlayDialog.className = 'emo-run-dialog';
+					overlayDialog.setAttribute('role', 'dialog');
+					overlayDialog.setAttribute('aria-modal', 'true');
+					overlayDialog.setAttribute('aria-labelledby', 'emo-run-dialog-title');
+
+					var bar = document.createElement('div');
+					bar.className = 'emo-run-dialog-bar';
+					overlayTitle = document.createElement('span');
+					overlayTitle.className = 'emo-run-dialog-title';
+					overlayTitle.id = 'emo-run-dialog-title';
+					overlayClose = document.createElement('button');
+					overlayClose.className = 'emo-btn emo-run-close';
+					overlayClose.type = 'button';
+					overlayClose.textContent = '关闭';
+					overlayClose.setAttribute('aria-label', '关闭运行结果');
+					overlayClose.addEventListener('click', closeOverlay);
+					bar.appendChild(overlayTitle);
+					bar.appendChild(overlayClose);
+					overlayDialog.appendChild(bar);
+					overlay.appendChild(overlayDialog);
+					document.body.appendChild(overlay);
+
+					overlay.addEventListener('click', function (e) {
+						if (e.target === overlay) closeOverlay();
+					});
+					document.addEventListener('keydown', function (e) {
+						if (e.key === 'Escape' && !overlay.hidden) {
+							e.preventDefault();
+							closeOverlay();
+						}
+					});
+				}
+
+				lastRunButton = btn;
+				var terminalTitle = terminal.querySelector('.emo-terminal-title');
+				overlayTitle.textContent = '运行结果' + (terminalTitle ? ' · ' + terminalTitle.textContent : '');
+
+				var out = document.createElement('pre');
+				out.className = 'emo-output';
+				out.setAttribute('aria-live', 'polite');
+				if (overlayOut) {
+					overlayDialog.replaceChild(out, overlayOut);
+				} else {
+					overlayDialog.appendChild(out);
+				}
+				overlayOut = out;
+
+				if (overlay.hidden) previousOverflow = document.body.style.overflow;
+				overlay.hidden = false;
+				document.body.style.overflow = 'hidden';
+				overlayClose.focus();
+				return out;
+			}
+
+			function setBusy(btn, busy) {
+				btn.disabled = busy;
+				var label = btn.querySelector('.emo-run-label');
+				if (label) label.textContent = busy ? '运行中' : '运行';
+			}
+
+			function run(btn, terminal) {
+				var out = openOverlay(btn, terminal);
+				var dec = new TextDecoder();
+				var mem = null;
+				var started = false;
+
+				out.classList.remove('emo-output-error');
+				out.textContent = '运行中…';
+				setBusy(btn, true);
+
+				compile(btn.getAttribute('data-emo-wasm')).then(function (module) {
+					return WebAssembly.instantiate(module, { emo: {
+						println: function (ptr, len) {
+							out.textContent += dec.decode(new Uint8Array(mem.buffer, ptr, len)) + '\n';
+						},
+						abort: function (ptr, len) {
+							throw new Error(dec.decode(new Uint8Array(mem.buffer, ptr, len)));
+						},
+						float_str: function (f) {
+							var bytes = new TextEncoder().encode(floatStr(f));
+							new Uint8Array(mem.buffer, 60000, bytes.length).set(bytes);
+							return [60000, bytes.length];
+						},
+					}});
+				}).then(function (instance) {
+					mem = instance.exports.mem;
+					started = true;
+					out.textContent = '';
+					instance.exports.main();
+					if (out.textContent === '') out.textContent = '（程序正常结束，没有输出）';
+				}).catch(function (err) {
+					out.classList.add('emo-output-error');
+					if (!started) out.textContent = '';
+					out.textContent += (err && err.message) ? err.message : String(err);
+				}).then(function () {
+					setBusy(btn, false);
+				});
+			}
+
+			function init() {
+				var buttons = document.querySelectorAll('.emo-run');
+				if (gcSupported) return;
+				for (var i = 0; i < buttons.length; i++) {
+					buttons[i].disabled = true;
+					buttons[i].title = '当前浏览器不支持 WebAssembly GC，请升级浏览器';
+					var label = buttons[i].querySelector('.emo-run-label');
+					if (label) label.textContent = '不支持';
+				}
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', init);
+			} else {
+				init();
+			}
+
+			document.addEventListener('click', function (e) {
+				var btn = e.target && e.target.closest ? e.target.closest('.emo-run') : null;
+				if (!btn || btn.disabled) return;
+				var terminal = btn.closest('.emo-terminal');
+				if (!terminal) return;
+				run(btn, terminal);
+			});
+		})();
 	</script>
 }
 
 // Terminal renders src as a highlighted Emo snippet inside a terminal frame.
 templ Terminal(title string, src string) {
+	@terminalFrame(title, src, "")
+}
+
+// RunnableTerminal renders src like Terminal, plus a Run button that fetches
+// the precompiled WebAssembly at wasmURL and executes it in the browser.
+templ RunnableTerminal(title string, src string, wasmURL string) {
+	@terminalFrame(title, src, wasmURL)
+}
+
+templ terminalFrame(title string, src string, wasmURL string) {
 	<div class="emo-terminal">
 		<div class="emo-terminal-bar">
 			<span class="emo-dot red"></span>
 			<span class="emo-dot yellow"></span>
 			<span class="emo-dot green"></span>
 			<span class="emo-terminal-title">{ title }</span>
-			<button class="emo-copy" type="button" title="复制代码" aria-label="复制代码">
-				<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-					<rect x="5.5" y="5.5" width="8" height="8" rx="1.5"></rect>
-					<path d="M3.5 10.5h-1A1 1 0 0 1 1.5 9.5v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1"></path>
-				</svg>
-				<span class="emo-copy-label">复制</span>
-			</button>
+			<div class="emo-actions">
+				if wasmURL != "" {
+					<button class="emo-btn emo-run" type="button" data-emo-wasm={ wasmURL } title="在浏览器中运行" aria-label="在浏览器中运行">
+						<svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+							<path d="M5 3.5l7 4.5-7 4.5z"></path>
+						</svg>
+						<span class="emo-run-label">运行</span>
+					</button>
+				}
+				<button class="emo-btn emo-copy" type="button" title="复制代码" aria-label="复制代码">
+					<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+						<rect x="5.5" y="5.5" width="8" height="8" rx="1.5"></rect>
+						<path d="M3.5 10.5h-1A1 1 0 0 1 1.5 9.5v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1"></path>
+					</svg>
+					<span class="emo-copy-label">复制</span>
+				</button>
+			</div>
 		</div>
 		<pre class="emo-code"><code>@templ.Raw(Highlight(src))</code></pre>
 	</div>

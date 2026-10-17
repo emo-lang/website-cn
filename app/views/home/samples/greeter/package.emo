@@ -1,0 +1,6 @@
+package {
+  name = "demo/greeter"
+  version = "0.1.0"
+  targets = ["wasm"]
+  deps {}
+}

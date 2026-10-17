@@ -1,0 +1,23 @@
+// 这是一行注释
+class User {
+  def init(age Int64) {
+    self.age = age
+  }
+
+  def adult?() Bool {
+    return self.age >= 18
+  }
+}
+
+const fuxi = User.new(age: 128)
+
+emo Company {
+	def can_hire?(u User) Bool {
+		return u.adult?()
+	}
+}
+
+const can_hire = Company.can_hire?(fuxi)
+var result = if can_hire { "能啊" } else { "肯定不行" }
+
+println("这人能要吗？${result}")

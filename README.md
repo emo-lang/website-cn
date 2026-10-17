@@ -18,7 +18,8 @@ Supporting pieces:
 
 - `app/views/layouts` — page shell (`Base`), brand design system (`SiteStyles`), shared `Nav`/`Footer`
 - `app/views/emocode` — a small Emo syntax highlighter plus the terminal-style code block used across the pages
-- `app/assets/public` — committed static files (logo), served at `/public/` via `assets.PublicHandler`
+- `app/views/home/samples` — the landing page's runnable Emo programs, one project per sample
+- `app/assets/public` — committed static files (logo, demo WebAssembly), served at `/public/` via `assets.PublicHandler`
 
 The brand palette matches the English site: Yellow `#EFBF6B` · Dark `#202022` ·
 Grey `#F9FAFC` · Blue `#7678ED`, with light/dark support through
@@ -45,6 +46,27 @@ cryptic, so keep these in mind when editing views):
   (`&#123;`, `&#125;`) — they are expression delimiters in templ.
 - Newlines inside text are collapsed; use `<br/>` for pre-formatted command
   blocks.
+
+## Runnable samples
+
+The landing page executes its code samples in the browser. Each runnable
+sample is a real Emo project under `app/views/home/samples/<name>/`; it is
+compiled ahead of time with `emo build --target wasm` and the `.wasm` is
+committed under `app/assets/public/demo/<name>.wasm`. The page fetches that
+module, and the runner in `app/views/emocode` instantiates it and streams the
+program's `println` output into a modal result overlay.
+
+The browser needs the WasmGC proposal (Chrome/Edge 119+, Firefox 120+,
+Safari 18.2+). The runner feature-detects it and disables the Run button with
+a notice elsewhere. A plain `go build` needs no Emo toolchain — the `.wasm`
+files are committed.
+
+After editing a sample, recompile the committed modules:
+
+```bash
+just demo-wasm                  # or: ./scripts/build-demo-wasm.sh
+EMO_BIN=/path/to/emo just demo-wasm   # use a specific emo binary
+```
 
 ## Static export
 

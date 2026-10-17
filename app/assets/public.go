@@ -55,6 +55,8 @@ func publicContentType(name string) string {
 		return "image/webp"
 	case ".ico":
 		return "image/x-icon"
+	case ".wasm":
+		return "application/wasm"
 	default:
 		return "application/octet-stream"
 	}

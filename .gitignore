@@ -12,4 +12,7 @@
 
 *.sock
 
+# Emo build cache for the landing-page samples (see scripts/build-demo-wasm.sh)
+app/views/home/samples/*/.emo-build
+
 schema.json
