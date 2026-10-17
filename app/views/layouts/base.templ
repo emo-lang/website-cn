@@ -29,6 +29,16 @@ templ Base(title string, description ...string) {
 				<meta name="theme-color" content="#202022"/>
 			}
 			@SiteStyles()
+			<script>
+				(function () {
+					try {
+						var theme = localStorage.getItem('emo-theme');
+						if (theme === 'light' || theme === 'dark') {
+							document.documentElement.setAttribute('data-theme', theme);
+						}
+					} catch (err) {}
+				})();
+			</script>
 			@emocode.Styles()
 			@assets.Stylesheet()
 			if utils.AppConfig().IsLocal {

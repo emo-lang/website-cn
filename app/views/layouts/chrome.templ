@@ -16,10 +16,39 @@ templ Nav(active string) {
 				<a href={ href("/features") } class={ templ.KV("active", active == "features") }>语言特性</a>
 				<a href={ href("/tour") } class={ templ.KV("active", active == "tour") }>语言漫游</a>
 				<a href={ href("/quickstart") } class={ templ.KV("active", active == "quickstart") }>快速上手</a>
-				<a class="button small primary" href="https://github.com/emo-lang/emo" target="_blank" rel="noreferrer">GitHub</a>
+				<div class="nav-actions">
+					<button class="theme-toggle" type="button" aria-label="切换浅色/深色主题" title="切换浅色/深色主题">
+						<svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+						</svg>
+						<svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<circle cx="12" cy="12" r="5"></circle>
+							<path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+						</svg>
+					</button>
+					<a class="button small primary" href="https://github.com/emo-lang/emo" target="_blank" rel="noreferrer">GitHub</a>
+				</div>
 			</nav>
 		</div>
 	</header>
+	<script>
+		(function () {
+			if (window.__emoThemeToggle) return;
+			window.__emoThemeToggle = true;
+			document.addEventListener('click', function (e) {
+				var btn = e.target && e.target.closest ? e.target.closest('.theme-toggle') : null;
+				if (!btn) return;
+				var root = document.documentElement;
+				var current = root.getAttribute('data-theme');
+				if (!current) {
+					current = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+				}
+				var next = current === 'dark' ? 'light' : 'dark';
+				root.setAttribute('data-theme', next);
+				try { localStorage.setItem('emo-theme', next); } catch (err) {}
+			});
+		})();
+	</script>
 }
 
 // Footer renders the shared site footer.
