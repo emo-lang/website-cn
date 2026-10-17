@@ -5,6 +5,7 @@ package emocode
 templ Styles() {
 	<style>
 		.emo-terminal {
+			position: relative;
 			border: 1px solid var(--border);
 			border-radius: 0.9rem;
 			overflow: hidden;
@@ -47,6 +48,7 @@ templ Styles() {
 			white-space: pre;
 		}
 		.emo-code code { font-family: inherit; font-size: inherit; background: none; border-radius: 0; padding: 0; }
+		.emo-terminal-runnable .emo-code { padding-bottom: 3.2rem; }
 		.emo-code .tok-k { color: #9ea0f5; }              /* keywords */
 		.emo-code .tok-t { color: #efbf6b; }              /* types */
 		.emo-code .tok-s { color: #a9dc76; }              /* strings */
@@ -127,6 +129,17 @@ templ Styles() {
 		.emo-run { color: #a9dc76; border-color: #3f5038; }
 		.emo-run:hover { color: #c6f28a; border-color: #5d7a4d; }
 		.emo-run:disabled { color: #6f6f78; border-color: #3a3a3f; cursor: default; }
+		.emo-run-corner {
+			position: absolute;
+			right: 0.8rem;
+			bottom: 0.8rem;
+			z-index: 1;
+			padding: 0.36rem 0.72rem;
+			background: #222225;
+			box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.4);
+		}
+		.emo-run-corner:hover { background: #2c2c30; }
+		.emo-run-corner:disabled { background: #222225; }
 	</style>
 	<script>
 		(function () {
@@ -309,10 +322,13 @@ templ Styles() {
 				return out;
 			}
 
-			function setBusy(btn, busy) {
-				btn.disabled = busy;
-				var label = btn.querySelector('.emo-run-label');
-				if (label) label.textContent = busy ? '运行中' : '运行';
+			function setBusy(terminal, busy) {
+				var buttons = terminal.querySelectorAll('.emo-run');
+				for (var i = 0; i < buttons.length; i++) {
+					buttons[i].disabled = busy;
+					var label = buttons[i].querySelector('.emo-run-label');
+					if (label) label.textContent = busy ? '运行中' : '运行';
+				}
 			}
 
 			function run(btn, terminal) {
@@ -323,7 +339,7 @@ templ Styles() {
 
 				out.classList.remove('emo-output-error');
 				out.textContent = '运行中…';
-				setBusy(btn, true);
+				setBusy(terminal, true);
 
 				compile(btn.getAttribute('data-emo-wasm')).then(function (module) {
 					return WebAssembly.instantiate(module, { emo: {
@@ -350,7 +366,7 @@ templ Styles() {
 					if (!started) out.textContent = '';
 					out.textContent += (err && err.message) ? err.message : String(err);
 				}).then(function () {
-					setBusy(btn, false);
+					setBusy(terminal, false);
 				});
 			}
 
@@ -393,8 +409,17 @@ templ RunnableTerminal(title string, src string, wasmURL string) {
 	@terminalFrame(title, src, wasmURL)
 }
 
+templ runButton(wasmURL string, corner bool) {
+	<button class={ "emo-btn", "emo-run", templ.KV("emo-run-corner", corner) } type="button" data-emo-wasm={ wasmURL } title="在浏览器中运行" aria-label="在浏览器中运行">
+		<svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+			<path d="M5 3.5l7 4.5-7 4.5z"></path>
+		</svg>
+		<span class="emo-run-label">运行</span>
+	</button>
+}
+
 templ terminalFrame(title string, src string, wasmURL string) {
-	<div class="emo-terminal">
+	<div class={ "emo-terminal", templ.KV("emo-terminal-runnable", wasmURL != "") }>
 		<div class="emo-terminal-bar">
 			<span class="emo-dot red"></span>
 			<span class="emo-dot yellow"></span>
@@ -402,12 +427,7 @@ templ terminalFrame(title string, src string, wasmURL string) {
 			<span class="emo-terminal-title">{ title }</span>
 			<div class="emo-actions">
 				if wasmURL != "" {
-					<button class="emo-btn emo-run" type="button" data-emo-wasm={ wasmURL } title="在浏览器中运行" aria-label="在浏览器中运行">
-						<svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-							<path d="M5 3.5l7 4.5-7 4.5z"></path>
-						</svg>
-						<span class="emo-run-label">运行</span>
-					</button>
+					@runButton(wasmURL, false)
 				}
 				<button class="emo-btn emo-copy" type="button" title="复制代码" aria-label="复制代码">
 					<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -419,5 +439,8 @@ templ terminalFrame(title string, src string, wasmURL string) {
 			</div>
 		</div>
 		<pre class="emo-code"><code>@templ.Raw(Highlight(src))</code></pre>
+		if wasmURL != "" {
+			@runButton(wasmURL, true)
+		}
 	</div>
 }
