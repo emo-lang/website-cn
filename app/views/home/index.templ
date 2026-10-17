@@ -46,7 +46,7 @@ templ Index(siteVersion string) {
 				text-align: center;
 			}
 			.hero-question .question {
-				margin: 0;
+				margin: -6.4rem 0px 0px 0px;
 				font-size: clamp(2.6rem, 9vw, 6.5rem);
 				font-weight: 800;
 				line-height: 1.15;
@@ -94,7 +94,12 @@ templ Index(siteVersion string) {
 				gap: 6rem;
 				max-width: 80rem;
 				margin: 0 auto;
-				padding: 4.5rem 1.5rem 5.5rem;
+				padding: 3rem 1.5rem;
+			}
+			@media (min-width: 960px) {
+				/* The intro is the second screen: when anchored to, it must fit the viewport whole,
+				   including the release note pinned to the bottom of the copy column. */
+				.hero { min-height: calc(100svh - 5rem); }
 			}
 			@media (max-width: 959px) {
 				.hero { grid-template-columns: minmax(0, 1fr); gap: 2.5rem; padding: 3.5rem 1.5rem; }
@@ -139,6 +144,9 @@ templ Index(siteVersion string) {
 			.hero-actions { margin-top: 2.25rem; display: flex; gap: 1.25rem; flex-wrap: wrap; }
 			.hero-code { width: 36rem; max-width: 100%; margin-left: auto; }
 			.hero-code .emo-code { max-height: 34rem; overflow-y: auto; scrollbar-width: thin; }
+			@media (min-width: 960px) {
+				.hero-code .emo-code { max-height: min(34rem, calc(100svh - 14rem)); }
+			}
 
 			.targets { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
 			.target-chip {
