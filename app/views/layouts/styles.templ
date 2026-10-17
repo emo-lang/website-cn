@@ -124,6 +124,9 @@ templ SiteStyles() {
 		.button:hover { text-decoration: none; border-color: var(--muted); transform: translateY(-1px); }
 		.button.primary { /*background: var(--brand);*/ border-color: var(--brand); color: var(--brand-ink); }
 		.button.primary:hover { border-color: #d9a94f; }
+		@media (prefers-color-scheme: dark) {
+			.button.primary { color: var(--brand); }
+		}
 		.button.small { padding: 0.3rem 0.8rem; font-size: 0.85rem; box-shadow: none; }
 
 		/* --------------------------------------------------------- layout -- */
