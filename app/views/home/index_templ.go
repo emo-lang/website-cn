@@ -108,7 +108,7 @@ func Index(siteVersion string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</span> <span class=\"\">2026 (冬至)</span> <span class=\"soft\">「立冬，十月节。冬，终也，万物收藏也。」</span></p></div><div class=\"hero-code\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</span> <span class=\"\">2026 (重阳)</span> <span class=\"soft\">「东篱把酒黄昏后，有暗香盈袖。」</span></p></div><div class=\"hero-code\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
