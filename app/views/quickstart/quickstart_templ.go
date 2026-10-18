@@ -20,7 +20,7 @@ println("你好, ${who}")`
 const packageSample = `package {
   name = "acme/hello"
   version = "0.1.0"
-  targets = ["native", "wasm"]
+  targets = ["c", "wasm"]
 
   deps {
     json = "2.3.1"

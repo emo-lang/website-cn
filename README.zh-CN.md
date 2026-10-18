@@ -9,7 +9,7 @@
 
 | 路由 | 视图 | 内容 |
 |---|---|---|
-| `/` | `app/views/home` | 落地页:Hero、五大编译目标、特性网格、并发 / 接口 / EmoUI / EmoOS 板块 |
+| `/` | `app/views/home` | 落地页:Hero、七大编译目标、特性网格、并发 / 接口 / EmoUI / EmoOS 板块 |
 | `/features` | `app/views/features` | 逐节讲解语言的设计决定 |
 | `/tour` | `app/views/tour` | 八步语言漫游,每步配注释代码 |
 | `/quickstart` | `app/views/quickstart` | 构建编译器、第一个程序、原生构建、包管理、示例 |

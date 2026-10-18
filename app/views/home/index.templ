@@ -34,7 +34,7 @@ def kernel_main() {
 }`
 
 templ Index(siteVersion string) {
-	@layouts.Base("Emo — 语法简洁 · 显式定义 · 符合直觉的国产系统级编程语言", "Emo 是一门国产通用系统级编程语言：渐进式类型、Actor 并发、直接风格网络，可编译到原生可执行文件、WebAssembly、TypeScript、BEAM 虚拟机与裸机。") {
+	@layouts.Base("Emo — 语法简洁 · 显式定义 · 符合直觉的国产系统级编程语言", "Emo 是一门国产通用系统级编程语言：渐进式类型、Actor 并发、直接风格网络，可编译到 c、OCaml、TypeScript、浏览器、WebAssembly、BEAM 虚拟机与裸机共七个目标。") {
 		<style>
 			.hero-question {
 				position: relative;
@@ -156,6 +156,7 @@ templ Index(siteVersion string) {
 				font-size: 0.88rem; font-weight: 600; box-shadow: var(--shadow);
 			}
 			.target-chip .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--brand); }
+			.target-chip .name { font-family: var(--mono); font-weight: 700; }
 			.target-chip small { color: var(--muted); font-weight: 400; }
 
 			.cta-band { text-align: center; }
@@ -211,15 +212,17 @@ templ Index(siteVersion string) {
 				<div class="container">
 					<p class="eyebrow">编译目标</p>
 					<div class="section-head">
-						<h2>一门语言，五个目标</h2>
-						<p>同一份 Emo 代码，可以编译到系统栈的每一层 —— 写应用、写服务、写前端，一直写到操作系统内核。</p>
+						<h2>一门语言，七个目标</h2>
+						<p>同一份 Emo 代码，可以编译到系统栈的每一层 —— 写应用、写服务、写前端，一直写到操作系统内核。默认目标是 <code>c</code>，产出一个单文件原生可执行文件。</p>
 					</div>
 					<div class="targets">
-						<span class="target-chip"><span class="dot"></span>原生可执行文件 <small>单文件，免安装</small></span>
-						<span class="target-chip"><span class="dot"></span>WebAssembly <small>浏览器与 WASI</small></span>
-						<span class="target-chip"><span class="dot"></span>TypeScript <small>编译到其他语言</small></span>
-						<span class="target-chip"><span class="dot"></span>BEAM 虚拟机 <small>Erlang 生态</small></span>
-						<span class="target-chip"><span class="dot"></span>RISC-V 裸机<small>运行于 QEMU</small></span>
+						<span class="target-chip"><span class="dot"></span><span class="name">c</span> <small>默认目标 · 单文件原生可执行文件</small></span>
+						<span class="target-chip"><span class="dot"></span><span class="name">ocaml</span> <small>生成 OCaml，链接 OCaml 运行时</small></span>
+						<span class="target-chip"><span class="dot"></span><span class="name">typescript</span> <small>单个 .ts 文件，Node 直接运行</small></span>
+						<span class="target-chip"><span class="dot"></span><span class="name">browser</span> <small>浏览器 DOM，script 标签即运行</small></span>
+						<span class="target-chip"><span class="dot"></span><span class="name">wasm</span> <small>WasmGC 模块 + 可读 .wat</small></span>
+						<span class="target-chip"><span class="dot"></span><span class="name">beam</span> <small>Core Erlang 到 .beam，Erlang 生态</small></span>
+						<span class="target-chip"><span class="dot"></span><span class="name">riscv64</span> <small>裸机 ELF，QEMU 或真实硬件</small></span>
 					</div>
 				</div>
 			</section>

@@ -9,7 +9,7 @@ marketing pages.
 
 | Route | View | Content |
 |---|---|---|
-| `/` | `app/views/home` | Landing: hero, five compilation targets, feature grid, concurrency / interfaces / EmoUI / EmoOS sections |
+| `/` | `app/views/home` | Landing: hero, seven compilation targets, feature grid, concurrency / interfaces / EmoUI / EmoOS sections |
 | `/features` | `app/views/features` | The language's design decisions, section by section |
 | `/tour` | `app/views/tour` | The language tour in eight annotated steps |
 | `/quickstart` | `app/views/quickstart` | Build the compiler, first program, native builds, packages, examples |
