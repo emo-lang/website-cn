@@ -55,6 +55,7 @@ func TestIndexActionRendersHomePage(t *testing.T) {
 		"Actor 并发",
 		"EmoUI",
 		"EmoOS",
+		"鲁ICP备2023024575号-26",
 	)
 }
 
@@ -66,6 +67,7 @@ func TestFeaturesActionRendersFeaturesPage(t *testing.T) {
 		"<title>语言特性 — Emo</title>",
 		"目录树即模块树",
 		"渐进式",
+		"鲁ICP备2023024575号-26",
 	)
 }
 
@@ -77,6 +79,7 @@ func TestTourActionRendersTourPage(t *testing.T) {
 		"<title>语言漫游 — Emo</title>",
 		"绑定与字符串",
 		"进程：一条消息链",
+		"鲁ICP备2023024575号-26",
 	)
 }
 
@@ -88,5 +91,6 @@ func TestQuickstartActionRendersQuickstartPage(t *testing.T) {
 		"<title>快速上手 — Emo</title>",
 		"emo run hello.emo",
 		"emo build hello.emo -o hello",
+		"鲁ICP备2023024575号-26",
 	)
 }
