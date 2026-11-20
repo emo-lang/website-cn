@@ -18,9 +18,9 @@ templ Nav(active string) {
 			</button>
 			<nav class="nav-links" id="site-nav-links" aria-label="主导航">
 				<a href={ href("/") } class={ templ.KV("active", active == "home") }>首页</a>
-				<a href={ href("/features") } class={ templ.KV("active", active == "features") }>语言特性</a>
-				<a href={ href("/tour") } class={ templ.KV("active", active == "tour") }>语言漫游</a>
 				<a href={ href("/quickstart") } class={ templ.KV("active", active == "quickstart") }>快速上手</a>
+				<a href={ href("/tour") } class={ templ.KV("active", active == "tour") }>语言漫游</a>
+				<a href={ href("/features") } class={ templ.KV("active", active == "features") }>语言特性</a>
 				<div class="nav-actions">
 					<button class="theme-toggle" type="button" aria-label="切换浅色/深色主题" title="切换浅色/深色主题">
 						<svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

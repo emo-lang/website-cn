@@ -153,15 +153,15 @@ func Index(siteVersion string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 templ.SafeURL
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/features"))
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/quickstart"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 405, Col: 64}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 405, Col: 66}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\">语言特性</a> <a class=\"button\" href=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\">快速上手</a> <a class=\"button\" href=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -174,7 +174,20 @@ func Index(siteVersion string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\">语言漫游</a> <a class=\"button\" href=\"https://github.com/emo-lang/emo\" target=\"_blank\" rel=\"noreferrer\">GitHub 仓库</a></div></div></section><script>\n\t\t\t\t(function () {\n\t\t\t\t\tif (window.__emoInstallCopyInit) return;\n\t\t\t\t\twindow.__emoInstallCopyInit = true;\n\n\t\t\t\t\tfunction legacyCopy(text) {\n\t\t\t\t\t\tvar ta = document.createElement('textarea');\n\t\t\t\t\t\tta.value = text;\n\t\t\t\t\t\tta.setAttribute('readonly', '');\n\t\t\t\t\t\tta.style.position = 'fixed';\n\t\t\t\t\t\tta.style.opacity = '0';\n\t\t\t\t\t\tdocument.body.appendChild(ta);\n\t\t\t\t\t\tta.select();\n\t\t\t\t\t\ttry { document.execCommand('copy'); } catch (err) {}\n\t\t\t\t\t\tdocument.body.removeChild(ta);\n\t\t\t\t\t}\n\n\t\t\t\t\tdocument.addEventListener('click', function (e) {\n\t\t\t\t\t\tvar btn = e.target && e.target.closest ? e.target.closest('.install-copy') : null;\n\t\t\t\t\t\tif (!btn) return;\n\t\t\t\t\t\tvar text = btn.getAttribute('data-copy');\n\t\t\t\t\t\tif (!text) return;\n\t\t\t\t\t\tfunction done() {\n\t\t\t\t\t\t\tbtn.classList.add('copied');\n\t\t\t\t\t\t\tbtn.textContent = '已复制';\n\t\t\t\t\t\t\tclearTimeout(btn.__emoInstallTimer);\n\t\t\t\t\t\t\tbtn.__emoInstallTimer = setTimeout(function () {\n\t\t\t\t\t\t\t\tbtn.classList.remove('copied');\n\t\t\t\t\t\t\t\tbtn.textContent = '复制';\n\t\t\t\t\t\t\t}, 2000);\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif (navigator.clipboard && navigator.clipboard.writeText) {\n\t\t\t\t\t\t\tnavigator.clipboard.writeText(text).then(\n\t\t\t\t\t\t\t\tdone,\n\t\t\t\t\t\t\t\tfunction () { legacyCopy(text); done(); }\n\t\t\t\t\t\t\t);\n\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\tlegacyCopy(text);\n\t\t\t\t\t\t\tdone();\n\t\t\t\t\t\t}\n\t\t\t\t\t});\n\t\t\t\t})();\n\t\t\t</script></main>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\">语言漫游</a> <a class=\"button\" href=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var7 templ.SafeURL
+			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/features"))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `home/index.templ`, Line: 407, Col: 56}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "\">语言特性</a></div></div></section><script>\n\t\t\t\t(function () {\n\t\t\t\t\tif (window.__emoInstallCopyInit) return;\n\t\t\t\t\twindow.__emoInstallCopyInit = true;\n\n\t\t\t\t\tfunction legacyCopy(text) {\n\t\t\t\t\t\tvar ta = document.createElement('textarea');\n\t\t\t\t\t\tta.value = text;\n\t\t\t\t\t\tta.setAttribute('readonly', '');\n\t\t\t\t\t\tta.style.position = 'fixed';\n\t\t\t\t\t\tta.style.opacity = '0';\n\t\t\t\t\t\tdocument.body.appendChild(ta);\n\t\t\t\t\t\tta.select();\n\t\t\t\t\t\ttry { document.execCommand('copy'); } catch (err) {}\n\t\t\t\t\t\tdocument.body.removeChild(ta);\n\t\t\t\t\t}\n\n\t\t\t\t\tdocument.addEventListener('click', function (e) {\n\t\t\t\t\t\tvar btn = e.target && e.target.closest ? e.target.closest('.install-copy') : null;\n\t\t\t\t\t\tif (!btn) return;\n\t\t\t\t\t\tvar text = btn.getAttribute('data-copy');\n\t\t\t\t\t\tif (!text) return;\n\t\t\t\t\t\tfunction done() {\n\t\t\t\t\t\t\tbtn.classList.add('copied');\n\t\t\t\t\t\t\tbtn.textContent = '已复制';\n\t\t\t\t\t\t\tclearTimeout(btn.__emoInstallTimer);\n\t\t\t\t\t\t\tbtn.__emoInstallTimer = setTimeout(function () {\n\t\t\t\t\t\t\t\tbtn.classList.remove('copied');\n\t\t\t\t\t\t\t\tbtn.textContent = '复制';\n\t\t\t\t\t\t\t}, 2000);\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif (navigator.clipboard && navigator.clipboard.writeText) {\n\t\t\t\t\t\t\tnavigator.clipboard.writeText(text).then(\n\t\t\t\t\t\t\t\tdone,\n\t\t\t\t\t\t\t\tfunction () { legacyCopy(text); done(); }\n\t\t\t\t\t\t\t);\n\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\tlegacyCopy(text);\n\t\t\t\t\t\t\tdone();\n\t\t\t\t\t\t}\n\t\t\t\t\t});\n\t\t\t\t})();\n\t\t\t</script></main>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
