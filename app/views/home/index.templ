@@ -165,11 +165,10 @@ templ Index(siteVersion string) {
 			.cta-band { text-align: center; }
 			.cta-band h2 { margin: 0 0 0.8rem; font-size: clamp(1.6rem, 3.5vw, 2.1rem); letter-spacing: -0.02em; }
 			.cta-band p { margin: 0 auto 2rem; max-width: 36rem; color: var(--muted); }
-			.cta-band .install-cmd {
+			.install-cmd {
 				display: inline-flex;
 				align-items: center;
 				gap: 0.9rem;
-				margin: 0 auto 2rem;
 				padding: 0.55rem 0.7rem 0.55rem 1.1rem;
 				max-width: 100%;
 				border: 1px solid var(--border);
@@ -178,7 +177,7 @@ templ Index(siteVersion string) {
 				box-shadow: var(--shadow);
 				text-align: left;
 			}
-			.cta-band .install-cmd code {
+			.install-cmd code {
 				min-width: 0;
 				overflow-x: auto;
 				font-family: var(--mono);
@@ -200,6 +199,10 @@ templ Index(siteVersion string) {
 			}
 			.install-copy:hover { border-color: var(--brand); }
 			.install-copy.copied { color: var(--brand); border-color: var(--brand); }
+			.cta-band .install-cmd { margin: 0 auto 2rem; }
+			.hero .release-note .install-cmd { gap: 0.7rem; padding: 0.4rem 0.55rem 0.4rem 0.85rem; }
+			.hero .release-note .install-cmd code { font-size: 0.8rem; }
+			.hero .release-note .install-copy { padding: 0.22rem 0.6rem; font-size: 0.72rem; }
 			.cta-band .hero-actions { justify-content: center; margin-top: 0; }
 			.eyebrow .badge {
 				display: inline-block;
@@ -238,7 +241,10 @@ templ Index(siteVersion string) {
 						<p class="release-note">
 							<span class="pill"><span class="dot"></span>当前版本：{ siteVersion }</span>
 							<span class="">2026 (重阳)</span>
-							<span class="soft">「东篱把酒黄昏后，有暗香盈袖。」</span>
+							<span class="install-cmd">
+								<code>curl -fsSL https://www.emo-lang.cn/cdn/install.sh | sh</code>
+								<button class="install-copy" type="button" data-copy="curl -fsSL https://www.emo-lang.cn/cdn/install.sh | sh" title="复制安装命令" aria-label="复制安装命令">复制</button>
+							</span>
 						</p>
 				</div>
 				<div class="hero-code">
