@@ -66,11 +66,15 @@ func Index() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style>\n\t\t\t/* The one-line install's copy button, dressed for the dark\n\t\t\t   .cli surface it sits on — the same palette the code\n\t\t\t   terminals use. */\n\t\t\t.install-copy {\n\t\t\t\tmargin-left: 0.75rem;\n\t\t\t\tvertical-align: middle;\n\t\t\t\tpadding: 0.2rem 0.7rem;\n\t\t\t\tborder: 1px solid #3a3a3f;\n\t\t\t\tborder-radius: 1rem;\n\t\t\t\tbackground: transparent;\n\t\t\t\tcolor: #8e8e96;\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.72rem;\n\t\t\t\tcursor: pointer;\n\t\t\t\ttransition: color 0.15s ease, border-color 0.15s ease;\n\t\t\t}\n\t\t\t.install-copy:hover { color: #e8e8ec; border-color: #52525a; }\n\t\t\t.install-copy:focus-visible { outline: 2px solid #7678ED; outline-offset: 2px; }\n\t\t\t.install-copy.copied { color: #28c840; border-color: #28c840; }\n\t\t</style> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 			templ_7745c5c3_Err = layouts.Nav("quickstart").Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<main><section class=\"page-hero\"><div class=\"container\"><h1>快速上手</h1><p>从源码到第一个原生可执行文件，只需要几分钟。</p></div></section><section class=\"section\" style=\"border-top: none; padding-top: 1rem;\"><div class=\"container prose\"><h2 id=\"install\">1 · 从源代码安装，或者使用一键安装脚本</h2><p>一行命令装好 —— macOS 与 Linux，脚本自动探测平台、校验 SHA256，并把 <code>emo</code> 安装到你的 PATH：</p><div class=\"cli\"><span class=\"tok-p\">$</span> curl -fsSL https://www.emo-lang.cn/cdn/install.sh | sh</div><p>想从源代码安装？Emo 的参考实现用 OCaml 5 写成，仓库自带一切 —— 不需要安装第二个编译器。 克隆仓库，用 OCaml 工具链(Dune)构建即可得到 <code>emo</code> 命令：</p><div class=\"cli\"><span class=\"tok-p\">$</span> git clone https://github.com/emo-lang/emo.git<br><span class=\"tok-p\">$</span> cd emo<br><span class=\"tok-c\"># 使用 OCaml 5 + Dune 构建, 详见仓库 README</span></div><h2 id=\"hello\">2 · 第一行代码</h2><p>新建 <code>hello.emo</code>：</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<main><section class=\"page-hero\"><div class=\"container\"><h1>快速上手</h1><p>从源码到第一个原生可执行文件，只需要几分钟。</p></div></section><section class=\"section\" style=\"border-top: none; padding-top: 1rem;\"><div class=\"container prose\"><h2 id=\"install\">1 · 从源代码安装，或者使用一键安装脚本</h2><p>一行命令装好 —— macOS 与 Linux，脚本自动探测平台、校验 SHA256，并把 <code>emo</code> 安装到你的 PATH：</p><div class=\"cli\"><span class=\"tok-p\">$</span> curl -fsSL https://www.emo-lang.cn/cdn/install.sh | sh<button class=\"install-copy\" type=\"button\" data-copy=\"curl -fsSL https://www.emo-lang.cn/cdn/install.sh | sh\" title=\"复制安装命令\" aria-label=\"复制安装命令\">复制</button></div><p>想从源代码安装？Emo 的参考实现用 OCaml 5 写成，仓库自带一切 —— 不需要安装第二个编译器。 克隆仓库，用 OCaml 工具链(Dune)构建即可得到 <code>emo</code> 命令：</p><div class=\"cli\"><span class=\"tok-p\">$</span> git clone https://github.com/emo-lang/emo.git<br><span class=\"tok-p\">$</span> cd emo<br><span class=\"tok-c\"># 使用 OCaml 5 + Dune 构建, 详见仓库 README</span></div><h2 id=\"hello\">2 · 第一行代码</h2><p>新建 <code>hello.emo</code>：</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -78,7 +82,7 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<p>直接运行，无需编译步骤：</p><div class=\"cli\"><span class=\"tok-p\">$</span> emo run hello.emo<br>你好, 中国</div><h2 id=\"build\">3 · 编译成原生可执行文件</h2><p><code>emo build</code> 把程序编译成独立的原生二进制 —— 一条命令，一个可执行文件： 调度器与网络栈随二进制发布，没有解释器，没有运行时下载。</p><div class=\"cli\"><span class=\"tok-p\">$</span> emo build hello.emo -o hello<br>built hello<br><span class=\"tok-p\">$</span> ./hello<br>你好, 中国</div><p>编译输出与 <code>emo run</code> 逐字节一致 —— 这是 CI 里的断言，不是口头承诺。</p><h2 id=\"packages\">4 · 使用包</h2><p>项目的 manifest 就是一个 Emo 配置文件，依赖写精确版本； 用 <code>require</code> 把包的短名带进作用域：</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<p>直接运行，无需编译步骤：</p><div class=\"cli\"><span class=\"tok-p\">$</span> emo run hello.emo<br>你好, 中国</div><h2 id=\"build\">3 · 编译成原生可执行文件</h2><p><code>emo build</code> 把程序编译成独立的原生二进制 —— 一条命令，一个可执行文件： 调度器与网络栈随二进制发布，没有解释器，没有运行时下载。</p><div class=\"cli\"><span class=\"tok-p\">$</span> emo build hello.emo -o hello<br>built hello<br><span class=\"tok-p\">$</span> ./hello<br>你好, 中国</div><p>编译输出与 <code>emo run</code> 逐字节一致 —— 这是 CI 里的断言，不是口头承诺。</p><h2 id=\"packages\">4 · 使用包</h2><p>项目的 manifest 就是一个 Emo 配置文件，依赖写精确版本； 用 <code>require</code> 把包的短名带进作用域：</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -90,33 +94,33 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"cli\"><span class=\"tok-p\">$</span> emo deps resolve   <span class=\"tok-c\"># 解析依赖, 写入 emo.lock</span><br><span class=\"tok-p\">$</span> emo deps list      <span class=\"tok-c\"># 查看解析结果</span><br><span class=\"tok-p\">$</span> emo build main.emo -o app</div><p>依赖解析是构建的副产品 —— 库没有单独的 install 步骤，<code>emo.lock</code> 纳入版本控制，构建永不静默改写它。</p><h2 id=\"examples\">5 · 探索示例</h2><p>仓库的 <code>examples/</code> 目录里，每个目录都是一个可运行的演示项目：</p><ul><li><a href=\"https://github.com/emo-lang/emo/tree/main/examples/language_tour\" target=\"_blank\" rel=\"noreferrer\">language_tour</a> —— 一个带讲解的程序读懂核心概念，从这里开始</li><li><a href=\"https://github.com/emo-lang/emo/tree/main/examples/pipeline\" target=\"_blank\" rel=\"noreferrer\">pipeline</a> —— 并发流水线：<code>do</code> / <code>&lt;-</code> / <code>receive</code></li><li><a href=\"https://github.com/emo-lang/emo/tree/main/examples/tcp_echo\" target=\"_blank\" rel=\"noreferrer\">tcp_echo</a> —— 直接风格网络：一个程序里的服务端与客户端</li><li><a href=\"https://github.com/emo-lang/emo/tree/main/examples/numerics\" target=\"_blank\" rel=\"noreferrer\">numerics</a> —— 原生后端：<code>foreign def</code> C 绑定与特化数值内核</li><li><a href=\"https://github.com/emo-lang/emo/tree/main/examples/shop\" target=\"_blank\" rel=\"noreferrer\">shop</a> —— 模块系统：目录树即模块树，含 <code>internal/</code> 私有子树</li><li><a href=\"https://github.com/emo-lang/emo/tree/main/examples/http_roundtrip\" target=\"_blank\" rel=\"noreferrer\">http_roundtrip</a> —— 本机 HTTP 服务端与客户端的一次往返</li></ul><h2 id=\"next\">下一步</h2><ul><li><a href=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"cli\"><span class=\"tok-p\">$</span> emo deps resolve   <span class=\"tok-c\"># 解析依赖, 写入 emo.lock</span><br><span class=\"tok-p\">$</span> emo deps list      <span class=\"tok-c\"># 查看解析结果</span><br><span class=\"tok-p\">$</span> emo build main.emo -o app</div><p>依赖解析是构建的副产品 —— 库没有单独的 install 步骤，<code>emo.lock</code> 纳入版本控制，构建永不静默改写它。</p><h2 id=\"examples\">5 · 探索示例</h2><p>仓库的 <code>examples/</code> 目录里，每个目录都是一个可运行的演示项目：</p><ul><li><a href=\"https://github.com/emo-lang/emo/tree/main/examples/language_tour\" target=\"_blank\" rel=\"noreferrer\">language_tour</a> —— 一个带讲解的程序读懂核心概念，从这里开始</li><li><a href=\"https://github.com/emo-lang/emo/tree/main/examples/pipeline\" target=\"_blank\" rel=\"noreferrer\">pipeline</a> —— 并发流水线：<code>do</code> / <code>&lt;-</code> / <code>receive</code></li><li><a href=\"https://github.com/emo-lang/emo/tree/main/examples/tcp_echo\" target=\"_blank\" rel=\"noreferrer\">tcp_echo</a> —— 直接风格网络：一个程序里的服务端与客户端</li><li><a href=\"https://github.com/emo-lang/emo/tree/main/examples/numerics\" target=\"_blank\" rel=\"noreferrer\">numerics</a> —— 原生后端：<code>foreign def</code> C 绑定与特化数值内核</li><li><a href=\"https://github.com/emo-lang/emo/tree/main/examples/shop\" target=\"_blank\" rel=\"noreferrer\">shop</a> —— 模块系统：目录树即模块树，含 <code>internal/</code> 私有子树</li><li><a href=\"https://github.com/emo-lang/emo/tree/main/examples/http_roundtrip\" target=\"_blank\" rel=\"noreferrer\">http_roundtrip</a> —— 本机 HTTP 服务端与客户端的一次往返</li></ul><h2 id=\"next\">下一步</h2><ul><li><a href=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 templ.SafeURL
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/tour"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `quickstart/quickstart.templ`, Line: 90, Col: 41}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `quickstart/quickstart.templ`, Line: 111, Col: 41}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\">语言漫游</a> —— 八个小节读完语言核心</li><li><a href=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\">语言漫游</a> —— 八个小节读完语言核心</li><li><a href=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 templ.SafeURL
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/features"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `quickstart/quickstart.templ`, Line: 91, Col: 45}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `quickstart/quickstart.templ`, Line: 112, Col: 45}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\">语言特性</a> —— 每个设计决定的理由</li><li><a href=\"https://github.com/emo-lang/emo\" target=\"_blank\" rel=\"noreferrer\">github.com/emo-lang/emo</a> —— 源码、文档与 issue</li></ul></div></section></main>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\">语言特性</a> —— 每个设计决定的理由</li><li><a href=\"https://github.com/emo-lang/emo\" target=\"_blank\" rel=\"noreferrer\">github.com/emo-lang/emo</a> —— 源码、文档与 issue</li></ul></div></section></main><script>\n\t\t\t(function () {\n\t\t\t\tif (window.__emoInstallCopyInit) return;\n\t\t\t\twindow.__emoInstallCopyInit = true;\n\n\t\t\t\tfunction legacyCopy(text) {\n\t\t\t\t\tvar ta = document.createElement('textarea');\n\t\t\t\t\tta.value = text;\n\t\t\t\t\tta.setAttribute('readonly', '');\n\t\t\t\t\tta.style.position = 'fixed';\n\t\t\t\t\tta.style.opacity = '0';\n\t\t\t\t\tdocument.body.appendChild(ta);\n\t\t\t\t\tta.select();\n\t\t\t\t\ttry { document.execCommand('copy'); } catch (err) {}\n\t\t\t\t\tdocument.body.removeChild(ta);\n\t\t\t\t}\n\n\t\t\t\tdocument.addEventListener('click', function (e) {\n\t\t\t\t\tvar btn = e.target && e.target.closest ? e.target.closest('.install-copy') : null;\n\t\t\t\t\tif (!btn) return;\n\t\t\t\t\tvar text = btn.getAttribute('data-copy');\n\t\t\t\t\tif (!text) return;\n\t\t\t\t\tfunction done() {\n\t\t\t\t\t\tbtn.classList.add('copied');\n\t\t\t\t\t\tbtn.textContent = '已复制';\n\t\t\t\t\t\tclearTimeout(btn.__emoInstallTimer);\n\t\t\t\t\t\tbtn.__emoInstallTimer = setTimeout(function () {\n\t\t\t\t\t\t\tbtn.classList.remove('copied');\n\t\t\t\t\t\t\tbtn.textContent = '复制';\n\t\t\t\t\t\t}, 2000);\n\t\t\t\t\t}\n\t\t\t\t\tif (navigator.clipboard && navigator.clipboard.writeText) {\n\t\t\t\t\t\tnavigator.clipboard.writeText(text).then(\n\t\t\t\t\t\t\tdone,\n\t\t\t\t\t\t\tfunction () { legacyCopy(text); done(); }\n\t\t\t\t\t\t);\n\t\t\t\t\t} else {\n\t\t\t\t\t\tlegacyCopy(text);\n\t\t\t\t\t\tdone();\n\t\t\t\t\t}\n\t\t\t\t});\n\t\t\t})();\n\t\t</script> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
