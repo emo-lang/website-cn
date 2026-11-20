@@ -176,12 +176,13 @@ templ Index(siteVersion string) {
 				background: var(--surface);
 				box-shadow: var(--shadow);
 				text-align: left;
+				font-size: 0.69rem;
 			}
 			.install-cmd code {
 				min-width: 0;
 				overflow-x: auto;
 				font-family: var(--mono);
-				font-size: 0.92rem;
+				font-size: 1em;
 				white-space: nowrap;
 				scrollbar-width: thin;
 			}
@@ -193,16 +194,14 @@ templ Index(siteVersion string) {
 				background: transparent;
 				color: var(--text);
 				font-family: var(--mono);
-				font-size: 0.78rem;
+				font-size: 0.85em;
 				cursor: pointer;
 				transition: color 0.15s ease, border-color 0.15s ease;
 			}
 			.install-copy:hover { border-color: var(--brand); }
 			.install-copy.copied { color: var(--brand); border-color: var(--brand); }
 			.cta-band .install-cmd { margin: 0 auto 2rem; }
-			.hero .release-note .install-cmd { gap: 0.7rem; padding: 0.4rem 0.55rem 0.4rem 0.85rem; }
-			.hero .release-note .install-cmd code { font-size: 0.8rem; }
-			.hero .release-note .install-copy { padding: 0.22rem 0.6rem; font-size: 0.72rem; }
+			.hero .release-note .install-cmd { gap: 0.7rem; padding: 0.4rem 0.55rem 0.4rem 0.85rem; font-size: 0.6rem; }
 			.cta-band .hero-actions { justify-content: center; margin-top: 0; }
 			.eyebrow .badge {
 				display: inline-block;
