@@ -165,6 +165,41 @@ templ Index(siteVersion string) {
 			.cta-band { text-align: center; }
 			.cta-band h2 { margin: 0 0 0.8rem; font-size: clamp(1.6rem, 3.5vw, 2.1rem); letter-spacing: -0.02em; }
 			.cta-band p { margin: 0 auto 2rem; max-width: 36rem; color: var(--muted); }
+			.cta-band .install-cmd {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.9rem;
+				margin: 0 auto 2rem;
+				padding: 0.55rem 0.7rem 0.55rem 1.1rem;
+				max-width: 100%;
+				border: 1px solid var(--border);
+				border-radius: 0.6rem;
+				background: var(--surface);
+				box-shadow: var(--shadow);
+				text-align: left;
+			}
+			.cta-band .install-cmd code {
+				min-width: 0;
+				overflow-x: auto;
+				font-family: var(--mono);
+				font-size: 0.92rem;
+				white-space: nowrap;
+				scrollbar-width: thin;
+			}
+			.install-copy {
+				flex: none;
+				padding: 0.3rem 0.8rem;
+				border: 1px solid var(--border);
+				border-radius: 1rem;
+				background: transparent;
+				color: var(--text);
+				font-family: var(--mono);
+				font-size: 0.78rem;
+				cursor: pointer;
+				transition: color 0.15s ease, border-color 0.15s ease;
+			}
+			.install-copy:hover { border-color: var(--brand); }
+			.install-copy.copied { color: var(--brand); border-color: var(--brand); }
 			.cta-band .hero-actions { justify-content: center; margin-top: 0; }
 			.eyebrow .badge {
 				display: inline-block;
@@ -357,7 +392,11 @@ templ Index(siteVersion string) {
 			<section class="section" id="cta">
 				<div class="container cta-band">
 					<h2>现在就开始用 Emo</h2>
-					<p>开源、MIT 协议、由 OCaml 5 实现的参考编译器。读一遍语言漫游，十分钟看懂整门语言。</p>
+					<p>开源、MIT 协议、由 OCaml 5 实现的参考编译器。一行命令装好 —— macOS 与 Linux，自动放置到 PATH。</p>
+					<div class="install-cmd">
+						<code>curl -fsSL https://www.emo-lang.cn/cdn/install.sh | sh</code>
+						<button class="install-copy" type="button" data-copy="curl -fsSL https://www.emo-lang.cn/cdn/install.sh | sh" title="复制安装命令" aria-label="复制安装命令">复制</button>
+					</div>
 					<div class="hero-actions">
 						<a class="button primary" href={ layouts.Href("/features") }>语言特性</a>
 						<a class="button" href={ layouts.Href("/tour") }>语言漫游</a>
@@ -365,6 +404,49 @@ templ Index(siteVersion string) {
 					</div>
 				</div>
 			</section>
+			<script>
+				(function () {
+					if (window.__emoInstallCopyInit) return;
+					window.__emoInstallCopyInit = true;
+
+					function legacyCopy(text) {
+						var ta = document.createElement('textarea');
+						ta.value = text;
+						ta.setAttribute('readonly', '');
+						ta.style.position = 'fixed';
+						ta.style.opacity = '0';
+						document.body.appendChild(ta);
+						ta.select();
+						try { document.execCommand('copy'); } catch (err) {}
+						document.body.removeChild(ta);
+					}
+
+					document.addEventListener('click', function (e) {
+						var btn = e.target && e.target.closest ? e.target.closest('.install-copy') : null;
+						if (!btn) return;
+						var text = btn.getAttribute('data-copy');
+						if (!text) return;
+						function done() {
+							btn.classList.add('copied');
+							btn.textContent = '已复制';
+							clearTimeout(btn.__emoInstallTimer);
+							btn.__emoInstallTimer = setTimeout(function () {
+								btn.classList.remove('copied');
+								btn.textContent = '复制';
+							}, 2000);
+						}
+						if (navigator.clipboard && navigator.clipboard.writeText) {
+							navigator.clipboard.writeText(text).then(
+								done,
+								function () { legacyCopy(text); done(); }
+							);
+						} else {
+							legacyCopy(text);
+							done();
+						}
+					});
+				})();
+			</script>
 		</main>
 
 		@layouts.Footer()
