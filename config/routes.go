@@ -95,8 +95,12 @@ func assetRoutes(r *gin.Engine) {
 // (default "static"); /assets/ stays reserved for the embedded frontend bundle.
 func staticRoutes(r *gin.Engine) {
 	prefix := staticURLPrefix()
-	r.GET("/"+prefix+"/*path", gin.WrapH(assets.StaticHandler(
-		utils.GetEnvMulti("AIRWAY_STATIC_PATH", "STATIC_PATH"), prefix)))
+	handler := gin.WrapH(assets.StaticHandler(
+		utils.GetEnvMulti("AIRWAY_STATIC_PATH", "STATIC_PATH"), prefix))
+	// HEAD answers beside GET: probe tools (curl -I, wget --spider) read
+	// headers only, and a 404 there reads as a missing download.
+	r.GET("/"+prefix+"/*path", handler)
+	r.HEAD("/"+prefix+"/*path", handler)
 }
 
 // staticURLPrefix returns the public path segment for STATIC_PATH files,
