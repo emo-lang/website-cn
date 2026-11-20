@@ -70,7 +70,7 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<main><section class=\"page-hero\"><div class=\"container\"><h1>快速上手</h1><p>从源码到第一个原生可执行文件，只需要几分钟。</p></div></section><section class=\"section\" style=\"border-top: none; padding-top: 1rem;\"><div class=\"container prose\"><h2 id=\"install\">1 · 构建编译器</h2><p>Emo 的参考实现用 OCaml 5 写成，仓库自带一切 —— 不需要安装第二个编译器。 克隆仓库，用 OCaml 工具链(Dune)构建即可得到 <code>emo</code> 命令：</p><div class=\"cli\"><span class=\"tok-p\">$</span> git clone https://github.com/emo-lang/emo.git<br><span class=\"tok-p\">$</span> cd emo<br><span class=\"tok-c\"># 使用 OCaml 5 + Dune 构建, 详见仓库 README</span></div><h2 id=\"hello\">2 · 第一行代码</h2><p>新建 <code>hello.emo</code>：</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<main><section class=\"page-hero\"><div class=\"container\"><h1>快速上手</h1><p>从源码到第一个原生可执行文件，只需要几分钟。</p></div></section><section class=\"section\" style=\"border-top: none; padding-top: 1rem;\"><div class=\"container prose\"><h2 id=\"install\">1 · 从源代码安装，或者使用一键安装脚本</h2><p>一行命令装好 —— macOS 与 Linux，脚本自动探测平台、校验 SHA256，并把 <code>emo</code> 安装到你的 PATH：</p><div class=\"cli\"><span class=\"tok-p\">$</span> curl -fsSL https://www.emo-lang.cn/cdn/install.sh | sh</div><p>想从源代码安装？Emo 的参考实现用 OCaml 5 写成，仓库自带一切 —— 不需要安装第二个编译器。 克隆仓库，用 OCaml 工具链(Dune)构建即可得到 <code>emo</code> 命令：</p><div class=\"cli\"><span class=\"tok-p\">$</span> git clone https://github.com/emo-lang/emo.git<br><span class=\"tok-p\">$</span> cd emo<br><span class=\"tok-c\"># 使用 OCaml 5 + Dune 构建, 详见仓库 README</span></div><h2 id=\"hello\">2 · 第一行代码</h2><p>新建 <code>hello.emo</code>：</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -97,7 +97,7 @@ func Index() templ.Component {
 			var templ_7745c5c3_Var3 templ.SafeURL
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/tour"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `quickstart/quickstart.templ`, Line: 86, Col: 41}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `quickstart/quickstart.templ`, Line: 90, Col: 41}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -110,7 +110,7 @@ func Index() templ.Component {
 			var templ_7745c5c3_Var4 templ.SafeURL
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinURLErrs(layouts.Href("/features"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `quickstart/quickstart.templ`, Line: 87, Col: 45}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `quickstart/quickstart.templ`, Line: 91, Col: 45}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -126,7 +126,7 @@ func Index() templ.Component {
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = layouts.Base("快速上手 — Emo", "十分钟上手 Emo：构建编译器，写下第一行代码，emo run 运行，emo build 编译成原生可执行文件。").Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = layouts.Base("快速上手 — Emo", "十分钟上手 Emo：一键安装或从源码构建，写下第一行代码，emo run 运行，emo build 编译成原生可执行文件。").Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
